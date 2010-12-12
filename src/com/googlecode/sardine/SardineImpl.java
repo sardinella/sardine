@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
@@ -19,8 +18,11 @@ import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.HttpVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.AuthenticationException;
 import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.auth.params.AuthParams;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
@@ -37,6 +39,7 @@ import org.apache.http.entity.AbstractHttpEntity;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.HttpEntityWrapper;
 import org.apache.http.entity.InputStreamEntity;
+import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
@@ -540,17 +543,19 @@ public class SardineImpl implements Sardine
 			if (this.authEnabled)
 			{
 				Credentials creds = this.client.getCredentialsProvider().getCredentials(AuthScope.ANY);
-				String value = "Basic " + new String(Base64.encodeBase64(new String(creds.getUserPrincipal().getName() + ":" + creds.getPassword()).getBytes()));
-				base.setHeader("Authorization", value);
+				AuthParams.setCredentialCharset(base.getParams(), AuthParams.getCredentialCharset(client.getParams()));
+				base.setHeader(new BasicScheme().authenticate(creds, base));
 			}
-
 			return this.client.execute(base);
 		}
 		catch (IOException ex)
 		{
 			base.abort();
 			throw new SardineException(ex);
-		}
+		} catch (AuthenticationException e) {
+            base.abort();
+            throw new SardineException(e);
+        }
 	}
 
 	/** */
@@ -611,4 +616,10 @@ public class SardineImpl implements Sardine
 			return -1;
 		}
 	}
+
+    /** {@inheritDoc} */
+    //@Override
+    public HttpClient getHttpClient() {
+        return client;
+    }
 }
