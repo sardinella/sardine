@@ -12,7 +12,6 @@
     <name>Sardine mavenized</name>
     <url>http://code.google.com/p/sardine/</url>
     <build>
-        <sourceDirectory>src</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
