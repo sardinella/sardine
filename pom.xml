@@ -86,8 +86,8 @@
 
         <dependency>
             <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.1.1</version>
+            <artifactId>commons-logging-api</artifactId>
+            <version>1.0.3</version>
         </dependency>
 
         <!-- ant and junit must be defined as provided for a succesful compile. -->

@@ -19,25 +19,24 @@ import com.googlecode.sardine.util.SardineException;
 public class Factory
 {
 	/** */
-	protected static Factory instance = new Factory();
+	private final static Factory instance = new Factory();
 
 	/** */
 	protected static Factory instance() { return instance; }
 
 	/** */
-	private JAXBContext context = null;
+	private final JAXBContext context;
 
 	/** */
 	public Factory()
 	{
 		try
 		{
-			if (this.context == null)
-				this.context = JAXBContext.newInstance(ObjectFactory.class);
+			this.context = JAXBContext.newInstance(ObjectFactory.class);
 		}
 		catch (JAXBException e)
 		{
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 

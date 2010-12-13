@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="utf-8"?>
+<D:multistatus xmlns:D="DAV:" xmlns:ns0="DAV:">
+<D:response xmlns:ns666="urn:schemas-microsoft-com:" xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/</D:href>
+<D:propstat>
+<D:prop>
+<ns666:Win32CreationTime>Fri, 02 Jun 2006 11:39:32 GMT</ns666:Win32CreationTime>
+<ns666:Win32LastModifiedTime>Fri, 02 Jun 2006 11:39:32 GMT</ns666:Win32LastModifiedTime>
+<ns666:Win32LastAccessTime>Fri, 02 Jun 2006 11:39:32 GMT</ns666:Win32LastAccessTime>
+<ns666:Win32FileAttributes>0</ns666:Win32FileAttributes>
+<D:getetag>"5bf37-0-3cf8c500"</D:getetag>
+<D:creationdate>2006-06-02T11:39:32Z</D:creationdate>
+<D:getlastmodified>Fri, 02 Jun 2006 11:39:32 GMT</D:getlastmodified>
+<D:displayname></D:displayname>
+<D:resourcetype><D:collection/></D:resourcetype>
+<D:getcontentlength>0</D:getcontentlength>
+<D:getcontenttype>httpd/unix-directory</D:getcontenttype>
+<D:getcontentlanguage></D:getcontentlanguage>
+<D:supportedlock>
+<D:lockentry>
+<D:lockscope><D:exclusive/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+<D:lockentry>
+<D:lockscope><D:shared/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+</D:supportedlock>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:ns666="urn:schemas-microsoft-com:" xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/Anlagen</D:href>
+<D:propstat>
+<D:prop>
+<ns666:Win32CreationTime>Mon, 12 Nov 2007 21:35:19 GMT</ns666:Win32CreationTime>
+<ns666:Win32LastModifiedTime>Mon, 12 Nov 2007 21:35:55 GMT</ns666:Win32LastModifiedTime>
+<ns666:Win32LastAccessTime>Mon, 12 Nov 2007 21:35:55 GMT</ns666:Win32LastAccessTime>
+<ns666:Win32FileAttributes>0</ns666:Win32FileAttributes>
+<D:getetag>"5bf49-0-1bed8de6"</D:getetag>
+<D:creationdate>2007-11-12T21:35:19Z</D:creationdate>
+<D:getlastmodified>Mon, 12 Nov 2007 21:35:55 GMT</D:getlastmodified>
+<D:displayname></D:displayname>
+<D:resourcetype><D:collection/></D:resourcetype>
+<D:getcontentlength>0</D:getcontentlength>
+<D:getcontenttype>httpd/unix-directory</D:getcontenttype>
+<D:getcontentlanguage></D:getcontentlanguage>
+<D:supportedlock>
+<D:lockentry>
+<D:lockscope><D:exclusive/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+<D:lockentry>
+<D:lockscope><D:shared/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+</D:supportedlock>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:ns666="urn:schemas-microsoft-com:" xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/Dokumentation</D:href>
+<D:propstat>
+<D:prop>
+<ns666:Win32CreationTime>Thu, 08 Mar 2007 08:27:14 GMT</ns666:Win32CreationTime>
+<ns666:Win32LastModifiedTime>Thu, 08 Mar 2007 08:27:14 GMT</ns666:Win32LastModifiedTime>
+<ns666:Win32LastAccessTime>Thu, 08 Mar 2007 08:27:14 GMT</ns666:Win32LastAccessTime>
+<ns666:Win32FileAttributes>0</ns666:Win32FileAttributes>
+<D:getetag>"5bf3e-0-12fcc5e7"</D:getetag>
+<D:creationdate>2007-03-08T08:27:14Z</D:creationdate>
+<D:getlastmodified>Thu, 08 Mar 2007 08:27:14 GMT</D:getlastmodified>
+<D:displayname></D:displayname>
+<D:resourcetype><D:collection/></D:resourcetype>
+<D:getcontentlength>0</D:getcontentlength>
+<D:getcontenttype>httpd/unix-directory</D:getcontenttype>
+<D:getcontentlanguage></D:getcontentlanguage>
+<D:supportedlock>
+<D:lockentry>
+<D:lockscope><D:exclusive/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+<D:lockentry>
+<D:lockscope><D:shared/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+</D:supportedlock>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:ns666="urn:schemas-microsoft-com:" xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/Meine%20Bilder</D:href>
+<D:propstat>
+<D:prop>
+<ns666:Win32CreationTime>Tue, 31 Oct 2006 05:24:49 GMT</ns666:Win32CreationTime>
+<ns666:Win32LastModifiedTime>Tue, 31 Oct 2006 05:24:49 GMT</ns666:Win32LastModifiedTime>
+<ns666:Win32LastAccessTime>Tue, 31 Oct 2006 05:24:49 GMT</ns666:Win32LastAccessTime>
+<ns666:Win32FileAttributes>0</ns666:Win32FileAttributes>
+<D:getetag>"5bf33-0-9aeb0a40"</D:getetag>
+<D:creationdate>2006-10-31T05:24:49Z</D:creationdate>
+<D:getlastmodified>Tue, 31 Oct 2006 05:24:49 GMT</D:getlastmodified>
+<D:displayname></D:displayname>
+<D:resourcetype><D:collection/></D:resourcetype>
+<D:getcontentlength>0</D:getcontentlength>
+<D:getcontenttype>httpd/unix-directory</D:getcontenttype>
+<D:getcontentlanguage></D:getcontentlanguage>
+<D:supportedlock>
+<D:lockentry>
+<D:lockscope><D:exclusive/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+<D:lockentry>
+<D:lockscope><D:shared/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+</D:supportedlock>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:ns666="urn:schemas-microsoft-com:" xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/Meine%20Dokumente</D:href>
+<D:propstat>
+<D:prop>
+<ns666:Win32CreationTime>Tue, 31 Oct 2006 05:24:49 GMT</ns666:Win32CreationTime>
+<ns666:Win32LastModifiedTime>Tue, 31 Oct 2006 05:24:49 GMT</ns666:Win32LastModifiedTime>
+<ns666:Win32LastAccessTime>Tue, 31 Oct 2006 05:24:49 GMT</ns666:Win32LastAccessTime>
+<ns666:Win32FileAttributes>0</ns666:Win32FileAttributes>
+<D:getetag>"5bf35-0-9aeb0a40"</D:getetag>
+<D:creationdate>2006-10-31T05:24:49Z</D:creationdate>
+<D:getlastmodified>Tue, 31 Oct 2006 05:24:49 GMT</D:getlastmodified>
+<D:displayname></D:displayname>
+<D:resourcetype><D:collection/></D:resourcetype>
+<D:getcontentlength>0</D:getcontentlength>
+<D:getcontenttype>httpd/unix-directory</D:getcontenttype>
+<D:getcontentlanguage></D:getcontentlanguage>
+<D:supportedlock>
+<D:lockentry>
+<D:lockscope><D:exclusive/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+<D:lockentry>
+<D:lockscope><D:shared/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+</D:supportedlock>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:ns666="urn:schemas-microsoft-com:" xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/Meine%20Musik</D:href>
+<D:propstat>
+<D:prop>
+<ns666:Win32CreationTime>Tue, 31 Oct 2006 05:24:49 GMT</ns666:Win32CreationTime>
+<ns666:Win32LastModifiedTime>Tue, 31 Oct 2006 05:24:49 GMT</ns666:Win32LastModifiedTime>
+<ns666:Win32LastAccessTime>Tue, 31 Oct 2006 05:24:49 GMT</ns666:Win32LastAccessTime>
+<ns666:Win32FileAttributes>0</ns666:Win32FileAttributes>
+<D:getetag>"5bf34-0-9aeb0a40"</D:getetag>
+<D:creationdate>2006-10-31T05:24:49Z</D:creationdate>
+<D:getlastmodified>Tue, 31 Oct 2006 05:24:49 GMT</D:getlastmodified>
+<D:displayname></D:displayname>
+<D:resourcetype><D:collection/></D:resourcetype>
+<D:getcontentlength>0</D:getcontentlength>
+<D:getcontenttype>httpd/unix-directory</D:getcontenttype>
+<D:getcontentlanguage></D:getcontentlanguage>
+<D:supportedlock>
+<D:lockentry>
+<D:lockscope><D:exclusive/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+<D:lockentry>
+<D:lockscope><D:shared/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+</D:supportedlock>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:ns666="urn:schemas-microsoft-com:" xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/Namens-A%cc%88nderung</D:href>
+<D:propstat>
+<D:prop>
+<ns666:Win32CreationTime>Sun, 07 Dec 2008 13:17:14 GMT</ns666:Win32CreationTime>
+<ns666:Win32LastModifiedTime>Mon, 13 Dec 2010 21:03:58 GMT</ns666:Win32LastModifiedTime>
+<ns666:Win32LastAccessTime>Mon, 13 Dec 2010 21:03:58 GMT</ns666:Win32LastAccessTime>
+<ns666:Win32FileAttributes>0</ns666:Win32FileAttributes>
+<D:getetag>"5bf5c-0-ba95ada5"</D:getetag>
+<D:creationdate>2008-12-07T13:17:14Z</D:creationdate>
+<D:getlastmodified>Mon, 13 Dec 2010 21:03:58 GMT</D:getlastmodified>
+<D:displayname></D:displayname>
+<D:resourcetype><D:collection/></D:resourcetype>
+<D:getcontentlength>0</D:getcontentlength>
+<D:getcontenttype>httpd/unix-directory</D:getcontenttype>
+<D:getcontentlanguage></D:getcontentlanguage>
+<D:supportedlock>
+<D:lockentry>
+<D:lockscope><D:exclusive/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+<D:lockentry>
+<D:lockscope><D:shared/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+</D:supportedlock>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:ns666="urn:schemas-microsoft-com:" xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/Neue%20Dateianlagen</D:href>
+<D:propstat>
+<D:prop>
+<ns666:Win32CreationTime>Tue, 31 Oct 2006 05:24:49 GMT</ns666:Win32CreationTime>
+<ns666:Win32LastModifiedTime>Tue, 31 Oct 2006 05:24:49 GMT</ns666:Win32LastModifiedTime>
+<ns666:Win32LastAccessTime>Tue, 31 Oct 2006 05:24:49 GMT</ns666:Win32LastAccessTime>
+<ns666:Win32FileAttributes>0</ns666:Win32FileAttributes>
+<D:getetag>"5bf36-0-9aeb0a40"</D:getetag>
+<D:creationdate>2006-10-31T05:24:49Z</D:creationdate>
+<D:getlastmodified>Tue, 31 Oct 2006 05:24:49 GMT</D:getlastmodified>
+<D:displayname></D:displayname>
+<D:resourcetype><D:collection/></D:resourcetype>
+<D:getcontentlength>0</D:getcontentlength>
+<D:getcontenttype>httpd/unix-directory</D:getcontenttype>
+<D:getcontentlanguage></D:getcontentlanguage>
+<D:supportedlock>
+<D:lockentry>
+<D:lockscope><D:exclusive/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+<D:lockentry>
+<D:lockscope><D:shared/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+</D:supportedlock>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:ns666="urn:schemas-microsoft-com:" xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/Ordner%20anderer%20Personen</D:href>
+<D:propstat>
+<D:prop>
+<ns666:Win32CreationTime>Tue, 19 Jun 2007 04:35:10 GMT</ns666:Win32CreationTime>
+<ns666:Win32LastModifiedTime>Tue, 19 Jun 2007 04:35:10 GMT</ns666:Win32LastModifiedTime>
+<ns666:Win32LastAccessTime>Tue, 19 Jun 2007 04:35:10 GMT</ns666:Win32LastAccessTime>
+<ns666:Win32FileAttributes>0</ns666:Win32FileAttributes>
+<D:getetag>"5bf45-0-d6c05f72"</D:getetag>
+<D:creationdate>2007-06-19T04:35:10Z</D:creationdate>
+<D:getlastmodified>Tue, 19 Jun 2007 04:35:10 GMT</D:getlastmodified>
+<D:displayname></D:displayname>
+<D:resourcetype><D:collection/></D:resourcetype>
+<D:getcontentlength>0</D:getcontentlength>
+<D:getcontenttype>httpd/unix-directory</D:getcontenttype>
+<D:getcontentlanguage></D:getcontentlanguage>
+<D:supportedlock>
+<D:lockentry>
+<D:lockscope><D:exclusive/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+<D:lockentry>
+<D:lockscope><D:shared/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+</D:supportedlock>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:ns666="urn:schemas-microsoft-com:" xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/Papierkorb</D:href>
+<D:propstat>
+<D:prop>
+<ns666:Win32CreationTime>Tue, 19 Jun 2007 04:35:10 GMT</ns666:Win32CreationTime>
+<ns666:Win32LastModifiedTime>Tue, 19 Jun 2007 04:35:10 GMT</ns666:Win32LastModifiedTime>
+<ns666:Win32LastAccessTime>Tue, 19 Jun 2007 04:35:10 GMT</ns666:Win32LastAccessTime>
+<ns666:Win32FileAttributes>0</ns666:Win32FileAttributes>
+<D:getetag>"5bf44-0-d6c05f72"</D:getetag>
+<D:creationdate>2007-06-19T04:35:10Z</D:creationdate>
+<D:getlastmodified>Tue, 19 Jun 2007 04:35:10 GMT</D:getlastmodified>
+<D:displayname></D:displayname>
+<D:resourcetype><D:collection/></D:resourcetype>
+<D:getcontentlength>0</D:getcontentlength>
+<D:getcontenttype>httpd/unix-directory</D:getcontenttype>
+<D:getcontentlanguage></D:getcontentlanguage>
+<D:supportedlock>
+<D:lockentry>
+<D:lockscope><D:exclusive/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+<D:lockentry>
+<D:lockscope><D:shared/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+</D:supportedlock>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:ns1="DAV:" xmlns:ns666="urn:schemas-microsoft-com:" xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/borg</D:href>
+<D:propstat>
+<D:prop>
+<ns1:executable>T</ns1:executable>
+<ns666:Win32CreationTime>Sat, 28 Nov 2009 22:27:39 GMT</ns666:Win32CreationTime>
+<ns666:Win32LastModifiedTime>Sat, 28 Nov 2009 22:27:42 GMT</ns666:Win32LastModifiedTime>
+<ns666:Win32LastAccessTime>Sat, 28 Nov 2009 22:27:42 GMT</ns666:Win32LastAccessTime>
+<ns666:Win32FileAttributes>0</ns666:Win32FileAttributes>
+<D:getetag>"9ad53f-0-ea8b25cf"</D:getetag>
+<D:creationdate>2009-11-28T22:27:39Z</D:creationdate>
+<D:getlastmodified>Sat, 28 Nov 2009 22:27:42 GMT</D:getlastmodified>
+<D:displayname></D:displayname>
+<D:resourcetype><D:collection/></D:resourcetype>
+<D:getcontentlength>0</D:getcontentlength>
+<D:getcontenttype>httpd/unix-directory</D:getcontenttype>
+<D:getcontentlanguage></D:getcontentlanguage>
+<D:supportedlock>
+<D:lockentry>
+<D:lockscope><D:exclusive/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+<D:lockentry>
+<D:lockscope><D:shared/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+</D:supportedlock>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:ns666="urn:schemas-microsoft-com:" xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/wichtige-dokumente</D:href>
+<D:propstat>
+<D:prop>
+<ns666:Win32CreationTime>Sun, 07 Dec 2008 13:17:21 GMT</ns666:Win32CreationTime>
+<ns666:Win32LastModifiedTime>Sun, 07 Dec 2008 13:17:21 GMT</ns666:Win32LastModifiedTime>
+<ns666:Win32LastAccessTime>Sun, 07 Dec 2008 13:17:21 GMT</ns666:Win32LastAccessTime>
+<ns666:Win32FileAttributes>0</ns666:Win32FileAttributes>
+<D:getetag>"5bf5e-0-bafb1abe"</D:getetag>
+<D:creationdate>2008-12-07T13:17:21Z</D:creationdate>
+<D:getlastmodified>Sun, 07 Dec 2008 13:17:21 GMT</D:getlastmodified>
+<D:displayname></D:displayname>
+<D:resourcetype><D:collection/></D:resourcetype>
+<D:getcontentlength>0</D:getcontentlength>
+<D:getcontenttype>httpd/unix-directory</D:getcontenttype>
+<D:getcontentlanguage></D:getcontentlanguage>
+<D:supportedlock>
+<D:lockentry>
+<D:lockscope><D:exclusive/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+<D:lockentry>
+<D:lockscope><D:shared/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+</D:supportedlock>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:ns666="urn:schemas-microsoft-com:" xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/.DS_Store</D:href>
+<D:propstat>
+<D:prop>
+<ns666:Win32CreationTime>Mon, 29 Oct 2007 21:41:09 GMT</ns666:Win32CreationTime>
+<ns666:Win32LastModifiedTime>Wed, 01 Apr 2009 19:10:36 GMT</ns666:Win32LastModifiedTime>
+<ns666:Win32LastAccessTime>Wed, 01 Apr 2009 19:10:36 GMT</ns666:Win32LastAccessTime>
+<ns666:Win32FileAttributes>0</ns666:Win32FileAttributes>
+<D:getetag>01.392102359.2</D:getetag>
+<D:creationdate>2007-10-29T21:41:09Z</D:creationdate>
+<D:getlastmodified>Wed, 01 Apr 2009 19:10:36 GMT</D:getlastmodified>
+<D:displayname></D:displayname>
+<D:resourcetype></D:resourcetype>
+<D:getcontentlength>15364</D:getcontentlength>
+<D:getcontenttype>application/octetstream</D:getcontenttype>
+<D:getcontentlanguage></D:getcontentlanguage>
+<D:supportedlock>
+<D:lockentry>
+<D:lockscope><D:exclusive/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+<D:lockentry>
+<D:lockscope><D:shared/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+</D:supportedlock>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:ns1="DAV:" xmlns:ns666="urn:schemas-microsoft-com:" xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/KanbanAndScrumInfoQVersionFINAL.pdf</D:href>
+<D:propstat>
+<D:prop>
+<ns1:executable>T</ns1:executable>
+<ns666:Win32CreationTime>Fri, 12 Mar 2010 21:32:30 GMT</ns666:Win32CreationTime>
+<ns666:Win32LastModifiedTime>Fri, 12 Mar 2010 21:32:34 GMT</ns666:Win32LastModifiedTime>
+<ns666:Win32LastAccessTime>Fri, 12 Mar 2010 21:32:34 GMT</ns666:Win32LastAccessTime>
+<ns666:Win32FileAttributes>0</ns666:Win32FileAttributes>
+<D:getetag>01.539551794.2</D:getetag>
+<D:creationdate>2010-03-12T21:32:30Z</D:creationdate>
+<D:getlastmodified>Fri, 12 Mar 2010 21:32:34 GMT</D:getlastmodified>
+<D:displayname></D:displayname>
+<D:resourcetype></D:resourcetype>
+<D:getcontentlength>5183353</D:getcontentlength>
+<D:getcontenttype>application/octetstream</D:getcontenttype>
+<D:getcontentlanguage></D:getcontentlanguage>
+<D:supportedlock>
+<D:lockentry>
+<D:lockscope><D:exclusive/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+<D:lockentry>
+<D:lockscope><D:shared/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+</D:supportedlock>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:ns666="urn:schemas-microsoft-com:" xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/MavenSchulung.odp</D:href>
+<D:propstat>
+<D:prop>
+<ns666:Win32CreationTime>Wed, 01 Apr 2009 20:04:38 GMT</ns666:Win32CreationTime>
+<ns666:Win32LastModifiedTime>Wed, 01 Apr 2009 20:04:41 GMT</ns666:Win32LastModifiedTime>
+<ns666:Win32LastAccessTime>Wed, 01 Apr 2009 20:04:41 GMT</ns666:Win32LastAccessTime>
+<ns666:Win32FileAttributes>0</ns666:Win32FileAttributes>
+<D:getetag>01.392115861.2</D:getetag>
+<D:creationdate>2009-04-01T20:04:38Z</D:creationdate>
+<D:getlastmodified>Wed, 01 Apr 2009 20:04:41 GMT</D:getlastmodified>
+<D:displayname></D:displayname>
+<D:resourcetype></D:resourcetype>
+<D:getcontentlength>1310789</D:getcontentlength>
+<D:getcontenttype>application/octetstream</D:getcontenttype>
+<D:getcontentlanguage></D:getcontentlanguage>
+<D:supportedlock>
+<D:lockentry>
+<D:lockscope><D:exclusive/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+<D:lockentry>
+<D:lockscope><D:shared/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+</D:supportedlock>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:ns1="DAV:" xmlns:ns666="urn:schemas-microsoft-com:" xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/">
+<D:href>/pom.xml</D:href>
+<D:propstat>
+<D:prop>
+<ns1:executable>T</ns1:executable>
+<ns666:Win32CreationTime>Sun, 12 Dec 2010 20:01:07 GMT</ns666:Win32CreationTime>
+<ns666:Win32LastModifiedTime>Mon, 13 Dec 2010 20:47:02 GMT</ns666:Win32LastModifiedTime>
+<ns666:Win32LastAccessTime>Mon, 13 Dec 2010 20:47:02 GMT</ns666:Win32LastAccessTime>
+<ns666:Win32FileAttributes>0</ns666:Win32FileAttributes>
+<D:getetag>02.530967477.2</D:getetag>
+<D:creationdate>2010-12-12T20:01:07Z</D:creationdate>
+<D:getlastmodified>Mon, 13 Dec 2010 20:47:02 GMT</D:getlastmodified>
+<D:displayname></D:displayname>
+<D:resourcetype></D:resourcetype>
+<D:getcontentlength>4160</D:getcontentlength>
+<D:getcontenttype>application/octetstream</D:getcontenttype>
+<D:getcontentlanguage></D:getcontentlanguage>
+<D:supportedlock>
+<D:lockentry>
+<D:lockscope><D:exclusive/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+<D:lockentry>
+<D:lockscope><D:shared/></D:lockscope>
+<D:locktype><D:write/></D:locktype>
+</D:lockentry>
+</D:supportedlock>
+<D:lockdiscovery/>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+</D:response>
+</D:multistatus>
