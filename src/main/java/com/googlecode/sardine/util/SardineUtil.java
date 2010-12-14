@@ -33,7 +33,22 @@ import com.googlecode.sardine.model.Multistatus;
 public class SardineUtil
 {
 	/** cached version of getResources() webdav xml GET request */
-	private static StringEntity GET_RESOURCES = null;
+	private final static StringEntity GET_RESOURCES;
+	
+	static {
+        try
+        {
+            GET_RESOURCES = new StringEntity("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n" +
+                                                "<propfind xmlns=\"DAV:\">\n" +
+                                                "   <allprop/>\n" +
+                                                "</propfind>", "UTF-8");
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            throw new RuntimeException("Could not find encoding, JVM broken?", e);
+        }
+	    
+	}
 
 	/**
 	 * Date formats using for Date parsing.
@@ -237,21 +252,6 @@ public class SardineUtil
 	 */
 	public static StringEntity getResourcesEntity()
 	{
-		if (GET_RESOURCES == null)
-		{
-			try
-			{
-				GET_RESOURCES = new StringEntity("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n" +
-													"<propfind xmlns=\"DAV:\">\n" +
-													"	<allprop/>\n" +
-													"</propfind>", "UTF-8");
-			}
-			catch (UnsupportedEncodingException e)
-			{
-				// Ignored
-			}
-		}
-
 		return GET_RESOURCES;
 	}
 
@@ -260,11 +260,9 @@ public class SardineUtil
 	 */
 	public static StringEntity getResourcePatchEntity(Map<String,String> setProps, List<String> removeProps)
 	{
-		StringEntity patchEntity = null;
-
 		try
 		{
-			StringBuffer buf = new StringBuffer("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n");
+			final StringBuilder buf = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n");
 			buf.append("<D:propertyupdate xmlns:D=\"DAV:\" xmlns:S=\"SAR:\">\n");
 
 			if(setProps != null)
@@ -297,15 +295,13 @@ public class SardineUtil
 
 			buf.append("</D:propertyupdate>\n");
 
-			patchEntity = new StringEntity(buf.toString());
+			return new StringEntity(buf.toString(), "UTF-8");
 
 		}
 		catch (UnsupportedEncodingException e)
 		{
-			// Ignored
+		    throw new RuntimeException("Could not find encoding, JVM broken?", e);
 		}
-
-		return patchEntity;
 	}
 
 	/**

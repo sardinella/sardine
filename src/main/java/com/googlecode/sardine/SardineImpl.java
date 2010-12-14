@@ -243,21 +243,22 @@ public class SardineImpl implements Sardine
 				baseUrl = href.substring(0, last);
 			}
 
-			// Ignore crap files
-			if (name.equals(".DS_Store"))
-				continue;
-
 			// Remove the final / from the name for directories
 			if (name.endsWith("/"))
 			{
 				name = name.substring(0, name.length() - 1);
 				isDirectory = true;
 			}
-
+			
 			Prop prop = resp.getPropstat().get(0).getProp();
+			
+            // SVN returns a content-type of text/html, but collection is set.
+			if (prop.getResourcetype().getCollection() != null) {
+                isDirectory = true;
+            }	            
 
 			Map<String,String> customProps = SardineUtil.extractCustomProps(prop.getAny());
-
+			
 			String creationdate = null;
 			Creationdate gcd = prop.getCreationdate();
 			if ((gcd != null) && (gcd.getContent().size() == 1))
@@ -278,11 +279,12 @@ public class SardineImpl implements Sardine
 				contentType = gtt.getContent().get(0);
 
 			// Make sure that directories have the correct content type.
-			if (isDirectory && (contentType == null))
+			if (isDirectory)
 			{
 				// Need to correct the contentType to identify as a directory.
 				contentType = "httpd/unix-directory";
 			}
+			
 
 			String contentLength = "0";
 			Getcontentlength gcl = prop.getGetcontentlength();

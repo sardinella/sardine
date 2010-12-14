@@ -162,5 +162,5 @@ public class DavResourceTest {
     public void testToString() {
         assertEquals("DavResource [baseUrl=https://webdav.smartdrive.web.de, contentLength=0, contentType=httpd/unix-directory, creation=Thu Jan 01 01:00:00 CET 1970, modified=Thu Jan 01 01:00:03 CET 1970, name=Meine%20Anlagen, nameDecoded=Meine Anlagen, getAbsoluteUrl()=https://webdav.smartdrive.web.de/Meine%20Anlagen/, isDirectory()=true]", String.valueOf(resource));
     }
-
+    
 }
