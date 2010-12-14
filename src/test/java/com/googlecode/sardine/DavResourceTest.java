@@ -37,7 +37,7 @@ public class DavResourceTest {
 
     private final DavResource resource;
 
-    private final Date creation = new Date();
+    private final Date creation = new Date(0);
 
     private final Date modified = new Date(creation.getTime() + 3600);
 
@@ -64,6 +64,7 @@ public class DavResourceTest {
      */
     @Test
     public void testDavResource() {
+        final DavResource resource = new DavResource(BASE_URL, "Meine%20Anlagen", creation, modified, "httpd/unix-directory", 0L, true, null);
     }
 
     /**
@@ -87,7 +88,7 @@ public class DavResourceTest {
      */
     @Test
     public void testGetNameDecoded() {
-        assertEquals("Meine Anlagen", resource.getName());
+        assertEquals("Meine Anlagen", resource.getNameDecoded());
     }
 
     /**
@@ -159,7 +160,7 @@ public class DavResourceTest {
      */
     @Test
     public void testToString() {
-        fail("Not yet implemented"); // TODO
+        assertEquals("DavResource [baseUrl=https://webdav.smartdrive.web.de, contentLength=0, contentType=httpd/unix-directory, creation=Thu Jan 01 01:00:00 CET 1970, modified=Thu Jan 01 01:00:03 CET 1970, name=Meine%20Anlagen, nameDecoded=Meine Anlagen, getAbsoluteUrl()=https://webdav.smartdrive.web.de/Meine%20Anlagen/, isDirectory()=true]", String.valueOf(resource));
     }
 
 }
