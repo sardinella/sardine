@@ -4,7 +4,9 @@
 
 package com.googlecode.sardine;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,12 +16,10 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import com.googlecode.sardine.model.Multistatus;
 import com.googlecode.sardine.model.ObjectFactory;
-import com.googlecode.sardine.model.Response;
 
 /**
  * @author mirko
@@ -33,7 +33,7 @@ public class DavResourceTest {
 
     private final Unmarshaller unmarshaller;
 
-    private Multistatus mulitStatus;
+    private Multistatus multiStatus;
 
     private final DavResource resource;
 
@@ -50,7 +50,7 @@ public class DavResourceTest {
         unmarshaller = context.createUnmarshaller();
         final InputStream stream = DavResourceTest.class.getResourceAsStream("propfind.xml");
         try {
-            mulitStatus = (Multistatus) unmarshaller.unmarshal(stream);
+            multiStatus = (Multistatus) unmarshaller.unmarshal(stream);
         } finally {
             stream.close();
         }
