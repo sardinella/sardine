@@ -10,17 +10,11 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 
 import org.junit.Test;
-
-import com.googlecode.sardine.model.Multistatus;
-import com.googlecode.sardine.model.ObjectFactory;
 
 /**
  * @author mirko
@@ -29,12 +23,6 @@ import com.googlecode.sardine.model.ObjectFactory;
 public class DavResourceTest {
 
     private final static String BASE_URL = "https://webdav.smartdrive.web.de";
-    
-    private final JAXBContext context;
-
-    private final Unmarshaller unmarshaller;
-
-    private Multistatus multiStatus;
 
     private final DavResource resource;
 
@@ -44,28 +32,11 @@ public class DavResourceTest {
 
     /**
      * @throws JAXBException
-     * @throws IOException 
+     * @throws IOException
      */
     public DavResourceTest() throws JAXBException, IOException {
-        context = JAXBContext.newInstance(ObjectFactory.class);
-        unmarshaller = context.createUnmarshaller();
-        final InputStream stream = DavResourceTest.class.getResourceAsStream("propfind.xml");
-        try {
-            multiStatus = (Multistatus) unmarshaller.unmarshal(stream);
-        } finally {
-            stream.close();
-        }
-        resource = new DavResource(BASE_URL, "Meine%20Anlagen", creation, modified, "httpd/unix-directory", 0L, false, null);
-    }
-
-    /**
-     * Test method for
-     * {@link com.googlecode.sardine.DavResource#DavResource(java.lang.String, java.lang.String, java.util.Date, java.util.Date, java.lang.String, java.lang.Long, boolean, java.util.Map)}
-     * .
-     */
-    @Test
-    public void testDavResource() {
-        final DavResource resource = new DavResource(BASE_URL, "Meine%20Anlagen", creation, modified, "httpd/unix-directory", 0L, false, null);
+        resource = new DavResource(BASE_URL, "Meine%20Anlagen", creation, modified, "httpd/unix-directory", 0L, false,
+                null);
     }
 
     /**
@@ -161,7 +132,9 @@ public class DavResourceTest {
      */
     @Test
     public void testToString() {
-        assertEquals("DavResource [baseUrl=https://webdav.smartdrive.web.de, contentLength=0, contentType=httpd/unix-directory, creation=Thu Jan 01 01:00:00 CET 1970, modified=Thu Jan 01 01:00:03 CET 1970, name=Meine%20Anlagen, nameDecoded=Meine Anlagen, getAbsoluteUrl()=https://webdav.smartdrive.web.de/Meine%20Anlagen/, isDirectory()=true]", String.valueOf(resource));
+        assertEquals(
+                "DavResource [baseUrl=https://webdav.smartdrive.web.de, contentLength=0, contentType=httpd/unix-directory, creation=Thu Jan 01 01:00:00 CET 1970, modified=Thu Jan 01 01:00:03 CET 1970, name=Meine%20Anlagen, nameDecoded=Meine Anlagen, getAbsoluteUrl()=https://webdav.smartdrive.web.de/Meine%20Anlagen/, isDirectory()=true]",
+                String.valueOf(resource));
     }
-    
+
 }

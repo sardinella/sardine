@@ -183,9 +183,17 @@ public class SardineImpl implements Sardine
 		}
 
 		// Process the response from the server.
-		Multistatus multistatus = SardineUtil.getMulitstatus(this.factory.getUnmarshaller(), response, url);
+		Multistatus multistatus = SardineUtil.getMulitstatus(this.factory.getUnmarshaller(), response, url);		
+		return fromMultiStatus(url, multistatus);
+	}
 
-		List<Response> responses = multistatus.getResponse();
+    /**
+     * @param url
+     * @param multistatus
+     * @return
+     */
+    List<DavResource> fromMultiStatus(String url, Multistatus multistatus) {
+        List<Response> responses = multistatus.getResponse();
 
 		List<DavResource> resources = new ArrayList<DavResource>(responses.size());
 
@@ -205,7 +213,7 @@ public class SardineImpl implements Sardine
 			boolean currentDirectory = false;
 			boolean isDirectory = false;
 
-			String href = SardineUtil.decode(resp.getHref().get(0));
+			String href = resp.getHref().get(0);
 
 			// figure out the name of the file and set
 			// the baseUrl if it isn't already set (like when
@@ -297,7 +305,7 @@ public class SardineImpl implements Sardine
 			resources.add(dr);
 		}
 		return resources;
-	}
+    }
 
 	/*
 	 * (non-Javadoc)
