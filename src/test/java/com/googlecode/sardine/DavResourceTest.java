@@ -5,6 +5,7 @@
 package com.googlecode.sardine;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -54,7 +55,7 @@ public class DavResourceTest {
         } finally {
             stream.close();
         }
-        resource = new DavResource(BASE_URL, "Meine%20Anlagen", creation, modified, "httpd/unix-directory", 0L, true, null);
+        resource = new DavResource(BASE_URL, "Meine%20Anlagen", creation, modified, "httpd/unix-directory", 0L, false, null);
     }
 
     /**
@@ -64,7 +65,7 @@ public class DavResourceTest {
      */
     @Test
     public void testDavResource() {
-        final DavResource resource = new DavResource(BASE_URL, "Meine%20Anlagen", creation, modified, "httpd/unix-directory", 0L, true, null);
+        final DavResource resource = new DavResource(BASE_URL, "Meine%20Anlagen", creation, modified, "httpd/unix-directory", 0L, false, null);
     }
 
     /**
@@ -144,7 +145,7 @@ public class DavResourceTest {
      */
     @Test
     public void testIsCurrentDirectory() {
-        assertTrue(resource.isCurrentDirectory());
+        assertFalse(resource.isCurrentDirectory());
     }
 
     /**

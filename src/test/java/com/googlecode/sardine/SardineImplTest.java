@@ -48,6 +48,7 @@ public class SardineImplTest {
         final DavResource rootDirectory = map.get("");
         assertThat("rootDirectory.isDirectory()", rootDirectory.isDirectory(), is(true));
         assertThat("rootDirectory.isCurrentDirectory()", rootDirectory.isCurrentDirectory(), is(true));
+        assertThat(rootDirectory.getBaseUrl(), is(rootDirectory.getAbsoluteUrl()));
         assertThat(rootDirectory.getCustomProps().get("ignore"), containsString("target\n"));
         DavResource pom = map.get("pom.xml");
         assertThat(pom.getContentType(), is("text/xml; charset=\"utf-8\""));        

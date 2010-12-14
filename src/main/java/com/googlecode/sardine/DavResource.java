@@ -42,7 +42,9 @@ public class DavResource
 		this.currentDirectory = currentDirectory;
 		this.customProps = customProps;
 		this.nameDecoded = SardineUtil.decode(name);
-		if (isDirectory()) {
+		if (isDirectory() && currentDirectory) {
+		    this.url = URI.create(baseUrl + "/").normalize().toASCIIString();
+		} else if (isDirectory()) {
 		    this.url = URI.create(baseUrl + "/").resolve(URI.create(name + "/")).toASCIIString();
 		} else {
 		    this.url = URI.create(baseUrl + "/").resolve(URI.create(name)).toASCIIString();
