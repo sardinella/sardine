@@ -1,5 +1,6 @@
 package com.googlecode.sardine;
 
+import java.net.URI;
 import java.util.Date;
 import java.util.Map;
 
@@ -13,17 +14,17 @@ import com.googlecode.sardine.util.SardineUtil;
  */
 public class DavResource
 {
-	private String baseUrl;
-	private String name;
-	private Date creation;
-	private Date modified;
-	private String contentType;
-	private Long contentLength;
-	private boolean currentDirectory;
-	private Map<String, String> customProps;
+	private final String baseUrl;
+	private final String name;
+	private final Date creation;
+	private final Date modified;
+	private final String contentType;
+	private final Long contentLength;
+	private final boolean currentDirectory;
+	private final Map<String, String> customProps;
 
-	private String url;
-	private String nameDecoded;
+	private final String url;
+	private final String nameDecoded;
 
 	/**
 	 * Represents a webdav response block.
@@ -40,6 +41,12 @@ public class DavResource
 		this.contentLength = contentLength;
 		this.currentDirectory = currentDirectory;
 		this.customProps = customProps;
+		this.nameDecoded = SardineUtil.decode(name);
+		if (isDirectory()) {
+		    this.url = URI.create(baseUrl + "/").resolve(URI.create(name + "/")).toASCIIString();
+		} else {
+		    this.url = URI.create(baseUrl + "/").resolve(URI.create(name)).toASCIIString();
+		}
 	}
 
 	/** */
@@ -61,8 +68,6 @@ public class DavResource
 	 */
 	public String getNameDecoded()
 	{
-		if (this.nameDecoded == null)
-			this.nameDecoded = SardineUtil.decode(this.name);
 		return this.nameDecoded;
 	}
 
@@ -95,19 +100,6 @@ public class DavResource
 	 */
 	public String getAbsoluteUrl()
 	{
-		if (this.url == null)
-		{
-			String result = null;
-			if (this.baseUrl.endsWith("/"))
-				result = this.baseUrl + this.name;
-			else
-				result = this.baseUrl + "/" + this.name;
-
-			if (this.contentType != null && this.isDirectory() && this.name != null && this.name.length() > 0)
-				result = result + "/";
-
-			this.url = result;
-		}
 		return this.url;
 	}
 
