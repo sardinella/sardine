@@ -307,7 +307,7 @@ public class SardineUtil
 	/**
 	 * Helper method for getting the Multistatus response processor.
 	 */
-	public static Multistatus getMulitstatus(Unmarshaller unmarshaller, HttpResponse response, String url)
+	public static Multistatus getMultistatus(Unmarshaller unmarshaller, HttpResponse response, String url)
 		throws SardineException
 	{
 		try

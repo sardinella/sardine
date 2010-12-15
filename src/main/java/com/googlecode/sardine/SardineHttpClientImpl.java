@@ -187,7 +187,7 @@ public class SardineHttpClientImpl implements Sardine
 		}
 
 		// Process the response from the server.
-		Multistatus multistatus = SardineUtil.getMulitstatus(this.factory.getUnmarshaller(), response, url);		
+		Multistatus multistatus = SardineUtil.getMultistatus(this.factory.getUnmarshaller(), response, url);		
 		return fromMultiStatus(uri, multistatus);
 	}
 
