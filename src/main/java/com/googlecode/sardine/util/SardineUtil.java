@@ -2,7 +2,6 @@ package com.googlecode.sardine.util;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.ParseException;
@@ -18,7 +17,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.entity.StringEntity;
 import org.w3c.dom.Element;
 
@@ -129,114 +127,6 @@ public class SardineUtil
 		}
 
 		return date;
-	}
-
-	/**
-	 * Simple class for making propfind a bit easier to deal with.
-	 */
-	public static class HttpPropFind extends HttpEntityEnclosingRequestBase
-	{
-		public HttpPropFind(String url)
-		{
-			super();
-			this.setDepth(1);
-			this.setURI(URI.create(url));
-			this.setHeader("Content-Type", "text/xml");
-		}
-
-		@Override
-		public String getMethod()
-		{
-			return "PROPFIND";
-		}
-
-		public void setDepth(int val)
-		{
-			this.setHeader("Depth", String.valueOf(val));
-		}
-	}
-
-	/**
-	 * Simple class for making proppatch a bit easier to deal with.
-	 */
-	public static class HttpPropPatch extends HttpEntityEnclosingRequestBase
-	{
-		public HttpPropPatch(String url)
-		{
-			super();
-			this.setURI(URI.create(url));
-			this.setHeader("Content-Type", "text/xml");
-		}
-
-		@Override
-		public String getMethod()
-		{
-			return "PROPPATCH";
-		}
-	}
-
-	/**
-	 * Simple class for making move a bit easier to deal with.
-	 */
-	public static class HttpMove extends HttpEntityEnclosingRequestBase
-	{
-		public HttpMove(String sourceUrl, String destinationUrl) throws SardineException
-		{
-			super();
-			this.setHeader("Destination", destinationUrl);
-			this.setHeader("Overwrite", "T");
-			this.setURI(URI.create(sourceUrl));
-
-			if (sourceUrl.endsWith("/") && !destinationUrl.endsWith("/"))
-				throw new SardineException("Destinationurl must end with a /", destinationUrl);
-		}
-
-		@Override
-		public String getMethod()
-		{
-			return "MOVE";
-		}
-	}
-
-	/**
-	 * Simple class for making copy a bit easier to deal with. Assumes Overwrite = T.
-	 */
-	public static class HttpCopy extends HttpEntityEnclosingRequestBase
-	{
-		public HttpCopy(String sourceUrl, String destinationUrl) throws SardineException
-		{
-			super();
-			this.setHeader("Destination", destinationUrl);
-			this.setHeader("Overwrite", "T");
-			this.setURI(URI.create(sourceUrl));
-
-			if (sourceUrl.endsWith("/") && !destinationUrl.endsWith("/"))
-				throw new SardineException("Destinationurl must end with a /", destinationUrl);
-		}
-
-		@Override
-		public String getMethod()
-		{
-			return "COPY";
-		}
-	}
-
-	/**
-	 * Simple class for making mkcol a bit easier to deal with.
-	 */
-	public static class HttpMkCol extends HttpEntityEnclosingRequestBase
-	{
-		public HttpMkCol(String url)
-		{
-			super();
-			this.setURI(URI.create(url));
-		}
-
-		@Override
-		public String getMethod()
-		{
-			return "MKCOL";
-		}
 	}
 
 	/**

@@ -30,7 +30,6 @@ import com.googlecode.sardine.model.ObjectFactory;
 import com.googlecode.sardine.model.Propfind;
 import com.googlecode.sardine.util.SardineException;
 import com.googlecode.sardine.util.SardineUtil;
-import com.googlecode.sardine.util.SardineUtil.HttpPropFind;
 
 /**
  * @author mirko

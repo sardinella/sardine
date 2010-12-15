@@ -50,6 +50,11 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HttpContext;
 
+import com.googlecode.sardine.httpclient.HttpCopy;
+import com.googlecode.sardine.httpclient.HttpMkCol;
+import com.googlecode.sardine.httpclient.HttpMove;
+import com.googlecode.sardine.httpclient.HttpPropFind;
+import com.googlecode.sardine.httpclient.HttpPropPatch;
 import com.googlecode.sardine.model.Creationdate;
 import com.googlecode.sardine.model.Getcontentlength;
 import com.googlecode.sardine.model.Getcontenttype;
@@ -59,11 +64,6 @@ import com.googlecode.sardine.model.Prop;
 import com.googlecode.sardine.model.Response;
 import com.googlecode.sardine.util.SardineException;
 import com.googlecode.sardine.util.SardineUtil;
-import com.googlecode.sardine.util.SardineUtil.HttpCopy;
-import com.googlecode.sardine.util.SardineUtil.HttpMkCol;
-import com.googlecode.sardine.util.SardineUtil.HttpMove;
-import com.googlecode.sardine.util.SardineUtil.HttpPropFind;
-import com.googlecode.sardine.util.SardineUtil.HttpPropPatch;
 
 /**
  * Implementation of the Sardine interface. This
