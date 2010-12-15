@@ -6,6 +6,7 @@ package com.googlecode.sardine;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.matchers.JUnitMatchers.containsString;
@@ -41,8 +42,24 @@ public class SardineImplTest {
      * 
      */
     private static final String SVN_BASE_URL = "https://svn.java.net/svn/hudson~svn/tags/jswidgets-1.5/";
+
+    /**
+     * 
+     */
+    private static final String SVN_POM_BASE_URL = SVN_BASE_URL + "pom.xml";
+
     private final static String WEBDE_BASE_URL = "https://webdav.smartdrive.web.de/";
-    
+
+    final SardineImpl sardine;
+
+    /**
+     * @throws SardineException
+     * 
+     */
+    public SardineImplTest() throws SardineException {
+        sardine = new SardineImpl(Factory.instance());
+    }
+
     private static void setHttpClientLogging() {
         System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
         System.setProperty("org.apache.commons.logging.simplelog.showdatetime", "true");
@@ -52,30 +69,28 @@ public class SardineImplTest {
 
     /**
      * Test method for {@link com.googlecode.sardine.SardineImpl#SardineImpl(com.googlecode.sardine.Factory)}.
-     * @throws SardineException 
+     * 
+     * @throws IOException
+     * @throws ClientProtocolException
      */
     @Test
-    public void testSardineImplFactory() throws SardineException {
+    public void testSvnContentIntegrative() throws ClientProtocolException, IOException {
         // setHttpClientLogging();
-        final Sardine sardine = SardineFactory.begin();
-        final HashMap<String, DavResource> resources = toMap(sardine
-                .getResources(SVN_BASE_URL));
-        checkResources(resources);
+        final HashMap<String, DavResource> resourceMap = toMap(sardine.getResources(SVN_BASE_URL));
+        checkMultipleResources(resourceMap);
     }
 
     @Test
-    public void testStaticSvnContent() throws JAXBException, IOException {
-        final Multistatus multiStatus = loadFromResources("svn-propfind.xml");
-        final SardineImpl sardine = new SardineImpl(Factory.instance());
-        final List<DavResource> fromMultiStatus = sardine.fromMultiStatus(URI.create(SVN_BASE_URL), multiStatus);
-        final HashMap<String, DavResource> resources = toMap(fromMultiStatus);
-        checkResources(resources);        
+    public void testSvnContentStatic() throws JAXBException, IOException {
+        final HashMap<String, DavResource> resourceMap = toMap(sardine.fromMultiStatus(URI.create(SVN_BASE_URL),
+                loadFromResources("svn-propfind.xml")));
+        checkMultipleResources(resourceMap);
     }
-    
+
     /**
      * @param resources
      */
-    void checkResources(final HashMap<String, DavResource> resources) {
+    void checkMultipleResources(final HashMap<String, DavResource> resources) {
         assertEquals(4, resources.size());
         final DavResource srcDirectory = resources.get("src");
         assertThat("srcDirectory.isDirectory()", srcDirectory.isDirectory(), is(true));
@@ -89,11 +104,32 @@ public class SardineImplTest {
         assertThat(pom.getContentType(), is("text/xml; charset=\"utf-8\""));
     }
 
+    @Test
+    public void testPomContentIntegrative() throws SardineException {
+        final HashMap<String, DavResource> resources = toMap(sardine.getResources(SVN_POM_BASE_URL));
+        checkPom(resources);
+    }
+
+    @Test
+    public void testPomContentStatic() throws JAXBException, IOException {
+        final HashMap<String,DavResource> resources = toMap(sardine.fromMultiStatus(URI.create(SVN_POM_BASE_URL), loadFromResources("svn-propfind-pom.xml")));
+        checkPom(resources);
+    }
+
+    /**
+     * @param pomResources
+     */
+    void checkPom(final HashMap<String, DavResource> pomResources) {
+        assertEquals(1, pomResources.size());
+        final DavResource pom = pomResources.get("pom.xml");
+        assertFalse(pom.isDirectory());
+        assertEquals(SVN_BASE_URL, pom.getBaseUrl());
+        assertEquals(SVN_POM_BASE_URL, pom.getAbsoluteUrl());
+    }
 
     @Test
     public void testStaticContent() throws JAXBException, IOException {
         final Multistatus multiStatus = loadFromResources("propfind.xml");
-        final SardineImpl sardine = new SardineImpl(Factory.instance());
         final List<DavResource> fromMultiStatus = sardine.fromMultiStatus(URI.create(WEBDE_BASE_URL), multiStatus);
         final HashMap<String, DavResource> resources = toMap(fromMultiStatus);
         assertThat(resources.size(), is(16));
@@ -115,7 +151,7 @@ public class SardineImplTest {
      * @throws IOException
      */
     Multistatus loadFromResources(final String resourcename) throws SardineException, JAXBException, IOException {
-        final Unmarshaller unmarshaller = Factory.instance().getUnmarshaller();        
+        final Unmarshaller unmarshaller = Factory.instance().getUnmarshaller();
         final InputStream stream = DavResourceTest.class.getResourceAsStream(resourcename);
         try {
             return (Multistatus) unmarshaller.unmarshal(stream);
@@ -123,7 +159,7 @@ public class SardineImplTest {
             stream.close();
         }
     }
-    
+
     /**
      * @param resources
      * @return
