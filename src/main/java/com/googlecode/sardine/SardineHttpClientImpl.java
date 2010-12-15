@@ -71,7 +71,7 @@ import com.googlecode.sardine.util.SardineUtil.HttpPropPatch;
  *
  * @author jonstevens
  */
-public class SardineImpl implements Sardine
+public class SardineHttpClientImpl implements Sardine
 {
 	/** */
 	Factory factory;
@@ -85,19 +85,19 @@ public class SardineImpl implements Sardine
 	private boolean supportsCompression;
 
 	/** */
-	public SardineImpl(Factory factory) throws SardineException
+	public SardineHttpClientImpl(Factory factory) throws SardineException
 	{
 		this(factory, null, null, null, null);
 	}
 
 	/** */
-	public SardineImpl(Factory factory, String username, String password) throws SardineException
+	public SardineHttpClientImpl(Factory factory, String username, String password) throws SardineException
 	{
 		this(factory, username, password, null, null);
 	}
 
 	/** */
-	public SardineImpl(Factory factory, String username, String password, SSLSocketFactory sslSocketFactory, HttpRoutePlanner routePlanner) throws SardineException
+	public SardineHttpClientImpl(Factory factory, String username, String password, SSLSocketFactory sslSocketFactory, HttpRoutePlanner routePlanner) throws SardineException
 	{
 		this(factory, username, password, null, null, null);
 	}
@@ -105,7 +105,7 @@ public class SardineImpl implements Sardine
 	/**
 	 * Main constructor.
 	 */
-	public SardineImpl(Factory factory, String username, String password, SSLSocketFactory sslSocketFactory, HttpRoutePlanner routePlanner, Integer port) throws SardineException
+	public SardineHttpClientImpl(Factory factory, String username, String password, SSLSocketFactory sslSocketFactory, HttpRoutePlanner routePlanner, Integer port) throws SardineException
 	{
 		this.factory = factory;
 

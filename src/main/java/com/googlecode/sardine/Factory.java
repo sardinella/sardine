@@ -19,10 +19,10 @@ import com.googlecode.sardine.util.SardineException;
 public class Factory
 {
 	/** */
-	private final static Factory instance = new Factory();
+	private final static Factory INSTANCE = new Factory();
 
 	/** */
-	protected static Factory instance() { return instance; }
+	protected static Factory instance() { return INSTANCE; }
 
 	/** */
 	private final JAXBContext context;
@@ -111,6 +111,6 @@ public class Factory
 	/** */
 	public Sardine begin(String username, String password, SSLSocketFactory sslSocketFactory, HttpRoutePlanner routePlanner, Integer port) throws SardineException
 	{
-		return new SardineImpl(this, username, password, sslSocketFactory, routePlanner, port);
+		return new SardineHttpClientImpl(this, username, password, sslSocketFactory, routePlanner, port);
 	}
 }

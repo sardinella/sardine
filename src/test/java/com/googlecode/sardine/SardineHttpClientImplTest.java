@@ -36,7 +36,7 @@ import com.googlecode.sardine.util.SardineUtil.HttpPropFind;
  * @author mirko
  * 
  */
-public class SardineImplTest {
+public class SardineHttpClientImplTest {
 
     /**
      * 
@@ -50,14 +50,14 @@ public class SardineImplTest {
 
     private final static String WEBDE_BASE_URL = "https://webdav.smartdrive.web.de/";
 
-    final SardineImpl sardine;
+    final SardineHttpClientImpl sardine;
 
     /**
      * @throws SardineException
      * 
      */
-    public SardineImplTest() throws SardineException {
-        sardine = new SardineImpl(Factory.instance());
+    public SardineHttpClientImplTest() throws SardineException {
+        sardine = new SardineHttpClientImpl(Factory.instance());
     }
 
     private static void setHttpClientLogging() {
@@ -68,7 +68,7 @@ public class SardineImplTest {
     }
 
     /**
-     * Test method for {@link com.googlecode.sardine.SardineImpl#SardineImpl(com.googlecode.sardine.Factory)}.
+     * Test method for {@link com.googlecode.sardine.SardineHttpClientImpl#SardineImpl(com.googlecode.sardine.Factory)}.
      * 
      * @throws IOException
      * @throws ClientProtocolException
