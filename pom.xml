@@ -153,7 +153,9 @@
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>2.5</version>
                 <configuration>
-                    <excludes>com/googlecode/sardine/model/*.java</excludes>
+                    <excludes>
+                        <exclude>com/googlecode/sardine/model/*.java</exclude>
+                    </excludes>
                     <linkXref>true</linkXref>
                     <sourceEncoding>${maven.build.sourceEncoding}</sourceEncoding>
                     <minimumTokens>100</minimumTokens>
