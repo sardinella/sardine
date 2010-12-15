@@ -17,19 +17,20 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.auth.AuthenticationException;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.junit.Test;
 
 import com.googlecode.sardine.model.Multistatus;
-import com.googlecode.sardine.model.ObjectFactory;
-import com.googlecode.sardine.model.Propfind;
 import com.googlecode.sardine.util.SardineException;
-import com.googlecode.sardine.util.SardineUtil;
 
 /**
  * @author mirko
@@ -124,10 +125,11 @@ public class SardineHttpClientImplTest {
     public void testDoesNotExist() throws SardineException {
         assertFalse(sardine.exists("http://www.google.com/idnotexist"));
     }
-    
+
     @Test
     public void testPomContentStatic() throws JAXBException, IOException {
-        final HashMap<String,DavResource> resources = toMap(sardine.fromMultiStatus(URI.create(SVN_POM_BASE_URL), loadFromResources("svn-propfind-pom.xml")));
+        final HashMap<String, DavResource> resources = toMap(sardine.fromMultiStatus(URI.create(SVN_POM_BASE_URL),
+                loadFromResources("svn-propfind-pom.xml")));
         checkPom(resources);
     }
 
@@ -140,6 +142,48 @@ public class SardineHttpClientImplTest {
         assertFalse(pom.isDirectory());
         assertEquals(SVN_BASE_URL, pom.getBaseUrl());
         assertEquals(SVN_POM_BASE_URL, pom.getAbsoluteUrl());
+    }
+
+    @Test
+    public void wrapResponseHandlerExceptionsClientProtocolException() throws SardineException {
+        try {
+            sardine.wrapResponseHandlerExceptions(new HttpGet(SVN_BASE_URL), new ResponseHandler<Void>() {
+                public Void handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
+                    throw new ClientProtocolException();
+                }
+            });
+        } catch (SardineException e) {
+            assertEquals(ClientProtocolException.class, e.getCause().getClass());
+        }
+    }
+
+    @Test
+    public void wrapResponseHandlerExceptionsIOException() throws SardineException {
+        try {
+            sardine.wrapResponseHandlerExceptions(new HttpGet(SVN_BASE_URL), new ResponseHandler<Void>() {
+                public Void handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
+                    throw new IOException();
+                }
+            });
+        } catch (SardineException e) {
+            assertEquals(IOException.class, e.getCause().getClass());
+        }
+    }
+
+    @Test
+    public void wrapResponseHandlerExceptionsAuthenticationException() throws SardineException {
+        SardineHttpClientImpl sut = new SardineHttpClientImpl(Factory.instance()) {
+            /** {@inheritDoc} */
+            @Override
+            void setAuthenticationOnMethod(HttpRequestBase base) throws AuthenticationException {
+                throw new AuthenticationException();
+            }
+        };
+        try {
+            sut.wrapResponseHandlerExceptions(new HttpGet(SVN_BASE_URL), new BasicResponseHandler());
+        } catch (SardineException e) {
+            assertEquals(AuthenticationException.class, e.getCause().getClass());
+        }
     }
 
     @Test
