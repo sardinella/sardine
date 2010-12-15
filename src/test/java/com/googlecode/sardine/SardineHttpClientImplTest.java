@@ -109,6 +109,22 @@ public class SardineHttpClientImplTest {
         checkPom(resources);
     }
 
+    /**
+     * @throws SardineException
+     */
+    @Test
+    public void testExists() throws SardineException {
+        assertTrue(sardine.exists("http://www.google.com/"));
+    }
+
+    /**
+     * @throws SardineException
+     */
+    @Test
+    public void testDoesNotExist() throws SardineException {
+        assertFalse(sardine.exists("http://www.google.com/idnotexist"));
+    }
+    
     @Test
     public void testPomContentStatic() throws JAXBException, IOException {
         final HashMap<String,DavResource> resources = toMap(sardine.fromMultiStatus(URI.create(SVN_POM_BASE_URL), loadFromResources("svn-propfind-pom.xml")));

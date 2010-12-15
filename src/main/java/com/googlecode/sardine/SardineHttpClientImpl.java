@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.Unmarshaller;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.StatusLine;
@@ -16,7 +18,9 @@ import org.apache.http.auth.AuthenticationException;
 import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.auth.params.AuthParams;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
@@ -39,6 +43,7 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 
+import com.googlecode.sardine.httpclient.ExistsResponseHandler;
 import com.googlecode.sardine.httpclient.GzipSupportRequestInterceptor;
 import com.googlecode.sardine.httpclient.GzipSupportResponseInterceptor;
 import com.googlecode.sardine.httpclient.HttpCopy;
@@ -46,6 +51,8 @@ import com.googlecode.sardine.httpclient.HttpMkCol;
 import com.googlecode.sardine.httpclient.HttpMove;
 import com.googlecode.sardine.httpclient.HttpPropFind;
 import com.googlecode.sardine.httpclient.HttpPropPatch;
+import com.googlecode.sardine.httpclient.MultiStatusResponseHandler;
+import com.googlecode.sardine.httpclient.VoidResponseHandler;
 import com.googlecode.sardine.model.Creationdate;
 import com.googlecode.sardine.model.Getcontentlength;
 import com.googlecode.sardine.model.Getcontenttype;
@@ -62,6 +69,7 @@ import com.googlecode.sardine.util.SardineUtil;
  * @author jonstevens
  */
 public class SardineHttpClientImpl implements Sardine {
+
     /** */
     Factory factory;
 
@@ -124,7 +132,7 @@ public class SardineHttpClientImpl implements Sardine {
         }
     }
 
-    /** */
+    /** {@inheritDoc} */
     public void enableCompression() {
         if (!this.supportsCompression) {
             this.client.addRequestInterceptor(new GzipSupportRequestInterceptor());
@@ -133,7 +141,7 @@ public class SardineHttpClientImpl implements Sardine {
         }
     }
 
-    /** */
+    /** {@inheritDoc} */
     public void disableCompression() {
         if (this.supportsCompression) {
             this.client.removeRequestInterceptorByClass(GzipSupportRequestInterceptor.class);
@@ -147,28 +155,41 @@ public class SardineHttpClientImpl implements Sardine {
         return this.supportsCompression;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.googlecode.sardine.Sardine#getResources(java.lang.String)
-     */
-    public List<DavResource> getResources(String url) throws SardineException {
+    /** {@inheritDoc} */
+    public List<DavResource> getResources(final String url) throws SardineException {
         final URI uri = URI.create(url);
         HttpPropFind propFind = new HttpPropFind(uri.toASCIIString());
         propFind.setEntity(SardineUtil.getResourcesEntity());
-
-        HttpResponse response = this.executeWrapper(propFind);
-
-        StatusLine statusLine = response.getStatusLine();
-        if (!SardineUtil.isGoodResponse(statusLine.getStatusCode())) {
-            propFind.abort();
-            throw new SardineException("Failed to get resources. Is the url valid?", url, statusLine.getStatusCode(),
-                    statusLine.getReasonPhrase());
-        }
-
-        // Process the response from the server.
-        Multistatus multistatus = SardineUtil.getMultistatus(this.factory.getUnmarshaller(), response, url);
+        final Unmarshaller unmarshaller = factory.getUnmarshaller();
+        final MultiStatusResponseHandler responseHandler = new MultiStatusResponseHandler(url, unmarshaller);
+        final Multistatus multistatus = wrapResponseHandlerExceptions(propFind, responseHandler);
         return fromMultiStatus(uri, multistatus);
+    }
+
+    /**
+     * Wraps all checked exceptions coming from the responseHandler to {@link SardineException}.
+     * 
+     * @param <T>
+     *            return type
+     * @param request
+     *            to execute
+     * @param responseHandler
+     *            for the type
+     * @return parsed response
+     * @throws SardineException
+     */
+    <T> T wrapResponseHandlerExceptions(final HttpRequestBase request, final ResponseHandler<T> responseHandler)
+            throws SardineException {
+        try {
+            setAuthenticationOnMethod(request);
+            return client.execute(request, responseHandler);
+        } catch (ClientProtocolException e) {
+            throw new SardineException(e);
+        } catch (IOException e) {
+            throw new SardineException(e);
+        } catch (AuthenticationException e) {            
+            throw new SardineException(e);
+        }
     }
 
     /**
@@ -283,36 +304,16 @@ public class SardineHttpClientImpl implements Sardine {
         return resources;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.googlecode.sardine.Sardine#setCustomProps(java.lang.String, java.util.List<java.lang.String>)
-     */
+    /** {@inheritDoc} */
     public void setCustomProps(String url, Map<String, String> setProps, List<String> removeProps)
             throws SardineException {
-        HttpPropPatch propPatch = new HttpPropPatch(url);
+        final HttpPropPatch propPatch = new HttpPropPatch(url);
         propPatch.setEntity(SardineUtil.getResourcePatchEntity(setProps, removeProps));
-
-        HttpResponse response = this.executeWrapper(propPatch);
-
-        StatusLine statusLine = response.getStatusLine();
-        if (!SardineUtil.isGoodResponse(statusLine.getStatusCode())) {
-            propPatch.abort();
-            throw new SardineException("Failed to set custom properties on resources.", url,
-                    statusLine.getStatusCode(), statusLine.getReasonPhrase());
-        }
-
-        try {
-            response.getEntity().getContent().close();
-        } catch (Exception ex) {
-        }
+        wrapResponseHandlerExceptions(propPatch, new VoidResponseHandler(url,
+                "Failed to set custom properties on resources."));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.googlecode.sardine.Sardine#getInputStream(java.lang.String)
-     */
+    /** {@inheritDoc} */
     public InputStream getInputStream(String url) throws SardineException {
         HttpGet get = new HttpGet(url);
 
@@ -332,31 +333,19 @@ public class SardineHttpClientImpl implements Sardine {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.googlecode.sardine.Sardine#put(java.lang.String, byte[])
-     */
+    /** {@inheritDoc} */
     public void put(String url, byte[] data) throws SardineException {
         put(url, data, null);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.googlecode.sardine.Sardine#put(java.lang.String, byte[], java.lang.String)
-     */
+    /** {@inheritDoc} */
     public void put(String url, byte[] data, String contentType) throws SardineException {
         HttpPut put = new HttpPut(url);
         ByteArrayEntity entity = new ByteArrayEntity(data);
         put(url, put, entity, null);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.googlecode.sardine.Sardine#put(java.lang.String, InputStream)
-     */
+    /** {@inheritDoc} */
     public void put(String url, InputStream dataStream) throws SardineException {
         put(url, dataStream, null);
     }
@@ -376,128 +365,45 @@ public class SardineHttpClientImpl implements Sardine {
     /**
      * Private helper for doing the work of a put
      */
-    private void put(String url, HttpPut put, AbstractHttpEntity entity, String contentType) throws SardineException {
+    private void put(final String url, HttpPut put, AbstractHttpEntity entity, String contentType)
+            throws SardineException {
         put.setEntity(entity);
         if (contentType != null) {
             put.setHeader("Content-Type", contentType);
         }
-
-        HttpResponse response = this.executeWrapper(put);
-
-        StatusLine statusLine = response.getStatusLine();
-        if (!SardineUtil.isGoodResponse(statusLine.getStatusCode())) {
-            put.abort();
-            throw new SardineException(url, statusLine.getStatusCode(), statusLine.getReasonPhrase());
-        }
-
-        try {
-            response.getEntity().getContent().close();
-        } catch (Exception ex) {
-        }
+        wrapResponseHandlerExceptions(put, new VoidResponseHandler(url, "PUT failed"));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.googlecode.sardine.Sardine#delete(java.lang.String)
-     */
+    /** {@inheritDoc} */
     public void delete(String url) throws SardineException {
-        HttpDelete delete = new HttpDelete(url);
-
-        HttpResponse response = this.executeWrapper(delete);
-
-        StatusLine statusLine = response.getStatusLine();
-        if (!SardineUtil.isGoodResponse(statusLine.getStatusCode())) {
-            delete.abort();
-            throw new SardineException(url, statusLine.getStatusCode(), statusLine.getReasonPhrase());
-        }
-
-        try {
-            response.getEntity().getContent().close();
-        } catch (Exception ex) {
-        }
+        final HttpDelete delete = new HttpDelete(url);
+        wrapResponseHandlerExceptions(delete, new VoidResponseHandler(url, "DELETE failed"));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.googlecode.sardine.Sardine#move(java.lang.String, java.lang.String)
-     */
+    /** {@inheritDoc} */
     public void move(String sourceUrl, String destinationUrl) throws SardineException {
         HttpMove move = new HttpMove(sourceUrl, destinationUrl);
-
-        HttpResponse response = this.executeWrapper(move);
-
-        StatusLine statusLine = response.getStatusLine();
-        if (!SardineUtil.isGoodResponse(statusLine.getStatusCode())) {
-            move.abort();
-            throw new SardineException("sourceUrl: " + sourceUrl + ", destinationUrl: " + destinationUrl,
-                    statusLine.getStatusCode(), statusLine.getReasonPhrase());
-        }
-
-        try {
-            response.getEntity().getContent().close();
-        } catch (Exception ex) {
-        }
+        wrapResponseHandlerExceptions(move, new VoidResponseHandler(sourceUrl, "MOVE sourceUrl: "
+                + sourceUrl + " to destinationUrl: " + destinationUrl + " failed"));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.googlecode.sardine.Sardine#copy(java.lang.String, java.lang.String)
-     */
+    /** {@inheritDoc} */
     public void copy(String sourceUrl, String destinationUrl) throws SardineException {
         HttpCopy copy = new HttpCopy(sourceUrl, destinationUrl);
-
-        HttpResponse response = this.executeWrapper(copy);
-
-        StatusLine statusLine = response.getStatusLine();
-        if (!SardineUtil.isGoodResponse(statusLine.getStatusCode())) {
-            copy.abort();
-            throw new SardineException("sourceUrl: " + sourceUrl + ", destinationUrl: " + destinationUrl,
-                    statusLine.getStatusCode(), statusLine.getReasonPhrase());
-        }
-
-        try {
-            response.getEntity().getContent().close();
-        } catch (Exception ex) {
-        }
+        wrapResponseHandlerExceptions(copy, new VoidResponseHandler(sourceUrl, "COPY sourceUrl: "
+                + sourceUrl + " to destinationUrl: " + destinationUrl + " failed"));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.googlecode.sardine.Sardine#createDirectory(java.lang.String)
-     */
+    /** {@inheritDoc} */
     public void createDirectory(String url) throws SardineException {
         HttpMkCol mkcol = new HttpMkCol(url);
-        HttpResponse response = this.executeWrapper(mkcol);
-
-        StatusLine statusLine = response.getStatusLine();
-        if (!SardineUtil.isGoodResponse(statusLine.getStatusCode())) {
-            mkcol.abort();
-            throw new SardineException(url, statusLine.getStatusCode(), statusLine.getReasonPhrase());
-        }
-
-        try {
-            response.getEntity().getContent().close();
-        } catch (Exception ex) {
-        }
+        wrapResponseHandlerExceptions(mkcol, new VoidResponseHandler(url, "MKCOL failed"));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.googlecode.sardine.Sardine#exists(java.lang.String)
-     */
-    public boolean exists(String url) throws SardineException {
-        HttpHead head = new HttpHead(url);
-
-        HttpResponse response = this.executeWrapper(head);
-
-        StatusLine statusLine = response.getStatusLine();
-
-        return SardineUtil.isGoodResponse(statusLine.getStatusCode());
+    /** {@inheritDoc} */
+    public boolean exists(final String url) throws SardineException {
+        final HttpHead head = new HttpHead(url);
+        return wrapResponseHandlerExceptions(head, new ExistsResponseHandler(url));
     }
 
     /**
@@ -505,11 +411,7 @@ public class SardineHttpClientImpl implements Sardine {
      */
     private HttpResponse executeWrapper(HttpRequestBase base) throws SardineException {
         try {
-            if (this.authEnabled) {
-                Credentials creds = this.client.getCredentialsProvider().getCredentials(AuthScope.ANY);
-                AuthParams.setCredentialCharset(base.getParams(), AuthParams.getCredentialCharset(client.getParams()));
-                base.setHeader(new BasicScheme().authenticate(creds, base));
-            }
+            setAuthenticationOnMethod(base);
             return this.client.execute(base);
         } catch (IOException ex) {
             base.abort();
@@ -517,6 +419,18 @@ public class SardineHttpClientImpl implements Sardine {
         } catch (AuthenticationException e) {
             base.abort();
             throw new SardineException(e);
+        }
+    }
+
+    /**
+     * @param base
+     * @throws AuthenticationException
+     */
+    void setAuthenticationOnMethod(HttpRequestBase base) throws AuthenticationException {
+        if (this.authEnabled) {
+            Credentials creds = this.client.getCredentialsProvider().getCredentials(AuthScope.ANY);
+            AuthParams.setCredentialCharset(base.getParams(), AuthParams.getCredentialCharset(client.getParams()));
+            base.setHeader(new BasicScheme().authenticate(creds, base));
         }
     }
 
