@@ -2,6 +2,9 @@ package com.googlecode.sardine;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -169,7 +172,8 @@ public class SardineImpl implements Sardine
 	 */
 	public List<DavResource> getResources(String url) throws SardineException
 	{
-		HttpPropFind propFind = new HttpPropFind(url);
+		final URI uri = URI.create(url);
+        HttpPropFind propFind = new HttpPropFind(uri.toASCIIString());
 		propFind.setEntity(SardineUtil.getResourcesEntity());
 
 		HttpResponse response = this.executeWrapper(propFind);
@@ -184,30 +188,31 @@ public class SardineImpl implements Sardine
 
 		// Process the response from the server.
 		Multistatus multistatus = SardineUtil.getMulitstatus(this.factory.getUnmarshaller(), response, url);		
-		return fromMultiStatus(url, multistatus);
+		return fromMultiStatus(uri, multistatus);
 	}
 
     /**
-     * @param url
+     * @param uri
      * @param multistatus
      * @return
      */
-    List<DavResource> fromMultiStatus(String url, Multistatus multistatus) {
+    List<DavResource> fromMultiStatus(final URI uri, Multistatus multistatus) {
         List<Response> responses = multistatus.getResponse();
 
 		List<DavResource> resources = new ArrayList<DavResource>(responses.size());
 
-		// Are we getting a directory listing or not?
-		// the path after the host stuff
-		int firstSlash = url.indexOf('/', 8);
 		String baseUrl = null;
-		if (url.endsWith("/"))
-			baseUrl = url.substring(firstSlash);
+		if (uri.getPath().endsWith("/"))
+			baseUrl = uri.getPath();
 
 		// Get the part of the url from the start to the first slash
-		// ie: http://server.com
-		String hostPart = url.substring(0, firstSlash);
-
+		// ie: http://server.com		
+		String hostPart;
+        try {
+            hostPart = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null).toASCIIString();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("Message:", e);
+        }
 		for (Response resp : responses)
 		{
 			boolean currentDirectory = false;

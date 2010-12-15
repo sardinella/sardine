@@ -12,6 +12,7 @@ import static org.junit.matchers.JUnitMatchers.containsString;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,11 +20,16 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.impl.client.BasicResponseHandler;
 import org.junit.Test;
 
 import com.googlecode.sardine.model.Multistatus;
 import com.googlecode.sardine.model.ObjectFactory;
+import com.googlecode.sardine.model.Propfind;
 import com.googlecode.sardine.util.SardineException;
+import com.googlecode.sardine.util.SardineUtil;
+import com.googlecode.sardine.util.SardineUtil.HttpPropFind;
 
 /**
  * @author mirko
@@ -31,7 +37,11 @@ import com.googlecode.sardine.util.SardineException;
  */
 public class SardineImplTest {
 
-    private final static String BASE_URL = "https://webdav.smartdrive.web.de/";
+    /**
+     * 
+     */
+    private static final String SVN_BASE_URL = "https://svn.java.net/svn/hudson~svn/tags/jswidgets-1.5/";
+    private final static String WEBDE_BASE_URL = "https://webdav.smartdrive.web.de/";
     
     private static void setHttpClientLogging() {
         System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
@@ -42,15 +52,30 @@ public class SardineImplTest {
 
     /**
      * Test method for {@link com.googlecode.sardine.SardineImpl#SardineImpl(com.googlecode.sardine.Factory)}.
-     * 
-     * @throws SardineException
+     * @throws SardineException 
      */
     @Test
     public void testSardineImplFactory() throws SardineException {
         // setHttpClientLogging();
         final Sardine sardine = SardineFactory.begin();
         final HashMap<String, DavResource> resources = toMap(sardine
-                .getResources("https://svn.java.net/svn/hudson~svn/tags/jswidgets-1.5/"));
+                .getResources(SVN_BASE_URL));
+        checkResources(resources);
+    }
+
+    @Test
+    public void testStaticSvnContent() throws JAXBException, IOException {
+        final Multistatus multiStatus = loadFromResources("svn-propfind.xml");
+        final SardineImpl sardine = new SardineImpl(Factory.instance());
+        final List<DavResource> fromMultiStatus = sardine.fromMultiStatus(URI.create(SVN_BASE_URL), multiStatus);
+        final HashMap<String, DavResource> resources = toMap(fromMultiStatus);
+        checkResources(resources);        
+    }
+    
+    /**
+     * @param resources
+     */
+    void checkResources(final HashMap<String, DavResource> resources) {
         assertEquals(4, resources.size());
         final DavResource srcDirectory = resources.get("src");
         assertThat("srcDirectory.isDirectory()", srcDirectory.isDirectory(), is(true));
@@ -64,23 +89,12 @@ public class SardineImplTest {
         assertThat(pom.getContentType(), is("text/xml; charset=\"utf-8\""));
     }
 
-    /**
-     * @param resources
-     * @return
-     */
-    HashMap<String, DavResource> toMap(final List<DavResource> resources) {
-        final HashMap<String, DavResource> map = new HashMap<String, DavResource>();
-        for (DavResource davResource : resources) {
-            map.put(davResource.getName(), davResource);
-        }
-        return map;
-    }
 
     @Test
     public void testStaticContent() throws JAXBException, IOException {
-        final Multistatus multiStatus = loadFromResources();
+        final Multistatus multiStatus = loadFromResources("propfind.xml");
         final SardineImpl sardine = new SardineImpl(Factory.instance());
-        final List<DavResource> fromMultiStatus = sardine.fromMultiStatus(BASE_URL, multiStatus);
+        final List<DavResource> fromMultiStatus = sardine.fromMultiStatus(URI.create(WEBDE_BASE_URL), multiStatus);
         final HashMap<String, DavResource> resources = toMap(fromMultiStatus);
         assertThat(resources.size(), is(16));
         final DavResource meineBilder = resources.get("Meine%20Bilder");
@@ -94,17 +108,32 @@ public class SardineImplTest {
     }
 
     /**
+     * @param resourcename
      * @return
+     * @throws SardineException
      * @throws JAXBException
      * @throws IOException
      */
-    Multistatus loadFromResources() throws JAXBException, IOException {
-        final Unmarshaller unmarshaller = Factory.instance().getUnmarshaller();
-        final InputStream stream = DavResourceTest.class.getResourceAsStream("propfind.xml");
+    Multistatus loadFromResources(final String resourcename) throws SardineException, JAXBException, IOException {
+        final Unmarshaller unmarshaller = Factory.instance().getUnmarshaller();        
+        final InputStream stream = DavResourceTest.class.getResourceAsStream(resourcename);
         try {
             return (Multistatus) unmarshaller.unmarshal(stream);
         } finally {
             stream.close();
         }
     }
+    
+    /**
+     * @param resources
+     * @return
+     */
+    HashMap<String, DavResource> toMap(final List<DavResource> resources) {
+        final HashMap<String, DavResource> map = new HashMap<String, DavResource>();
+        for (DavResource davResource : resources) {
+            map.put(davResource.getName(), davResource);
+        }
+        return map;
+    }
+
 }

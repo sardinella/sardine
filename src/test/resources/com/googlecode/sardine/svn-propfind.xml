@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<D:multistatus
+    xmlns:D="DAV:">
+    <D:response
+        xmlns:S="http://subversion.tigris.org/xmlns/svn/"
+        xmlns:C="http://subversion.tigris.org/xmlns/custom/"
+        xmlns:V="http://subversion.tigris.org/xmlns/dav/"
+        xmlns:lp1="DAV:"
+        xmlns:lp3="http://subversion.tigris.org/xmlns/dav/"
+        xmlns:lp2="http://apache.org/dav/props/">
+        <D:href>/svn/hudson~svn/tags/jswidgets-1.5/</D:href>
+        <D:propstat>
+            <D:prop>
+                <S:ignore>target
+                    work
+                    .classpath
+                    .project
+                    .settings
+</S:ignore>
+                <lp1:resourcetype>
+                    <D:collection />
+                </lp1:resourcetype>
+                <lp1:getcontenttype>text/html; charset=UTF-8</lp1:getcontenttype>
+                <lp1:getetag>W/"37175//tags/jswidgets-1.5"</lp1:getetag>
+                <lp1:creationdate>2010-12-05T20:39:14.937854Z</lp1:creationdate>
+                <lp1:getlastmodified>Sun, 05 Dec 2010 20:39:14 GMT</lp1:getlastmodified>
+                <lp1:checked-in>
+                    <D:href>/svn/hudson~svn/!svn/ver/37175/tags/jswidgets-1.5</D:href>
+                </lp1:checked-in>
+                <lp1:version-controlled-configuration>
+                    <D:href>/svn/hudson~svn/!svn/vcc/default</D:href>
+                </lp1:version-controlled-configuration>
+                <lp1:version-name>37175</lp1:version-name>
+                <lp1:creator-displayname>mfriedenhagen</lp1:creator-displayname>
+                <lp3:baseline-relative-path>tags/jswidgets-1.5</lp3:baseline-relative-path>
+                <lp3:repository-uuid>71c3de6d-444a-0410-be80-ed276b4c234a</lp3:repository-uuid>
+                <lp3:deadprop-count>1</lp3:deadprop-count>
+                <D:lockdiscovery />
+            </D:prop>
+            <D:status>HTTP/1.1 200 OK</D:status>
+        </D:propstat>
+    </D:response>
+    <D:response
+        xmlns:S="http://subversion.tigris.org/xmlns/svn/"
+        xmlns:C="http://subversion.tigris.org/xmlns/custom/"
+        xmlns:V="http://subversion.tigris.org/xmlns/dav/"
+        xmlns:lp1="DAV:"
+        xmlns:lp3="http://subversion.tigris.org/xmlns/dav/"
+        xmlns:lp2="http://apache.org/dav/props/">
+        <D:href>/svn/hudson~svn/tags/jswidgets-1.5/.hgignore</D:href>
+        <D:propstat>
+            <D:prop>
+                <lp1:resourcetype />
+                <lp1:getcontentlength>60</lp1:getcontentlength>
+                <lp1:getcontenttype>text/xml; charset="utf-8"</lp1:getcontenttype>
+                <lp1:getetag>"22934//tags/jswidgets-1.5/.hgignore"</lp1:getetag>
+                <lp1:creationdate>2009-10-19T19:32:51.452256Z</lp1:creationdate>
+                <lp1:getlastmodified>Mon, 19 Oct 2009 19:32:51 GMT</lp1:getlastmodified>
+                <lp1:checked-in>
+                    <D:href>/svn/hudson~svn/!svn/ver/37175/tags/jswidgets-1.5/.hgignore</D:href>
+                </lp1:checked-in>
+                <lp1:version-controlled-configuration>
+                    <D:href>/svn/hudson~svn/!svn/vcc/default</D:href>
+                </lp1:version-controlled-configuration>
+                <lp1:version-name>22934</lp1:version-name>
+                <lp1:creator-displayname>mfriedenhagen</lp1:creator-displayname>
+                <lp3:baseline-relative-path>tags/jswidgets-1.5/.hgignore</lp3:baseline-relative-path>
+                <lp3:md5-checksum>830e014dc7bcda299ee0eb88848dfebb</lp3:md5-checksum>
+                <lp3:repository-uuid>71c3de6d-444a-0410-be80-ed276b4c234a</lp3:repository-uuid>
+                <lp3:deadprop-count>0</lp3:deadprop-count>
+                <D:supportedlock>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:exclusive />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                </D:supportedlock>
+                <D:lockdiscovery />
+            </D:prop>
+            <D:status>HTTP/1.1 200 OK</D:status>
+        </D:propstat>
+    </D:response>
+    <D:response
+        xmlns:S="http://subversion.tigris.org/xmlns/svn/"
+        xmlns:C="http://subversion.tigris.org/xmlns/custom/"
+        xmlns:V="http://subversion.tigris.org/xmlns/dav/"
+        xmlns:lp1="DAV:"
+        xmlns:lp3="http://subversion.tigris.org/xmlns/dav/"
+        xmlns:lp2="http://apache.org/dav/props/">
+        <D:href>/svn/hudson~svn/tags/jswidgets-1.5/src/</D:href>
+        <D:propstat>
+            <D:prop>
+                <lp1:resourcetype>
+                    <D:collection />
+                </lp1:resourcetype>
+                <lp1:getcontenttype>text/html; charset=UTF-8</lp1:getcontenttype>
+                <lp1:getetag>W/"36170//tags/jswidgets-1.5/src"</lp1:getetag>
+                <lp1:creationdate>2010-10-23T18:47:31.668001Z</lp1:creationdate>
+                <lp1:getlastmodified>Sat, 23 Oct 2010 18:47:31 GMT</lp1:getlastmodified>
+                <lp1:checked-in>
+                    <D:href>/svn/hudson~svn/!svn/ver/37175/tags/jswidgets-1.5/src</D:href>
+                </lp1:checked-in>
+                <lp1:version-controlled-configuration>
+                    <D:href>/svn/hudson~svn/!svn/vcc/default</D:href>
+                </lp1:version-controlled-configuration>
+                <lp1:version-name>36170</lp1:version-name>
+                <lp1:creator-displayname>mfriedenhagen</lp1:creator-displayname>
+                <lp3:baseline-relative-path>tags/jswidgets-1.5/src</lp3:baseline-relative-path>
+                <lp3:repository-uuid>71c3de6d-444a-0410-be80-ed276b4c234a</lp3:repository-uuid>
+                <lp3:deadprop-count>0</lp3:deadprop-count>
+                <D:lockdiscovery />
+            </D:prop>
+            <D:status>HTTP/1.1 200 OK</D:status>
+        </D:propstat>
+    </D:response>
+    <D:response
+        xmlns:S="http://subversion.tigris.org/xmlns/svn/"
+        xmlns:C="http://subversion.tigris.org/xmlns/custom/"
+        xmlns:V="http://subversion.tigris.org/xmlns/dav/"
+        xmlns:lp1="DAV:"
+        xmlns:lp3="http://subversion.tigris.org/xmlns/dav/"
+        xmlns:lp2="http://apache.org/dav/props/">
+        <D:href>/svn/hudson~svn/tags/jswidgets-1.5/pom.xml</D:href>
+        <D:propstat>
+            <D:prop>
+                <lp1:resourcetype />
+                <lp1:getcontentlength>7863</lp1:getcontentlength>
+                <lp1:getcontenttype>text/xml; charset="utf-8"</lp1:getcontenttype>
+                <lp1:getetag>"37174//tags/jswidgets-1.5/pom.xml"</lp1:getetag>
+                <lp1:creationdate>2010-12-05T20:39:03.805178Z</lp1:creationdate>
+                <lp1:getlastmodified>Sun, 05 Dec 2010 20:39:03 GMT</lp1:getlastmodified>
+                <lp1:checked-in>
+                    <D:href>/svn/hudson~svn/!svn/ver/37175/tags/jswidgets-1.5/pom.xml</D:href>
+                </lp1:checked-in>
+                <lp1:version-controlled-configuration>
+                    <D:href>/svn/hudson~svn/!svn/vcc/default</D:href>
+                </lp1:version-controlled-configuration>
+                <lp1:version-name>37174</lp1:version-name>
+                <lp1:creator-displayname>mfriedenhagen</lp1:creator-displayname>
+                <lp3:baseline-relative-path>tags/jswidgets-1.5/pom.xml</lp3:baseline-relative-path>
+                <lp3:md5-checksum>edba6f7cc97fdc346557d8b2b00bb845</lp3:md5-checksum>
+                <lp3:repository-uuid>71c3de6d-444a-0410-be80-ed276b4c234a</lp3:repository-uuid>
+                <lp3:deadprop-count>0</lp3:deadprop-count>
+                <D:supportedlock>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:exclusive />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                </D:supportedlock>
+                <D:lockdiscovery />
+            </D:prop>
+            <D:status>HTTP/1.1 200 OK</D:status>
+        </D:propstat>
+    </D:response>
+</D:multistatus>
