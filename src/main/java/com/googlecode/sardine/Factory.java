@@ -19,7 +19,7 @@ import com.googlecode.sardine.util.SardineException;
 public class Factory
 {
 	/** */
-	private final static Factory INSTANCE = new Factory();
+    private final static Factory INSTANCE = new Factory();
 
 	/** */
 	protected static Factory instance() { return INSTANCE; }

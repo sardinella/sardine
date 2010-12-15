@@ -100,10 +100,10 @@ public interface Sardine {
 	 */
 	public boolean isCompressionEnabled();
 	
-	/**
-	 * Returns the {@link HttpClient} used.
-	 * 
-	 * @return client
-	 */
-	public HttpClient getHttpClient();
+    /**
+     * Returns the {@link HttpClient} used.
+     * 
+     * @return client
+     */
+    public HttpClient getHttpClient();
 }
