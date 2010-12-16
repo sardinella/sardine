@@ -116,27 +116,6 @@ public class SardineHttpClientImpl implements Sardine {
     }
 
     /** {@inheritDoc} */
-    public void enableCompression() {
-        if (!this.supportsCompression) {
-            HttpClientUtils.enableCompression(client);
-            this.supportsCompression = true;
-        }
-    }
-    
-    /** {@inheritDoc} */
-    public void disableCompression() {
-        if (this.supportsCompression) {
-            HttpClientUtils.disableCompression(this.client);
-            this.supportsCompression = false;
-        }
-    }
-
-    /** */
-    public boolean isCompressionEnabled() {
-        return this.supportsCompression;
-    }
-
-    /** {@inheritDoc} */
     public List<DavResource> getResources(final String url) throws SardineException {
         final URI uri = URI.create(url);
         HttpPropFind propFind = new HttpPropFind(uri.toASCIIString());
