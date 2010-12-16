@@ -4,8 +4,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.http.client.HttpClient;
-
 import com.googlecode.sardine.util.SardineException;
 
 /**
@@ -100,10 +98,4 @@ public interface Sardine {
      */
     public boolean isCompressionEnabled();
 
-    /**
-     * Returns the {@link HttpClient} used.
-     * 
-     * @return client
-     */
-    public HttpClient getHttpClient();
 }

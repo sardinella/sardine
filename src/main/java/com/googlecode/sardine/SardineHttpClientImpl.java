@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.http.HttpResponse;
@@ -58,6 +60,7 @@ import com.googlecode.sardine.model.Getcontentlength;
 import com.googlecode.sardine.model.Getcontenttype;
 import com.googlecode.sardine.model.Getlastmodified;
 import com.googlecode.sardine.model.Multistatus;
+import com.googlecode.sardine.model.ObjectFactory;
 import com.googlecode.sardine.model.Prop;
 import com.googlecode.sardine.model.Response;
 import com.googlecode.sardine.util.SardineException;
@@ -71,10 +74,7 @@ import com.googlecode.sardine.util.SardineUtil;
 public class SardineHttpClientImpl implements Sardine {
 
     /** */
-    Factory factory;
-
-    /** */
-    DefaultHttpClient client;
+    final DefaultHttpClient client;
 
     /** was a username/password passed in? */
     boolean authEnabled;
@@ -82,41 +82,34 @@ public class SardineHttpClientImpl implements Sardine {
     private boolean supportsCompression;
 
     /** */
-    public SardineHttpClientImpl(Factory factory) throws SardineException {
-        this(factory, null, null, null, null);
+    public SardineHttpClientImpl() throws SardineException {
+        this(null, null, null, null, null);
     }
 
     /** */
-    public SardineHttpClientImpl(Factory factory, String username, String password) throws SardineException {
-        this(factory, username, password, null, null);
+    public SardineHttpClientImpl(String username, String password) throws SardineException {
+        this(username, password, null, null);
     }
 
     /** */
-    public SardineHttpClientImpl(Factory factory, String username, String password, SSLSocketFactory sslSocketFactory,
-            HttpRoutePlanner routePlanner) throws SardineException {
-        this(factory, username, password, sslSocketFactory, routePlanner, null);
+    public SardineHttpClientImpl(String username, String password, SSLSocketFactory sslSocketFactory, HttpRoutePlanner routePlanner) throws SardineException {
+        this(username, password, sslSocketFactory, routePlanner, null);
+    }
+
+    /** */
+    public SardineHttpClientImpl(Factory factory, HttpClient httpClient, String username, String password)
+            throws SardineException {
+        this(username, password, null, null);
     }
 
     /**
      * Main constructor.
      */
-    public SardineHttpClientImpl(Factory factory, String username, String password, SSLSocketFactory sslSocketFactory,
-            HttpRoutePlanner routePlanner, Integer port) throws SardineException {
-        this.factory = factory;
+    public SardineHttpClientImpl(String username, String password, SSLSocketFactory sslSocketFactory, HttpRoutePlanner routePlanner,
+            Integer port) throws SardineException {
 
-        HttpParams params = new BasicHttpParams();
-        ConnManagerParams.setMaxTotalConnections(params, 100);
-        HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-        HttpProtocolParams.setUserAgent(params, "Sardine/" + Version.getSpecification());
-
-        SchemeRegistry schemeRegistry = new SchemeRegistry();
-        schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), port != null ? port : 80));
-        if (sslSocketFactory != null)
-            schemeRegistry.register(new Scheme("https", sslSocketFactory, port != null ? port : 443));
-        else
-            schemeRegistry
-                    .register(new Scheme("https", SSLSocketFactory.getSocketFactory(), port != null ? port : 443));
-
+        HttpParams params = createDefaultHttpParams();
+        SchemeRegistry schemeRegistry = createDefaultSchemeRegistry(sslSocketFactory, port);
         ClientConnectionManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
         this.client = new DefaultHttpClient(cm, params);
 
@@ -130,6 +123,33 @@ public class SardineHttpClientImpl implements Sardine {
 
             this.authEnabled = true;
         }
+    }
+
+    /**
+     * @return
+     */
+    static HttpParams createDefaultHttpParams() {
+        HttpParams params = new BasicHttpParams();
+        ConnManagerParams.setMaxTotalConnections(params, 100);
+        HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
+        HttpProtocolParams.setUserAgent(params, "Sardine/" + Version.getSpecification());
+        return params;
+    }
+
+    /**
+     * @param sslSocketFactory
+     * @param port
+     * @return
+     */
+    static SchemeRegistry createDefaultSchemeRegistry(SSLSocketFactory sslSocketFactory, Integer port) {
+        SchemeRegistry schemeRegistry = new SchemeRegistry();
+        schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), port != null ? port : 80));
+        if (sslSocketFactory != null)
+            schemeRegistry.register(new Scheme("https", sslSocketFactory, port != null ? port : 443));
+        else
+            schemeRegistry
+                    .register(new Scheme("https", SSLSocketFactory.getSocketFactory(), port != null ? port : 443));
+        return schemeRegistry;
     }
 
     /** {@inheritDoc} */
@@ -160,7 +180,7 @@ public class SardineHttpClientImpl implements Sardine {
         final URI uri = URI.create(url);
         HttpPropFind propFind = new HttpPropFind(uri.toASCIIString());
         propFind.setEntity(SardineUtil.getResourcesEntity());
-        final Unmarshaller unmarshaller = factory.getUnmarshaller();
+        final Unmarshaller unmarshaller = SardineUtil.createUnmarshaller();
         final MultiStatusResponseHandler responseHandler = new MultiStatusResponseHandler(url, unmarshaller);
         final Multistatus multistatus = wrapResponseHandlerExceptions(propFind, responseHandler);
         return fromMultiStatus(uri, multistatus);
@@ -185,6 +205,8 @@ public class SardineHttpClientImpl implements Sardine {
             return client.execute(request, responseHandler);
         } catch (ClientProtocolException e) {
             throw new SardineException(e);
+        } catch (SardineException e) {
+            throw e;
         } catch (IOException e) {
             throw new SardineException(e);
         } catch (AuthenticationException e) {

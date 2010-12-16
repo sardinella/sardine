@@ -13,6 +13,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
+import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
@@ -21,6 +22,7 @@ import org.apache.http.entity.StringEntity;
 import org.w3c.dom.Element;
 
 import com.googlecode.sardine.model.Multistatus;
+import com.googlecode.sardine.model.ObjectFactory;
 
 /**
  * Basic utility code. I borrowed some code from the webdavlib for parsing dates.
@@ -28,6 +30,10 @@ import com.googlecode.sardine.model.Multistatus;
  * @author jonstevens
  */
 public class SardineUtil {
+
+    /** */
+    final static JAXBContext CONTEXT;
+
     /** cached version of getResources() webdav xml GET request */
     private final static StringEntity GET_RESOURCES;
 
@@ -35,11 +41,16 @@ public class SardineUtil {
         try {
             GET_RESOURCES = new StringEntity(//
                     "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n" + //
-                    "<propfind xmlns=\"DAV:\">\n" + //
-                    "   <allprop/>\n" + //
-                    "</propfind>", "UTF-8");
+                            "<propfind xmlns=\"DAV:\">\n" + //
+                            "   <allprop/>\n" + //
+                            "</propfind>", "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("Could not find encoding, JVM broken?", e);
+        }
+        try {
+            CONTEXT = JAXBContext.newInstance(ObjectFactory.class);
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -197,6 +208,20 @@ public class SardineUtil {
         }
 
         return customPropsMap;
+    }
+
+    /**
+     * Creates an {@link Unmarshaller} from the {@link SardineUtil#CONTEXT}.
+     * 
+     * @return a new Unmarshaller.
+     * @throws JAXBException
+     */
+    public static Unmarshaller createUnmarshaller() {
+        try {
+            return CONTEXT.createUnmarshaller();
+        } catch (JAXBException e) {
+            throw new RuntimeException("Could not create unmarshaller", e);
+        }
     }
 
 }

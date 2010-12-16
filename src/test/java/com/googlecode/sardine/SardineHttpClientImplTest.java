@@ -7,6 +7,7 @@ package com.googlecode.sardine;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.matchers.JUnitMatchers.containsString;
@@ -31,6 +32,7 @@ import org.junit.Test;
 
 import com.googlecode.sardine.model.Multistatus;
 import com.googlecode.sardine.util.SardineException;
+import com.googlecode.sardine.util.SardineUtil;
 
 /**
  * @author mirko
@@ -57,7 +59,7 @@ public class SardineHttpClientImplTest {
      * 
      */
     public SardineHttpClientImplTest() throws SardineException {
-        sardine = new SardineHttpClientImpl(Factory.instance());
+        sardine = new SardineHttpClientImpl();
     }
 
     private static void setHttpClientLogging() {
@@ -171,8 +173,21 @@ public class SardineHttpClientImplTest {
     }
 
     @Test
+    public void wrapResponseHandlerExceptionsSardineException() throws SardineException {
+        try {
+            sardine.wrapResponseHandlerExceptions(new HttpGet(SVN_BASE_URL), new ResponseHandler<Void>() {
+                public Void handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
+                    throw new SardineException("MSG", "URL");
+                }
+            });
+        } catch (SardineException e) {
+            assertNull("Direct SardineException", e.getCause());
+        }
+    }
+
+    @Test
     public void wrapResponseHandlerExceptionsAuthenticationException() throws SardineException {
-        SardineHttpClientImpl sut = new SardineHttpClientImpl(Factory.instance()) {
+        SardineHttpClientImpl sut = new SardineHttpClientImpl() {
             /** {@inheritDoc} */
             @Override
             void setAuthenticationOnMethod(HttpRequestBase base) throws AuthenticationException {
@@ -210,7 +225,7 @@ public class SardineHttpClientImplTest {
      * @throws IOException
      */
     Multistatus loadFromResources(final String resourcename) throws SardineException, JAXBException, IOException {
-        final Unmarshaller unmarshaller = Factory.instance().getUnmarshaller();
+        final Unmarshaller unmarshaller = SardineUtil.createUnmarshaller();
         final InputStream stream = DavResourceTest.class.getResourceAsStream(resourcename);
         try {
             return (Multistatus) unmarshaller.unmarshal(stream);

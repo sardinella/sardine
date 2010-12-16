@@ -37,18 +37,11 @@ public class Factory {
     }
 
     /**
-     * @return the JAXBContext
-     */
-    public JAXBContext getContext() {
-        return this.context;
-    }
-
-    /**
      * Note: the unmarshaller is not thread safe, so it must be created for every request.
      * 
      * @return the JAXB Unmarshaller
      */
-    public Unmarshaller getUnmarshaller() throws SardineException {
+    private Unmarshaller getUnmarshaller() throws SardineException {
         try {
             return this.context.createUnmarshaller();
         } catch (JAXBException e) {
@@ -95,6 +88,6 @@ public class Factory {
     /** */
     public Sardine begin(String username, String password, SSLSocketFactory sslSocketFactory,
             HttpRoutePlanner routePlanner, Integer port) throws SardineException {
-        return new SardineHttpClientImpl(this, username, password, sslSocketFactory, routePlanner, port);
+        return new SardineHttpClientImpl(username, password, sslSocketFactory, routePlanner, port);
     }
 }

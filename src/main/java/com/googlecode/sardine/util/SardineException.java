@@ -9,15 +9,19 @@ import java.io.IOException;
  */
 @SuppressWarnings("serial")
 public class SardineException extends IOException {
-    private int statusCode;
+    
+    private final int statusCode;
 
-    private String responsePhrase;
+    private final String responsePhrase;
 
-    private String url;
+    private final String url;
 
     /** */
     public SardineException(Exception ex) {
-        this.initCause(ex);
+        super(ex);
+        statusCode = -1;
+        responsePhrase = "";
+        url = "";
     }
 
     /** */
@@ -42,12 +46,10 @@ public class SardineException extends IOException {
 
     /** */
     public SardineException(String msg, String url, int statusCode, String responsePhrase, Exception initCause) {
-        super(msg + responsePhrase != null ? ", response: " + responsePhrase : "" + ", statusCode: " + statusCode);
+        super(msg + ", response: " + responsePhrase + ", statusCode: " + statusCode, initCause);
         this.url = url;
         this.statusCode = statusCode;
         this.responsePhrase = responsePhrase;
-        if (initCause != null)
-            this.initCause(initCause);
     }
 
     /**
