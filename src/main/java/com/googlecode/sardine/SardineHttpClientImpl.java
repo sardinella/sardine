@@ -27,17 +27,13 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.routing.HttpRoutePlanner;
-import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.AbstractHttpEntity;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.HttpParams;
 
 import com.googlecode.sardine.httpclient.ExistsResponseHandler;
 import com.googlecode.sardine.httpclient.HttpClientUtils;
@@ -70,7 +66,7 @@ public class SardineHttpClientImpl implements Sardine {
     final DefaultHttpClient client;
 
     /** was a username/password passed in? */
-    boolean authEnabled;
+    final boolean authEnabled;
 
     private boolean supportsCompression;
 
@@ -89,8 +85,12 @@ public class SardineHttpClientImpl implements Sardine {
         this(username, password, sslSocketFactory, routePlanner, null);
     }
 
+    public SardineHttpClientImpl(DefaultHttpClient httpClient) {
+        this.client = httpClient;
+        this.authEnabled = false;
+    }
     /** */
-    public SardineHttpClientImpl(Factory factory, HttpClient httpClient, String username, String password)
+    public SardineHttpClientImpl(HttpClient httpClient, String username, String password)
             throws SardineException {
         this(username, password, null, null);
     }
@@ -100,11 +100,7 @@ public class SardineHttpClientImpl implements Sardine {
      */
     public SardineHttpClientImpl(String username, String password, SSLSocketFactory sslSocketFactory, HttpRoutePlanner routePlanner,
             Integer port) throws SardineException {
-
-        HttpParams params = HttpClientUtils.createDefaultHttpParams();
-        SchemeRegistry schemeRegistry = HttpClientUtils.createDefaultSchemeRegistry(sslSocketFactory, port);
-        ClientConnectionManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
-        this.client = new DefaultHttpClient(cm, params);
+        this.client = HttpClientUtils.createDefaultHttpClient(sslSocketFactory, port);
 
         // for proxy configurations
         if (routePlanner != null)
@@ -113,8 +109,9 @@ public class SardineHttpClientImpl implements Sardine {
         if ((username != null) && (password != null)) {
             this.client.getCredentialsProvider().setCredentials(new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT),
                     new UsernamePasswordCredentials(username, password));
-
             this.authEnabled = true;
+        } else {
+            authEnabled = false;
         }
     }
 

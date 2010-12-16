@@ -28,8 +28,10 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.Test;
 
+import com.googlecode.sardine.httpclient.HttpClientUtils;
 import com.googlecode.sardine.model.Multistatus;
 import com.googlecode.sardine.util.SardineException;
 import com.googlecode.sardine.util.SardineUtil;
@@ -217,6 +219,14 @@ public class SardineHttpClientImplTest {
         assertEquals("Sun, 07 Dec 2008 13:17:14 GMT", umlautDirectory.getCustomProps().get("Win32CreationTime"));
     }
 
+    @Test
+    public void testInjectedHttpClient() throws SardineException {
+        final DefaultHttpClient httpClient = new DefaultHttpClient(HttpClientUtils.createDefaultHttpParams());
+        HttpClientUtils.enableCompression(httpClient);
+        final SardineHttpClientImpl sardine = new SardineHttpClientImpl(httpClient);
+        checkMultipleResources(toMap(sardine.getResources(SVN_BASE_URL)));
+    }
+    
     /**
      * @param resourcename
      * @return

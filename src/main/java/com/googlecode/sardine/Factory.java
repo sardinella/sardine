@@ -1,13 +1,8 @@
 package com.googlecode.sardine;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-
 import org.apache.http.conn.routing.HttpRoutePlanner;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 
-import com.googlecode.sardine.model.ObjectFactory;
 import com.googlecode.sardine.util.SardineException;
 
 /**
@@ -22,31 +17,6 @@ public class Factory {
     /** */
     protected static Factory instance() {
         return INSTANCE;
-    }
-
-    /** */
-    private final JAXBContext context;
-
-    /** */
-    public Factory() {
-        try {
-            this.context = JAXBContext.newInstance(ObjectFactory.class);
-        } catch (JAXBException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Note: the unmarshaller is not thread safe, so it must be created for every request.
-     * 
-     * @return the JAXB Unmarshaller
-     */
-    private Unmarshaller getUnmarshaller() throws SardineException {
-        try {
-            return this.context.createUnmarshaller();
-        } catch (JAXBException e) {
-            throw new SardineException(e);
-        }
     }
 
     /** */
