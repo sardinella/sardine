@@ -5,7 +5,6 @@
 // Generated on: 2009.12.23 at 06:27:19 PM PST 
 //
 
-
 package com.googlecode.sardine.model;
 
 import java.util.ArrayList;
@@ -17,11 +16,12 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -39,38 +39,31 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "removeOrSet"
-})
+@XmlType(name = "", propOrder = { "removeOrSet" })
 @XmlRootElement(name = "propertyupdate")
 public class Propertyupdate {
 
-    @XmlElements({
-        @XmlElement(name = "remove", type = Remove.class),
-        @XmlElement(name = "set", type = Set.class)
-    })
+    @XmlElements({ @XmlElement(name = "remove", type = Remove.class), @XmlElement(name = "set", type = Set.class) })
     protected List<Object> removeOrSet;
 
     /**
      * Gets the value of the removeOrSet property.
      * 
      * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the removeOrSet property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the removeOrSet property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getRemoveOrSet().add(newItem);
+     * getRemoveOrSet().add(newItem);
      * </pre>
      * 
      * 
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link Remove }
-     * {@link Set }
+     * Objects of the following type(s) are allowed in the list {@link Remove } {@link Set }
      * 
      * 
      */

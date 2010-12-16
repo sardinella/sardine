@@ -5,7 +5,6 @@
 // Generated on: 2009.12.23 at 06:27:19 PM PST 
 //
 
-
 package com.googlecode.sardine.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -14,11 +13,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -35,9 +35,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "write"
-})
+@XmlType(name = "", propOrder = { "write" })
 @XmlRootElement(name = "locktype")
 public class Locktype {
 
@@ -47,10 +45,8 @@ public class Locktype {
     /**
      * Gets the value of the write property.
      * 
-     * @return
-     *     possible object is
-     *     {@link Write }
-     *     
+     * @return possible object is {@link Write }
+     * 
      */
     public Write getWrite() {
         return write;
@@ -60,9 +56,8 @@ public class Locktype {
      * Sets the value of the write property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link Write }
-     *     
+     *            allowed object is {@link Write }
+     * 
      */
     public void setWrite(Write value) {
         this.write = value;

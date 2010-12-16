@@ -17,116 +17,101 @@ import com.googlecode.sardine.ant.command.Put;
 
 /**
  * Controller for the Sardine ant Task
- *
+ * 
  * @author jonstevens
  */
-public class SardineTask extends Task
-{
-	/** */
-	private final List<Command> commands = new ArrayList<Command>();
+public class SardineTask extends Task {
+    /** */
+    private final List<Command> commands = new ArrayList<Command>();
 
-	/** */
-	private boolean failonerror = false;
-	private String username = null;
-	private String password = null;
-	private Integer port = null;
-	private Sardine sardine = null;
+    /** */
+    private boolean failonerror = false;
 
-	/** */
-	public void addCopy(Copy copy)
-	{
-		this.addCommand(copy);
-	}
+    private String username = null;
 
-	/** */
-	public void addCreateDirectory(CreateDirectory createDirectory)
-	{
-		this.addCommand(createDirectory);
-	}
+    private String password = null;
 
-	/** */
-	public void addDelete(Delete delete)
-	{
-		this.addCommand(delete);
-	}
+    private Integer port = null;
 
-	/** */
-	public void addExists(Exists exists)
-	{
-		this.addCommand(exists);
-	}
+    private Sardine sardine = null;
 
-	/** */
-	public void addMove(Move move)
-	{
-		this.addCommand(move);
-	}
+    /** */
+    public void addCopy(Copy copy) {
+        this.addCommand(copy);
+    }
 
-	/** */
-	public void addPut(Put put)
-	{
-		this.addCommand(put);
-	}
+    /** */
+    public void addCreateDirectory(CreateDirectory createDirectory) {
+        this.addCommand(createDirectory);
+    }
 
-	/** */
-	private void addCommand(Command command)
-	{
-		command.setTask(this);
-		this.commands.add(command);
-	}
+    /** */
+    public void addDelete(Delete delete) {
+        this.addCommand(delete);
+    }
 
-	/** */
-	@Override
-	public void execute() throws BuildException
-	{
-		try
-		{
-			this.sardine = SardineFactory.begin(this.username, this.password, this.port);
+    /** */
+    public void addExists(Exists exists) {
+        this.addCommand(exists);
+    }
 
-			for (Command command : this.commands)
-			{
-				command.executeCommand();
-			}
-		}
-		catch (Exception e)
-		{
-			throw new BuildException(e);
-		}
-	}
+    /** */
+    public void addMove(Move move) {
+        this.addCommand(move);
+    }
 
-	/** */
-	public void setFailonerror(boolean failonerror)
-	{
-		this.failonerror = failonerror;
-	}
+    /** */
+    public void addPut(Put put) {
+        this.addCommand(put);
+    }
 
-	/** */
-	public boolean isFailonerror()
-	{
-		return this.failonerror;
-	}
+    /** */
+    private void addCommand(Command command) {
+        command.setTask(this);
+        this.commands.add(command);
+    }
 
-	/** */
-	public void setUsername(String username)
-	{
-		this.username = username;
-	}
+    /** */
+    @Override
+    public void execute() throws BuildException {
+        try {
+            this.sardine = SardineFactory.begin(this.username, this.password, this.port);
 
-	/** */
-	public void setPassword(String password)
-	{
-		this.password = password;
-	}
+            for (Command command : this.commands) {
+                command.executeCommand();
+            }
+        } catch (Exception e) {
+            throw new BuildException(e);
+        }
+    }
 
-	/** */
-	public void setPort(Integer port)
-	{
-		this.port = port;
-	}
+    /** */
+    public void setFailonerror(boolean failonerror) {
+        this.failonerror = failonerror;
+    }
 
-	/** */
-	public Sardine getSardine()
-	{
-		return this.sardine;
-	}
+    /** */
+    public boolean isFailonerror() {
+        return this.failonerror;
+    }
+
+    /** */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /** */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /** */
+    public void setPort(Integer port) {
+        this.port = port;
+    }
+
+    /** */
+    public Sardine getSardine() {
+        return this.sardine;
+    }
 }

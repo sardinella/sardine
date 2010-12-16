@@ -5,7 +5,6 @@
 // Generated on: 2009.12.23 at 06:27:19 PM PST 
 //
 
-
 package com.googlecode.sardine.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -14,11 +13,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -37,27 +37,23 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "lockscope",
-    "locktype",
-    "owner"
-})
+@XmlType(name = "", propOrder = { "lockscope", "locktype", "owner" })
 @XmlRootElement(name = "lockinfo")
 public class Lockinfo {
 
     @XmlElement(required = true)
     protected Lockscope lockscope;
+
     @XmlElement(required = true)
     protected Locktype locktype;
+
     protected Owner owner;
 
     /**
      * Gets the value of the lockscope property.
      * 
-     * @return
-     *     possible object is
-     *     {@link Lockscope }
-     *     
+     * @return possible object is {@link Lockscope }
+     * 
      */
     public Lockscope getLockscope() {
         return lockscope;
@@ -67,9 +63,8 @@ public class Lockinfo {
      * Sets the value of the lockscope property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link Lockscope }
-     *     
+     *            allowed object is {@link Lockscope }
+     * 
      */
     public void setLockscope(Lockscope value) {
         this.lockscope = value;
@@ -78,10 +73,8 @@ public class Lockinfo {
     /**
      * Gets the value of the locktype property.
      * 
-     * @return
-     *     possible object is
-     *     {@link Locktype }
-     *     
+     * @return possible object is {@link Locktype }
+     * 
      */
     public Locktype getLocktype() {
         return locktype;
@@ -91,9 +84,8 @@ public class Lockinfo {
      * Sets the value of the locktype property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link Locktype }
-     *     
+     *            allowed object is {@link Locktype }
+     * 
      */
     public void setLocktype(Locktype value) {
         this.locktype = value;
@@ -102,10 +94,8 @@ public class Lockinfo {
     /**
      * Gets the value of the owner property.
      * 
-     * @return
-     *     possible object is
-     *     {@link Owner }
-     *     
+     * @return possible object is {@link Owner }
+     * 
      */
     public Owner getOwner() {
         return owner;
@@ -115,9 +105,8 @@ public class Lockinfo {
      * Sets the value of the owner property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link Owner }
-     *     
+     *            allowed object is {@link Owner }
+     * 
      */
     public void setOwner(Owner value) {
         this.owner = value;

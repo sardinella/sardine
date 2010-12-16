@@ -13,93 +13,80 @@ import com.googlecode.sardine.ant.Command;
 
 /**
  * A nice ant wrapper around sardine.put().
- *
+ * 
  * @author Jon Stevens
  */
-public class Put extends Command
-{
-	/** */
-	private String url;
+public class Put extends Command {
+    /** */
+    private String url;
 
-	/** */
-	List<FileSet> filesets = new ArrayList<FileSet>();
+    /** */
+    List<FileSet> filesets = new ArrayList<FileSet>();
 
-	/** */
-	File file = null;
-	
-	/** */
-	private String contentType;
+    /** */
+    File file = null;
 
-	/** */
-	@Override
-	public void execute() throws Exception
-	{
-		Project p = this.getProject();
+    /** */
+    private String contentType;
 
-		if (this.file != null)
-		{
-			this.process(this.file);
-		}
-		else
-		{
-			for (FileSet fileset: this.filesets)
-			{
-				File dir = fileset.getDir(p);
-				DirectoryScanner ds = fileset.getDirectoryScanner(p);
+    /** */
+    @Override
+    public void execute() throws Exception {
+        Project p = this.getProject();
 
-				for (String file: ds.getIncludedFiles())
-				{
-					File absolute = new File(dir, file);
-					if (absolute.isFile())
-						this.process(absolute);
-				}
-			}
-		}
-	}
+        if (this.file != null) {
+            this.process(this.file);
+        } else {
+            for (FileSet fileset : this.filesets) {
+                File dir = fileset.getDir(p);
+                DirectoryScanner ds = fileset.getDirectoryScanner(p);
 
-	/**
-	 * Process an individual file with sardine.put()
-	 */
-	protected void process(File file) throws Exception
-	{
-		this.getTask().getSardine().put(this.url, new FileInputStream(file), contentType);
-	}
+                for (String file : ds.getIncludedFiles()) {
+                    File absolute = new File(dir, file);
+                    if (absolute.isFile())
+                        this.process(absolute);
+                }
+            }
+        }
+    }
 
-	/** */
-	@Override
-	protected void validateAttributes() throws Exception
-	{
-		if (this.url == null)
-			throw new NullPointerException("url cannot be null");
+    /**
+     * Process an individual file with sardine.put()
+     */
+    protected void process(File file) throws Exception {
+        this.getTask().getSardine().put(this.url, new FileInputStream(file), contentType);
+    }
 
-		if (this.file == null && this.filesets.size() == 0)
-			throw new NullPointerException("Need to define the file attribute or add a fileset.");
+    /** */
+    @Override
+    protected void validateAttributes() throws Exception {
+        if (this.url == null)
+            throw new NullPointerException("url cannot be null");
 
-		if (this.file != null && !this.file.exists())
-			throw new Exception("Could not find file: " + this.file);
-	}
+        if (this.file == null && this.filesets.size() == 0)
+            throw new NullPointerException("Need to define the file attribute or add a fileset.");
 
-	/** */
-	public void setUrl(String url)
-	{
-		this.url = url;
-	}
+        if (this.file != null && !this.file.exists())
+            throw new Exception("Could not find file: " + this.file);
+    }
 
-	/** */
-	public void setFile(File file)
-	{
-		this.file = file;
-	}
+    /** */
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-	/** */
-	public void setContentType(String contentType)
-	{
-		this.contentType = contentType;
-	}
+    /** */
+    public void setFile(File file) {
+        this.file = file;
+    }
 
-	/** */
-	public void addConfiguredFileset(FileSet value)
-	{
-		this.filesets.add(value);
-	}
+    /** */
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    /** */
+    public void addConfiguredFileset(FileSet value) {
+        this.filesets.add(value);
+    }
 }

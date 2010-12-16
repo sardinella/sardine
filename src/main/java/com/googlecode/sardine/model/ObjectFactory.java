@@ -5,7 +5,6 @@
 // Generated on: 2009.12.23 at 06:27:19 PM PST 
 //
 
-
 package com.googlecode.sardine.model;
 
 import javax.xml.bind.JAXBElement;
@@ -13,34 +12,36 @@ import javax.xml.bind.annotation.XmlElementDecl;
 import javax.xml.bind.annotation.XmlRegistry;
 import javax.xml.namespace.QName;
 
-
 /**
- * This object contains factory methods for each 
- * Java content interface and Java element interface 
- * generated in the com.googlecode.sardine.model package. 
- * <p>An ObjectFactory allows you to programatically 
- * construct new instances of the Java representation 
- * for XML content. The Java representation of XML 
- * content can consist of schema derived interfaces 
- * and classes representing the binding of schema 
- * type definitions, element declarations and model 
- * groups.  Factory methods for each of these are 
- * provided in this class.
+ * This object contains factory methods for each Java content interface and Java element interface generated in the
+ * com.googlecode.sardine.model package.
+ * <p>
+ * An ObjectFactory allows you to programatically construct new instances of the Java representation for XML content.
+ * The Java representation of XML content can consist of schema derived interfaces and classes representing the binding
+ * of schema type definitions, element declarations and model groups. Factory methods for each of these are provided in
+ * this class.
  * 
  */
 @XmlRegistry
 public class ObjectFactory {
 
     private final static QName _Status_QNAME = new QName("DAV:", "status");
+
     private final static QName _Dst_QNAME = new QName("DAV:", "dst");
+
     private final static QName _Src_QNAME = new QName("DAV:", "src");
+
     private final static QName _Timeout_QNAME = new QName("DAV:", "timeout");
+
     private final static QName _Depth_QNAME = new QName("DAV:", "depth");
+
     private final static QName _Responsedescription_QNAME = new QName("DAV:", "responsedescription");
+
     private final static QName _Href_QNAME = new QName("DAV:", "href");
 
     /**
-     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.googlecode.sardine.model
+     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package:
+     * com.googlecode.sardine.model
      * 
      */
     public ObjectFactory() {
@@ -343,7 +344,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}
      * 
      */
     @XmlElementDecl(namespace = "DAV:", name = "status")
@@ -352,7 +353,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}
      * 
      */
     @XmlElementDecl(namespace = "DAV:", name = "dst")
@@ -361,7 +362,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}
      * 
      */
     @XmlElementDecl(namespace = "DAV:", name = "src")
@@ -370,7 +371,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}
      * 
      */
     @XmlElementDecl(namespace = "DAV:", name = "timeout")
@@ -379,7 +380,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}
      * 
      */
     @XmlElementDecl(namespace = "DAV:", name = "depth")
@@ -388,7 +389,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}
      * 
      */
     @XmlElementDecl(namespace = "DAV:", name = "responsedescription")
@@ -397,7 +398,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}
      * 
      */
     @XmlElementDecl(namespace = "DAV:", name = "href")

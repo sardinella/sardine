@@ -187,7 +187,7 @@ public class SardineHttpClientImpl implements Sardine {
             throw new SardineException(e);
         } catch (IOException e) {
             throw new SardineException(e);
-        } catch (AuthenticationException e) {            
+        } catch (AuthenticationException e) {
             throw new SardineException(e);
         }
     }
@@ -383,15 +383,15 @@ public class SardineHttpClientImpl implements Sardine {
     /** {@inheritDoc} */
     public void move(String sourceUrl, String destinationUrl) throws SardineException {
         HttpMove move = new HttpMove(sourceUrl, destinationUrl);
-        wrapResponseHandlerExceptions(move, new VoidResponseHandler(sourceUrl, "MOVE sourceUrl: "
-                + sourceUrl + " to destinationUrl: " + destinationUrl + " failed"));
+        wrapResponseHandlerExceptions(move, new VoidResponseHandler(sourceUrl, "MOVE sourceUrl: " + sourceUrl
+                + " to destinationUrl: " + destinationUrl + " failed"));
     }
 
     /** {@inheritDoc} */
     public void copy(String sourceUrl, String destinationUrl) throws SardineException {
         HttpCopy copy = new HttpCopy(sourceUrl, destinationUrl);
-        wrapResponseHandlerExceptions(copy, new VoidResponseHandler(sourceUrl, "COPY sourceUrl: "
-                + sourceUrl + " to destinationUrl: " + destinationUrl + " failed"));
+        wrapResponseHandlerExceptions(copy, new VoidResponseHandler(sourceUrl, "COPY sourceUrl: " + sourceUrl
+                + " to destinationUrl: " + destinationUrl + " failed"));
     }
 
     /** {@inheritDoc} */

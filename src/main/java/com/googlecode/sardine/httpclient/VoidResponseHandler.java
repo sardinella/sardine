@@ -18,7 +18,7 @@ public final class VoidResponseHandler extends BasicResponseHandler<Void> {
     public VoidResponseHandler(String url, final String msg) {
         super(url);
         this.msg = msg;
-        
+
     }
 
     /** {@inheritDoc} */

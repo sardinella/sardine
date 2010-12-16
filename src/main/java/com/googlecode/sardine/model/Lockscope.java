@@ -5,7 +5,6 @@
 // Generated on: 2009.12.23 at 06:27:19 PM PST 
 //
 
-
 package com.googlecode.sardine.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,11 +12,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -35,23 +35,19 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "exclusive",
-    "shared"
-})
+@XmlType(name = "", propOrder = { "exclusive", "shared" })
 @XmlRootElement(name = "lockscope")
 public class Lockscope {
 
     protected Exclusive exclusive;
+
     protected Shared shared;
 
     /**
      * Gets the value of the exclusive property.
      * 
-     * @return
-     *     possible object is
-     *     {@link Exclusive }
-     *     
+     * @return possible object is {@link Exclusive }
+     * 
      */
     public Exclusive getExclusive() {
         return exclusive;
@@ -61,9 +57,8 @@ public class Lockscope {
      * Sets the value of the exclusive property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link Exclusive }
-     *     
+     *            allowed object is {@link Exclusive }
+     * 
      */
     public void setExclusive(Exclusive value) {
         this.exclusive = value;
@@ -72,10 +67,8 @@ public class Lockscope {
     /**
      * Gets the value of the shared property.
      * 
-     * @return
-     *     possible object is
-     *     {@link Shared }
-     *     
+     * @return possible object is {@link Shared }
+     * 
      */
     public Shared getShared() {
         return shared;
@@ -85,9 +78,8 @@ public class Lockscope {
      * Sets the value of the shared property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link Shared }
-     *     
+     *            allowed object is {@link Shared }
+     * 
      */
     public void setShared(Shared value) {
         this.shared = value;

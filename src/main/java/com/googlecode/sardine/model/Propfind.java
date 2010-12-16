@@ -5,7 +5,6 @@
 // Generated on: 2009.12.23 at 06:27:19 PM PST 
 //
 
-
 package com.googlecode.sardine.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,11 +12,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -36,25 +36,21 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "allprop",
-    "propname",
-    "prop"
-})
+@XmlType(name = "", propOrder = { "allprop", "propname", "prop" })
 @XmlRootElement(name = "propfind")
 public class Propfind {
 
     protected Allprop allprop;
+
     protected Propname propname;
+
     protected Prop prop;
 
     /**
      * Gets the value of the allprop property.
      * 
-     * @return
-     *     possible object is
-     *     {@link Allprop }
-     *     
+     * @return possible object is {@link Allprop }
+     * 
      */
     public Allprop getAllprop() {
         return allprop;
@@ -64,9 +60,8 @@ public class Propfind {
      * Sets the value of the allprop property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link Allprop }
-     *     
+     *            allowed object is {@link Allprop }
+     * 
      */
     public void setAllprop(Allprop value) {
         this.allprop = value;
@@ -75,10 +70,8 @@ public class Propfind {
     /**
      * Gets the value of the propname property.
      * 
-     * @return
-     *     possible object is
-     *     {@link Propname }
-     *     
+     * @return possible object is {@link Propname }
+     * 
      */
     public Propname getPropname() {
         return propname;
@@ -88,9 +81,8 @@ public class Propfind {
      * Sets the value of the propname property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link Propname }
-     *     
+     *            allowed object is {@link Propname }
+     * 
      */
     public void setPropname(Propname value) {
         this.propname = value;
@@ -99,10 +91,8 @@ public class Propfind {
     /**
      * Gets the value of the prop property.
      * 
-     * @return
-     *     possible object is
-     *     {@link Prop }
-     *     
+     * @return possible object is {@link Prop }
+     * 
      */
     public Prop getProp() {
         return prop;
@@ -112,9 +102,8 @@ public class Propfind {
      * Sets the value of the prop property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link Prop }
-     *     
+     *            allowed object is {@link Prop }
+     * 
      */
     public void setProp(Prop value) {
         this.prop = value;

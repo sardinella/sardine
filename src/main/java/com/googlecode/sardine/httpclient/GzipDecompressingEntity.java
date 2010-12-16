@@ -8,24 +8,20 @@ import org.apache.http.HttpEntity;
 import org.apache.http.entity.HttpEntityWrapper;
 
 /** */
-public final class GzipDecompressingEntity extends HttpEntityWrapper
-{
+public final class GzipDecompressingEntity extends HttpEntityWrapper {
 
-	public GzipDecompressingEntity(final HttpEntity entity)
-	{
-		super(entity);
-	}
+    public GzipDecompressingEntity(final HttpEntity entity) {
+        super(entity);
+    }
 
-	@Override
-	public InputStream getContent() throws IOException, IllegalStateException
-	{
-		InputStream wrappedin = wrappedEntity.getContent();
-		return new GZIPInputStream(wrappedin);
-	}
+    @Override
+    public InputStream getContent() throws IOException, IllegalStateException {
+        InputStream wrappedin = wrappedEntity.getContent();
+        return new GZIPInputStream(wrappedin);
+    }
 
-	@Override
-	public long getContentLength()
-	{
-		return -1;
-	}
+    @Override
+    public long getContentLength() {
+        return -1;
+    }
 }
