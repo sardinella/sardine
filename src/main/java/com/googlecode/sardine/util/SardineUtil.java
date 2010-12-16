@@ -33,8 +33,11 @@ public class SardineUtil {
 
     static {
         try {
-            GET_RESOURCES = new StringEntity("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n"
-                    + "<propfind xmlns=\"DAV:\">\n" + "   <allprop/>\n" + "</propfind>", "UTF-8");
+            GET_RESOURCES = new StringEntity(//
+                    "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n" + //
+                    "<propfind xmlns=\"DAV:\">\n" + //
+                    "   <allprop/>\n" + //
+                    "</propfind>", "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("Could not find encoding, JVM broken?", e);
         }
@@ -101,9 +104,9 @@ public class SardineUtil {
             return null;
 
         Date date = null;
-        for (int i = 0; (date == null) && (i < formats.length); i++) {
+        for (final SimpleDateFormat format : formats) {
             try {
-                date = ((SimpleDateFormat) formats[i].clone()).parse(dateValue);
+                date = ((SimpleDateFormat) format.clone()).parse(dateValue);
                 break;
             } catch (ParseException e) {
                 // We loop through this until we found a valid one.
