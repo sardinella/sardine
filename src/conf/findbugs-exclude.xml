@@ -1,0 +1,3 @@
+<FindBugsFilter>
+    <!-- most of the members are injected by Maven -->
+</FindBugsFilter>
