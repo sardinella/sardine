@@ -116,13 +116,12 @@ public class SardineUtil
 		{
 			try
 			{
-				synchronized (formats[i])
-				{
-					date = formats[i].parse(dateValue);
-				}
+                date = ((SimpleDateFormat) formats[i].clone()).parse(dateValue);
+                break;
 			}
 			catch (ParseException e)
 			{
+			    // We loop through this until we found a valid one. 
 			}
 		}
 
@@ -152,40 +151,40 @@ public class SardineUtil
 	{
 		try
 		{
-			final StringBuilder buf = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n");
-			buf.append("<D:propertyupdate xmlns:D=\"DAV:\" xmlns:S=\"SAR:\">\n");
+			final StringBuilder sb = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n");
+			sb.append("<D:propertyupdate xmlns:D=\"DAV:\" xmlns:S=\"SAR:\">\n");
 
 			if(setProps != null)
 			{
-				buf.append("<D:set>\n");
-				buf.append("<D:prop>\n");
+				sb.append("<D:set>\n");
+				sb.append("<D:prop>\n");
 				for(Map.Entry<String,String> prop : setProps.entrySet())
 				{
-					buf.append("<S:");
-					buf.append(prop.getKey()).append(">");
-					buf.append(prop.getValue()).append("</S:");
-					buf.append(prop.getKey()).append(">\n");
+					sb.append("<S:");
+					sb.append(prop.getKey()).append(">");
+					sb.append(prop.getValue()).append("</S:");
+					sb.append(prop.getKey()).append(">\n");
 				}
-				buf.append("</D:prop>\n");
-				buf.append("</D:set>\n");
+				sb.append("</D:prop>\n");
+				sb.append("</D:set>\n");
 			}
 
 			if(removeProps != null)
 			{
-				buf.append("<D:remove>\n");
-				buf.append("<D:prop>\n");
+				sb.append("<D:remove>\n");
+				sb.append("<D:prop>\n");
 				for(String removeProp : removeProps)
 				{
-					buf.append("<S:");
-					buf.append(removeProp).append("/>");
+					sb.append("<S:");
+					sb.append(removeProp).append("/>");
 				}
-				buf.append("</D:prop>\n");
-				buf.append("</D:remove>\n");
+				sb.append("</D:prop>\n");
+				sb.append("</D:remove>\n");
 			}
 
-			buf.append("</D:propertyupdate>\n");
+			sb.append("</D:propertyupdate>\n");
 
-			return new StringEntity(buf.toString(), "UTF-8");
+			return new StringEntity(sb.toString(), "UTF-8");
 
 		}
 		catch (UnsupportedEncodingException e)

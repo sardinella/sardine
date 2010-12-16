@@ -94,7 +94,7 @@ public class SardineHttpClientImpl implements Sardine {
     /** */
     public SardineHttpClientImpl(Factory factory, String username, String password, SSLSocketFactory sslSocketFactory,
             HttpRoutePlanner routePlanner) throws SardineException {
-        this(factory, username, password, null, null, null);
+        this(factory, username, password, sslSocketFactory, routePlanner, null);
     }
 
     /**
