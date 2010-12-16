@@ -13,7 +13,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.AuthenticationException;
@@ -29,10 +28,7 @@ import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.params.ConnManagerParams;
 import org.apache.http.conn.routing.HttpRoutePlanner;
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.AbstractHttpEntity;
@@ -41,13 +37,10 @@ import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
 
 import com.googlecode.sardine.httpclient.ExistsResponseHandler;
-import com.googlecode.sardine.httpclient.GzipSupportRequestInterceptor;
-import com.googlecode.sardine.httpclient.GzipSupportResponseInterceptor;
+import com.googlecode.sardine.httpclient.HttpClientUtils;
 import com.googlecode.sardine.httpclient.HttpCopy;
 import com.googlecode.sardine.httpclient.HttpMkCol;
 import com.googlecode.sardine.httpclient.HttpMove;
@@ -108,8 +101,8 @@ public class SardineHttpClientImpl implements Sardine {
     public SardineHttpClientImpl(String username, String password, SSLSocketFactory sslSocketFactory, HttpRoutePlanner routePlanner,
             Integer port) throws SardineException {
 
-        HttpParams params = createDefaultHttpParams();
-        SchemeRegistry schemeRegistry = createDefaultSchemeRegistry(sslSocketFactory, port);
+        HttpParams params = HttpClientUtils.createDefaultHttpParams();
+        SchemeRegistry schemeRegistry = HttpClientUtils.createDefaultSchemeRegistry(sslSocketFactory, port);
         ClientConnectionManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
         this.client = new DefaultHttpClient(cm, params);
 
@@ -125,47 +118,18 @@ public class SardineHttpClientImpl implements Sardine {
         }
     }
 
-    /**
-     * @return
-     */
-    static HttpParams createDefaultHttpParams() {
-        HttpParams params = new BasicHttpParams();
-        ConnManagerParams.setMaxTotalConnections(params, 100);
-        HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-        HttpProtocolParams.setUserAgent(params, "Sardine/" + Version.getSpecification());
-        return params;
-    }
-
-    /**
-     * @param sslSocketFactory
-     * @param port
-     * @return
-     */
-    static SchemeRegistry createDefaultSchemeRegistry(SSLSocketFactory sslSocketFactory, Integer port) {
-        SchemeRegistry schemeRegistry = new SchemeRegistry();
-        schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), port != null ? port : 80));
-        if (sslSocketFactory != null)
-            schemeRegistry.register(new Scheme("https", sslSocketFactory, port != null ? port : 443));
-        else
-            schemeRegistry
-                    .register(new Scheme("https", SSLSocketFactory.getSocketFactory(), port != null ? port : 443));
-        return schemeRegistry;
-    }
-
     /** {@inheritDoc} */
     public void enableCompression() {
         if (!this.supportsCompression) {
-            this.client.addRequestInterceptor(new GzipSupportRequestInterceptor());
-            this.client.addResponseInterceptor(new GzipSupportResponseInterceptor());
+            HttpClientUtils.enableCompression(client);
             this.supportsCompression = true;
         }
     }
-
+    
     /** {@inheritDoc} */
     public void disableCompression() {
         if (this.supportsCompression) {
-            this.client.removeRequestInterceptorByClass(GzipSupportRequestInterceptor.class);
-            this.client.removeResponseInterceptorByClass(GzipSupportResponseInterceptor.class);
+            HttpClientUtils.disableCompression(this.client);
             this.supportsCompression = false;
         }
     }
