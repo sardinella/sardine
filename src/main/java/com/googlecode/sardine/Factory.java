@@ -93,7 +93,7 @@ public class Factory
 	/** */
 	public Sardine begin(String username, String password, HttpRoutePlanner routePlanner) throws SardineException
 	{
-		return this.begin(username, password, routePlanner);
+		return this.begin(username, password, null, routePlanner);
 	}
 
 	/** */

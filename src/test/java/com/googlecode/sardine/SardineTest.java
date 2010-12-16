@@ -1,4 +1,4 @@
-package com.googlecode.sardine.test;
+package com.googlecode.sardine;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.googlecode.sardine.DavResource;
@@ -22,6 +23,7 @@ import com.googlecode.sardine.SardineFactory;
  *
  * @author jonstevens
  */
+@Ignore
 public class SardineTest
 {
 

@@ -43,8 +43,8 @@ public class DavResource {
             Long contentLength, boolean currentDirectory, Map<String, String> customProps) {
         this.baseUrl = baseUrl;
         this.name = name;
-        this.creation = creation;
-        this.modified = modified;
+        this.creation = new Date(creation.getTime());
+        this.modified = new Date(modified.getTime());
         this.contentType = contentType;
         this.contentLength = contentLength;
         this.currentDirectory = currentDirectory;
@@ -90,12 +90,12 @@ public class DavResource {
 
     /** */
     public Date getCreation() {
-        return this.creation;
+        return new Date(this.creation.getTime());
     }
 
     /** */
     public Date getModified() {
-        return this.modified;
+        return new Date(this.modified.getTime());
     }
 
     /** */
