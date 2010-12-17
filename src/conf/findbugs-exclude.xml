@@ -1,3 +1,5 @@
 <FindBugsFilter>
-    <!-- most of the members are injected by Maven -->
+    <Match>
+        <Package name="~.*\.ant" />        
+    </Match>
 </FindBugsFilter>
