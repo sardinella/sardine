@@ -51,6 +51,8 @@ public class ResponseToDavResource {
 
     private final String hostPart;
 
+    private final boolean isDirectory;
+
     /**
      * @param resp
      * @param hostPart
@@ -61,6 +63,7 @@ public class ResponseToDavResource {
         this.baseUrl = baseUrl;
         this.hostPart = hostPart;
         prop = resp.getPropstat().get(0).getProp();
+        isDirectory = prop.getResourcetype().getCollection() != null;
     }
 
     /**
@@ -99,14 +102,12 @@ public class ResponseToDavResource {
     /**
      * Retrieves the contenttype from prop or set it to {@link ResponseToDavResource#DEFAULT_CONTENT_TYPE}. If
      * isDirectory always set the contenttype to {@link ResponseToDavResource#HTTPD_UNIX_DIRECTORY_CONTENT_TYPE}.
-     * 
-     * @param isDirectory
-     *            true if this is a directory.
      * @param prop
      *            from {@link Multistatus}
+     * 
      * @return the content type.
      */
-    String retrieveContentType(boolean isDirectory) {
+    String retrieveContentType() {
         final String contentType;
         // Make sure that directories have the correct content type.
         if (isDirectory) {
@@ -192,8 +193,6 @@ public class ResponseToDavResource {
             finalName = name;
         }
 
-        Prop prop = resp.getPropstat().get(0).getProp();
-
         // SVN returns a content-type of text/html, but collection is set.
         if (prop.getResourcetype().getCollection() != null) {
             isDirectory = true;
@@ -203,7 +202,7 @@ public class ResponseToDavResource {
 
         final String creationdate = retrieveCreationDate();
         final String modifieddate = retrieveModifiedDate(creationdate);
-        final String contentType = retrieveContentType(isDirectory);
+        final String contentType = retrieveContentType();
         final String contentLength = retrieveContentLength();
 
         return new DavResource(hostPart + finalBaseUrl, finalName, SardineUtil.parseDate(creationdate),

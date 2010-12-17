@@ -15,12 +15,14 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.googlecode.sardine.model.Collection;
 import com.googlecode.sardine.model.Creationdate;
 import com.googlecode.sardine.model.Getcontentlength;
 import com.googlecode.sardine.model.Getcontenttype;
 import com.googlecode.sardine.model.Getlastmodified;
 import com.googlecode.sardine.model.Prop;
 import com.googlecode.sardine.model.Propstat;
+import com.googlecode.sardine.model.Resourcetype;
 import com.googlecode.sardine.model.Response;
 
 /**
@@ -34,11 +36,14 @@ public class ResponseToDavResourceTest {
     private final Propstat propstat = Mockito.mock(Propstat.class);
 
     private final Prop prop = new Prop();
+    
+    private final Resourcetype resourceType = new Resourcetype();
 
     @Before
     public void connectMocks() {
         Mockito.when(propstat.getProp()).thenReturn(prop);
         Mockito.when(response.getPropstat()).thenReturn(Arrays.asList(propstat));
+        prop.setResourcetype(resourceType);
     }
 
     /**
@@ -98,27 +103,30 @@ public class ResponseToDavResourceTest {
     }
 
     /**
-     * Test method for {@link com.googlecode.sardine.util.ResponseToDavResource#retrieveContentType(boolean)}.
+     * Test method for {@link com.googlecode.sardine.util.ResponseToDavResource#retrieveContentType()}.
      */
     @Test
     public void testRetrieveContentType() {
         final ResponseToDavResource sut = newSut(null, null);
 
-        // always return directory if parameter is true.
-        assertSame(ResponseToDavResource.HTTPD_UNIX_DIRECTORY_CONTENT_TYPE, sut.retrieveContentType(true));
-
         // if content-type is null return default.
-        assertSame(ResponseToDavResource.DEFAULT_CONTENT_TYPE, sut.retrieveContentType(false));
+        assertSame(ResponseToDavResource.DEFAULT_CONTENT_TYPE, sut.retrieveContentType());
 
         // if content-type has no content return default
         final Getcontenttype getContentType = new Getcontenttype();
         prop.setGetcontenttype(getContentType);
-        assertSame(ResponseToDavResource.DEFAULT_CONTENT_TYPE, sut.retrieveContentType(false));
+        assertSame(ResponseToDavResource.DEFAULT_CONTENT_TYPE, sut.retrieveContentType());
 
         // return correct type
         final String expected = "text/html";
         getContentType.getContent().add(expected);
-        assertSame(expected, sut.retrieveContentType(false));
+        assertSame(expected, sut.retrieveContentType());
+        
+        // always return directory if this is a collection
+        resourceType.setCollection(new Collection());
+        ResponseToDavResource sut2 = new ResponseToDavResource(response, null, null);
+        resourceType.setCollection(new Collection());
+        assertSame(ResponseToDavResource.HTTPD_UNIX_DIRECTORY_CONTENT_TYPE, sut2.retrieveContentType());
     }
 
     /**
@@ -155,8 +163,7 @@ public class ResponseToDavResourceTest {
      * @param hostPart
      * @return
      */
-    ResponseToDavResource newSut(final String baseUrl, final String hostPart) {
+    ResponseToDavResource newSut(final String baseUrl, final String hostPart) {                
         return new ResponseToDavResource(response, baseUrl, hostPart);
     }
-
 }
