@@ -1,32 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<D:multistatus xmlns:D="DAV:">
-<D:response xmlns:S="http://subversion.tigris.org/xmlns/svn/" xmlns:C="http://subversion.tigris.org/xmlns/custom/" xmlns:V="http://subversion.tigris.org/xmlns/dav/" xmlns:lp1="DAV:" xmlns:lp3="http://subversion.tigris.org/xmlns/dav/" xmlns:lp2="http://apache.org/dav/props/">
-<D:href>/svn/hudson~svn/tags/jswidgets-1.5/pom.xml</D:href>
-<D:propstat>
-<D:prop>
-<lp1:resourcetype/>
-<lp1:getcontentlength>7863</lp1:getcontentlength>
-<lp1:getcontenttype>text/xml; charset="utf-8"</lp1:getcontenttype>
-<lp1:getetag>"37174//tags/jswidgets-1.5/pom.xml"</lp1:getetag>
-<lp1:creationdate>2010-12-05T20:39:03.805178Z</lp1:creationdate>
-<lp1:getlastmodified>Sun, 05 Dec 2010 20:39:03 GMT</lp1:getlastmodified>
-<lp1:checked-in><D:href>/svn/hudson~svn/!svn/ver/37175/tags/jswidgets-1.5/pom.xml</D:href></lp1:checked-in>
-<lp1:version-controlled-configuration><D:href>/svn/hudson~svn/!svn/vcc/default</D:href></lp1:version-controlled-configuration>
-<lp1:version-name>37174</lp1:version-name>
-<lp1:creator-displayname>mfriedenhagen</lp1:creator-displayname>
-<lp3:baseline-relative-path>tags/jswidgets-1.5/pom.xml</lp3:baseline-relative-path>
-<lp3:md5-checksum>edba6f7cc97fdc346557d8b2b00bb845</lp3:md5-checksum>
-<lp3:repository-uuid>71c3de6d-444a-0410-be80-ed276b4c234a</lp3:repository-uuid>
-<lp3:deadprop-count>0</lp3:deadprop-count>
-<D:supportedlock>
-<D:lockentry>
-<D:lockscope><D:exclusive/></D:lockscope>
-<D:locktype><D:write/></D:locktype>
-</D:lockentry>
-</D:supportedlock>
-<D:lockdiscovery/>
-</D:prop>
-<D:status>HTTP/1.1 200 OK</D:status>
-</D:propstat>
-</D:response>
+<D:multistatus
+    xmlns:D="DAV:">
+    <D:response
+        xmlns:S="http://subversion.tigris.org/xmlns/svn/"
+        xmlns:C="http://subversion.tigris.org/xmlns/custom/"
+        xmlns:V="http://subversion.tigris.org/xmlns/dav/"
+        xmlns:lp1="DAV:"
+        xmlns:lp3="http://subversion.tigris.org/xmlns/dav/"
+        xmlns:lp2="http://apache.org/dav/props/">
+        <D:href>/svn/hudson~svn/tags/jswidgets-1.5/pom.xml</D:href>
+        <D:propstat>
+            <D:prop>
+                <lp1:resourcetype />
+                <lp1:getcontentlength>7863</lp1:getcontentlength>
+                <lp1:getcontenttype>text/xml; charset="utf-8"</lp1:getcontenttype>
+                <lp1:getetag>"37174//tags/jswidgets-1.5/pom.xml"</lp1:getetag>
+                <lp1:creationdate>2010-12-05T20:39:03.805178Z</lp1:creationdate>
+                <lp1:getlastmodified>Sun, 05 Dec 2010 20:39:03 GMT</lp1:getlastmodified>
+                <lp1:checked-in>
+                    <D:href>/svn/hudson~svn/!svn/ver/37175/tags/jswidgets-1.5/pom.xml</D:href>
+                </lp1:checked-in>
+                <lp1:version-controlled-configuration>
+                    <D:href>/svn/hudson~svn/!svn/vcc/default</D:href>
+                </lp1:version-controlled-configuration>
+                <lp1:version-name>37174</lp1:version-name>
+                <lp1:creator-displayname>mfriedenhagen</lp1:creator-displayname>
+                <lp3:baseline-relative-path>tags/jswidgets-1.5/pom.xml</lp3:baseline-relative-path>
+                <lp3:md5-checksum>edba6f7cc97fdc346557d8b2b00bb845</lp3:md5-checksum>
+                <lp3:repository-uuid>71c3de6d-444a-0410-be80-ed276b4c234a</lp3:repository-uuid>
+                <lp3:deadprop-count>0</lp3:deadprop-count>
+                <D:supportedlock>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:exclusive />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                </D:supportedlock>
+                <D:lockdiscovery />
+            </D:prop>
+            <D:status>HTTP/1.1 200 OK</D:status>
+        </D:propstat>
+    </D:response>
 </D:multistatus>

@@ -149,9 +149,7 @@ public class ResponseToDavResource {
     public DavResource toDavResource() {
 
         final String finalBaseUrl;
-        boolean currentDirectory = false;
-        boolean isDirectory = false;
-
+        final boolean currentDirectory;
         String href = resp.getHref().get(0);
 
         // figure out the name of the file and set
@@ -171,35 +169,24 @@ public class ResponseToDavResource {
             } else {
                 name = href.substring(baseUrl.length());
             }
-            if ("".equals(name) || (name.length() == 0)) {
-                // This is the directory itself.
-                isDirectory = true;
-                currentDirectory = true;
-            }
+            currentDirectory = "".equals(name) || (name.length() == 0);
         } else {
             // figure out the name of the file
             int last = href.lastIndexOf("/") + 1;
             name = href.substring(last);
-
             // this is the part after the host, but without the file
             finalBaseUrl = href.substring(0, last);
+            currentDirectory = false;
         }
 
         // Remove the final / from the name for directories
-        if (name.endsWith("/")) {
+        if (name.endsWith("/") && isDirectory) {
             finalName = name.substring(0, name.length() - 1);
-            isDirectory = true;
         } else {
             finalName = name;
         }
 
-        // SVN returns a content-type of text/html, but collection is set.
-        if (prop.getResourcetype().getCollection() != null) {
-            isDirectory = true;
-        }
-
         final Map<String, String> customProps = SardineUtil.extractCustomProps(prop.getAny());
-
         final String creationdate = retrieveCreationDate();
         final String modifieddate = retrieveModifiedDate(creationdate);
         final String contentType = retrieveContentType();
