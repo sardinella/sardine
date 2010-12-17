@@ -38,6 +38,11 @@ public class ResponseToDavResource {
     public static final String DEFAULT_CONTENT_TYPE = "application/octetstream";
 
     /**
+     * The default content-lenght if nothing is in the {@link Multistatus} response.
+     */
+    public static final String DEFAULT_CONTENT_LENGTH = "0";
+
+    /**
      * content-type for {@link Collection}.
      */
     public static final String HTTPD_UNIX_DIRECTORY_CONTENT_TYPE = "httpd/unix-directory";
@@ -76,8 +81,9 @@ public class ResponseToDavResource {
     }
 
     /**
-     * @param prop
-     * @return
+     * Retrieves creationdate from props. If it is not available return {@link ResponseToDavResource#DEFAULT_DATE}.
+     * 
+     * @return creationdate
      */
     String retrieveCreationDate() {
         final String creationdate;
@@ -117,6 +123,28 @@ public class ResponseToDavResource {
         return contentType;
     }
 
+    /**
+     * Retrieves content-length from props. If it is not available return
+     * {@link ResponseToDavResource#DEFAULT_CONTENT_LENGTH}.
+     * 
+     * @return contentlength
+     */
+    String retrieveContentLength() {
+        final String contentLength;
+        final Getcontentlength gcl = prop.getGetcontentlength();
+        if ((gcl != null) && (gcl.getContent().size() == 1)) {
+            contentLength = gcl.getContent().get(0);
+        } else {
+            contentLength = DEFAULT_CONTENT_LENGTH;
+        }
+        return contentLength;
+    }
+
+    /**
+     * Converts the given {@link Response} to a {@link DavResource}.
+     * 
+     * @return new {@link DavResource} from {@link Response}.
+     */
     public DavResource toDavResource() {
 
         final String finalBaseUrl;
@@ -176,10 +204,7 @@ public class ResponseToDavResource {
         final String creationdate = retrieveCreationDate();
         final String modifieddate = retrieveModifiedDate(creationdate);
         final String contentType = retrieveContentType(isDirectory);
-        String contentLength = "0";
-        Getcontentlength gcl = prop.getGetcontentlength();
-        if ((gcl != null) && (gcl.getContent().size() == 1))
-            contentLength = gcl.getContent().get(0);
+        final String contentLength = retrieveContentLength();
 
         return new DavResource(hostPart + finalBaseUrl, finalName, SardineUtil.parseDate(creationdate),
                 SardineUtil.parseDate(modifieddate), contentType, Long.valueOf(contentLength), currentDirectory,

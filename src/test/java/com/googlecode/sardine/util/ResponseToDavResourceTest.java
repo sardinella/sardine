@@ -16,6 +16,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.googlecode.sardine.model.Creationdate;
+import com.googlecode.sardine.model.Getcontentlength;
 import com.googlecode.sardine.model.Getcontenttype;
 import com.googlecode.sardine.model.Getlastmodified;
 import com.googlecode.sardine.model.Prop;
@@ -121,10 +122,30 @@ public class ResponseToDavResourceTest {
     }
 
     /**
+     * Test method for {@link com.googlecode.sardine.util.ResponseToDavResource#retrieveContentLength()}.
+     */
+    @Test
+    public void testRetrieveContentLength() {
+        final ResponseToDavResource sut = newSut(null, null);
+
+        // no content-length
+        assertSame(ResponseToDavResource.DEFAULT_CONTENT_LENGTH, sut.retrieveContentLength());
+
+        // if content-type has no content return default
+        final Getcontentlength getContentLength = new Getcontentlength();
+        prop.setGetcontentlength(getContentLength);
+        assertSame(ResponseToDavResource.DEFAULT_CONTENT_LENGTH, sut.retrieveContentLength());
+
+        final String expected = "1024";
+        getContentLength.getContent().add(expected);
+        assertSame(expected, sut.retrieveContentLength());
+    }
+
+    /**
      * Test method for {@link com.googlecode.sardine.util.ResponseToDavResource#toDavResource()}.
      */
     @Test
-    @Ignore(value="Not implemented")
+    @Ignore(value = "Not implemented")
     public void testToDavResource() {
         fail("Not yet implemented"); // TODO
     }
