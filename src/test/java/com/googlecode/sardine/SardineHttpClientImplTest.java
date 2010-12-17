@@ -250,7 +250,7 @@ public class SardineHttpClientImplTest {
      */
     HashMap<String, DavResource> toMap(final List<DavResource> resources) {
         final HashMap<String, DavResource> map = new HashMap<String, DavResource>();
-        for (DavResource davResource : resources) {
+        for (final DavResource davResource : resources) {
             map.put(davResource.getName(), davResource);
         }
         return map;

@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.http.HttpResponse;
@@ -44,14 +42,9 @@ import com.googlecode.sardine.httpclient.HttpPropFind;
 import com.googlecode.sardine.httpclient.HttpPropPatch;
 import com.googlecode.sardine.httpclient.MultiStatusResponseHandler;
 import com.googlecode.sardine.httpclient.VoidResponseHandler;
-import com.googlecode.sardine.model.Creationdate;
-import com.googlecode.sardine.model.Getcontentlength;
-import com.googlecode.sardine.model.Getcontenttype;
-import com.googlecode.sardine.model.Getlastmodified;
 import com.googlecode.sardine.model.Multistatus;
-import com.googlecode.sardine.model.ObjectFactory;
-import com.googlecode.sardine.model.Prop;
 import com.googlecode.sardine.model.Response;
+import com.googlecode.sardine.util.ResponseToDavResource;
 import com.googlecode.sardine.util.SardineException;
 import com.googlecode.sardine.util.SardineUtil;
 
@@ -68,8 +61,6 @@ public class SardineHttpClientImpl implements Sardine {
     /** was a username/password passed in? */
     final boolean authEnabled;
 
-    private boolean supportsCompression;
-
     /** */
     public SardineHttpClientImpl() throws SardineException {
         this(null, null, null, null, null);
@@ -81,25 +72,30 @@ public class SardineHttpClientImpl implements Sardine {
     }
 
     /** */
-    public SardineHttpClientImpl(String username, String password, SSLSocketFactory sslSocketFactory, HttpRoutePlanner routePlanner) throws SardineException {
+    public SardineHttpClientImpl(String username, String password, SSLSocketFactory sslSocketFactory,
+            HttpRoutePlanner routePlanner) throws SardineException {
         this(username, password, sslSocketFactory, routePlanner, null);
     }
 
-    public SardineHttpClientImpl(DefaultHttpClient httpClient) {
+    public SardineHttpClientImpl(final DefaultHttpClient httpClient) {
         this.client = httpClient;
         this.authEnabled = false;
     }
+
     /** */
-    public SardineHttpClientImpl(HttpClient httpClient, String username, String password)
+    public SardineHttpClientImpl(final DefaultHttpClient httpClient, String username, String password)
             throws SardineException {
-        this(username, password, null, null);
+        this.client = httpClient;
+        this.client.getCredentialsProvider().setCredentials(new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT),
+                new UsernamePasswordCredentials(username, password));
+        this.authEnabled = true;
     }
 
     /**
      * Main constructor.
      */
-    public SardineHttpClientImpl(String username, String password, SSLSocketFactory sslSocketFactory, HttpRoutePlanner routePlanner,
-            Integer port) throws SardineException {
+    public SardineHttpClientImpl(String username, String password, SSLSocketFactory sslSocketFactory,
+            HttpRoutePlanner routePlanner, Integer port) throws SardineException {
         this.client = HttpClientUtils.createDefaultHttpClient(sslSocketFactory, port);
 
         // for proxy configurations
@@ -160,108 +156,30 @@ public class SardineHttpClientImpl implements Sardine {
      * @return
      */
     List<DavResource> fromMultiStatus(final URI uri, Multistatus multistatus) {
-        List<Response> responses = multistatus.getResponse();
-
-        List<DavResource> resources = new ArrayList<DavResource>(responses.size());
-
-        String baseUrl = null;
-        if (uri.getPath().endsWith("/"))
-            baseUrl = uri.getPath();
+        
+        final List<Response> responses = multistatus.getResponse();
+        final List<DavResource> resources = new ArrayList<DavResource>(responses.size());
 
         // Get the part of the url from the start to the first slash
         // ie: http://server.com
-        String hostPart;
+        final String hostPart;
         try {
             hostPart = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null)
                     .toASCIIString();
         } catch (URISyntaxException e) {
-            throw new RuntimeException("Message:", e);
+            throw new RuntimeException("Could not get hostpart from " + uri, e);
         }
-        for (Response resp : responses) {
-            boolean currentDirectory = false;
-            boolean isDirectory = false;
 
-            String href = resp.getHref().get(0);
+        final String baseUrl;
+        if (uri.getPath().endsWith("/")) {
+            baseUrl = uri.getPath();
+        } else {
+            baseUrl = null;
+        }
 
-            // figure out the name of the file and set
-            // the baseUrl if it isn't already set (like when
-            // we are looking for just one file)
-            String name = null;
-            if (baseUrl != null) {
-                // Some (broken) servers don't return a href with a trailing /
-                if ((href.length() == baseUrl.length() - 1) && baseUrl.endsWith("/")) {
-                    href += "/";
-                }
-
-                if (href.startsWith(hostPart)) {
-                    name = href.substring(hostPart.length() + baseUrl.length());
-                } else
-                    name = href.substring(baseUrl.length());
-
-                if ("".equals(name) || (name.length() == 0)) {
-                    // This is the directory itself.
-                    isDirectory = true;
-                    currentDirectory = true;
-                }
-            } else {
-                // figure out the name of the file
-                int last = href.lastIndexOf("/") + 1;
-                name = href.substring(last);
-
-                // this is the part after the host, but without the file
-                baseUrl = href.substring(0, last);
-            }
-
-            // Remove the final / from the name for directories
-            if (name.endsWith("/")) {
-                name = name.substring(0, name.length() - 1);
-                isDirectory = true;
-            }
-
-            Prop prop = resp.getPropstat().get(0).getProp();
-
-            // SVN returns a content-type of text/html, but collection is set.
-            if (prop.getResourcetype().getCollection() != null) {
-                isDirectory = true;
-            }
-
-            Map<String, String> customProps = SardineUtil.extractCustomProps(prop.getAny());
-
-            String creationdate = null;
-            Creationdate gcd = prop.getCreationdate();
-            if ((gcd != null) && (gcd.getContent().size() == 1))
-                creationdate = gcd.getContent().get(0);
-
-            // modifieddate is sometimes not set
-            // if that's the case, use creationdate
-            String modifieddate = null;
-            Getlastmodified glm = prop.getGetlastmodified();
-            if ((glm != null) && (glm.getContent().size() == 1))
-                modifieddate = glm.getContent().get(0);
-            else
-                modifieddate = creationdate;
-
-            String contentType = null;
-            Getcontenttype gtt = prop.getGetcontenttype();
-            if ((gtt != null) && (gtt.getContent().size() == 1))
-                contentType = gtt.getContent().get(0);
-
-            // Make sure that directories have the correct content type.
-            if (isDirectory) {
-                // Need to correct the contentType to identify as a directory.
-                contentType = "httpd/unix-directory";
-            }
-
-            String contentLength = "0";
-            Getcontentlength gcl = prop.getGetcontentlength();
-            if ((gcl != null) && (gcl.getContent().size() == 1))
-                contentLength = gcl.getContent().get(0);
-
-            DavResource dr = new DavResource(hostPart + baseUrl, name, SardineUtil.parseDate(creationdate),
-                    SardineUtil.parseDate(modifieddate), contentType, Long.valueOf(contentLength), currentDirectory,
-                    customProps);
-
-            resources.add(dr);
+        for (final Response resp : responses) {
+            final ResponseToDavResource toDavResource = new ResponseToDavResource(resp, baseUrl, hostPart);
+            resources.add(toDavResource.toDavResource());
         }
         return resources;
     }
