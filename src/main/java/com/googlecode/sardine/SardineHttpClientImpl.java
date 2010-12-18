@@ -315,8 +315,7 @@ public class SardineHttpClientImpl implements Sardine {
     }
 
     /** {@inheritDoc} */
-    // @Override
-    public HttpClient getHttpClient() {
+    public DefaultHttpClient getHttpClient() {
         return client;
     }
 }
