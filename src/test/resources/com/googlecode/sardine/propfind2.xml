@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="utf-8"?>
+<D:multistatus
+    xmlns:D="DAV:">
+    <D:response
+        xmlns:lp0="DAV:"
+        xmlns:lp1="http://apache.org/dav/props/">
+        <D:href>/.thumb/</D:href>
+        <D:propstat>
+            <D:prop>
+                <lp0:creationdate
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.tz">2007-07-16T13:35:49Z</lp0:creationdate>
+                <lp0:getlastmodified
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.rfc1123">Mon, 16 Jul 2007 13:35:49 GMT</lp0:getlastmodified>
+                <lp0:getetag>"1e636-26-469b7435"</lp0:getetag>
+                <D:supportedlock>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:exclusive />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:shared />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                </D:supportedlock>
+                <D:lockdiscovery />
+                <D:resourcetype>
+                    <D:collection />
+                </D:resourcetype>
+                <D:getcontenttype>httpd/unix-directory</D:getcontenttype>
+            </D:prop>
+            <D:status>HTTP/1.1 200 OK</D:status>
+        </D:propstat>
+    </D:response>
+    <D:response
+        xmlns:lp0="DAV:"
+        xmlns:lp1="http://apache.org/dav/props/">
+        <D:href>/._rssowl.opml</D:href>
+        <D:propstat>
+            <D:prop>
+                <lp0:creationdate
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.tz">2007-03-14T20:25:26Z</lp0:creationdate>
+                <lp0:getcontentlength>82</lp0:getcontentlength>
+                <lp0:getlastmodified
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.rfc1123">Wed, 14 Mar 2007 20:25:26 GMT</lp0:getlastmodified>
+                <lp0:getetag>"30011f72-52-45f85a36"</lp0:getetag>
+                <lp1:executable>F</lp1:executable>
+                <D:supportedlock>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:exclusive />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:shared />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                </D:supportedlock>
+                <D:lockdiscovery />
+                <D:resourcetype />
+            </D:prop>
+            <D:status>HTTP/1.1 200 OK</D:status>
+        </D:propstat>
+    </D:response>
+    <D:response
+        xmlns:lp0="DAV:"
+        xmlns:lp1="http://apache.org/dav/props/">
+        <D:href>/rssowl.opml</D:href>
+        <D:propstat>
+            <D:prop>
+                <lp0:creationdate
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.tz">2007-03-14T20:25:25Z</lp0:creationdate>
+                <lp0:getcontentlength>74771</lp0:getcontentlength>
+                <lp0:getlastmodified
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.rfc1123">Wed, 14 Mar 2007 20:25:24 GMT</lp0:getlastmodified>
+                <lp0:getetag>"30011f73-12413-45f85a34"</lp0:getetag>
+                <lp1:executable>F</lp1:executable>
+                <D:supportedlock>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:exclusive />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:shared />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                </D:supportedlock>
+                <D:lockdiscovery />
+                <D:resourcetype />
+            </D:prop>
+            <D:status>HTTP/1.1 200 OK</D:status>
+        </D:propstat>
+    </D:response>
+    <D:response
+        xmlns:ns0="DAV:"
+        xmlns:ns1="GMX:"
+        xmlns:lp0="DAV:"
+        xmlns:lp1="http://apache.org/dav/props/">
+        <D:href>/imm002_0A-9.jpg</D:href>
+        <D:propstat>
+            <D:prop>
+                <ns1:width>1024</ns1:width>
+                <ns1:height>1536</ns1:height>
+                <lp0:creationdate
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.tz">2006-10-25T08:47:28Z</lp0:creationdate>
+                <lp0:getcontentlength>860369</lp0:getcontentlength>
+                <lp0:getlastmodified
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.rfc1123">Fri, 17 Mar 2006 08:57:46 GMT</lp0:getlastmodified>
+                <lp0:getetag>"10004190-d20d1-441a7a0a"</lp0:getetag>
+                <lp1:executable>F</lp1:executable>
+                <D:supportedlock>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:exclusive />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:shared />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                </D:supportedlock>
+                <D:lockdiscovery />
+                <D:resourcetype />
+                <D:getcontenttype>image/jpeg</D:getcontenttype>
+            </D:prop>
+            <D:status>HTTP/1.1 200 OK</D:status>
+        </D:propstat>
+    </D:response>
+    <D:response
+        xmlns:lp0="DAV:"
+        xmlns:lp1="http://apache.org/dav/props/">
+        <D:href>/Ich%20&amp;%20Du,%20M%c3%bcllers%20Kuh/</D:href>
+        <D:propstat>
+            <D:prop>
+                <lp0:creationdate
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.tz">2006-10-13T08:20:06Z</lp0:creationdate>
+                <lp0:getlastmodified
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.rfc1123">Fri, 13 Oct 2006 08:19:44 GMT</lp0:getlastmodified>
+                <lp0:getetag>"3006381d-6-452f4c20"</lp0:getetag>
+                <D:supportedlock>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:exclusive />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:shared />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                </D:supportedlock>
+                <D:lockdiscovery />
+                <D:resourcetype>
+                    <D:collection />
+                </D:resourcetype>
+                <D:getcontenttype>httpd/unix-directory</D:getcontenttype>
+            </D:prop>
+            <D:status>HTTP/1.1 200 OK</D:status>
+        </D:propstat>
+    </D:response>
+    <D:response
+        xmlns:lp0="DAV:"
+        xmlns:lp1="http://apache.org/dav/props/">
+        <D:href>/Sonstige%20Dateien/</D:href>
+        <D:propstat>
+            <D:prop>
+                <lp0:creationdate
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.tz">2006-10-10T11:54:44Z</lp0:creationdate>
+                <lp0:getlastmodified
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.rfc1123">Tue, 10 Oct 2006 11:54:44 GMT</lp0:getlastmodified>
+                <lp0:getetag>"b001f2cd-1000-452b8a04"</lp0:getetag>
+                <D:supportedlock>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:exclusive />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:shared />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                </D:supportedlock>
+                <D:lockdiscovery />
+                <D:resourcetype>
+                    <D:collection />
+                </D:resourcetype>
+                <D:getcontenttype>httpd/unix-directory</D:getcontenttype>
+            </D:prop>
+            <D:status>HTTP/1.1 200 OK</D:status>
+        </D:propstat>
+    </D:response>
+    <D:response
+        xmlns:lp0="DAV:"
+        xmlns:lp1="http://apache.org/dav/props/">
+        <D:href>/.DS_Store</D:href>
+        <D:propstat>
+            <D:prop>
+                <lp0:creationdate
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.tz">2007-11-13T00:04:20Z</lp0:creationdate>
+                <lp0:getcontentlength>6148</lp0:getcontentlength>
+                <lp0:getlastmodified
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.rfc1123">Tue, 13 Nov 2007 00:04:20 GMT</lp0:getlastmodified>
+                <lp0:getetag>"3001ecff-1804-4738ea04"</lp0:getetag>
+                <lp1:executable>F</lp1:executable>
+                <D:supportedlock>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:exclusive />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:shared />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                </D:supportedlock>
+                <D:lockdiscovery />
+                <D:resourcetype />
+            </D:prop>
+            <D:status>HTTP/1.1 200 OK</D:status>
+        </D:propstat>
+    </D:response>
+    <D:response
+        xmlns:lp0="DAV:"
+        xmlns:lp1="http://apache.org/dav/props/">
+        <D:href>/Neue%20Dateianlagen/</D:href>
+        <D:propstat>
+            <D:prop>
+                <lp0:creationdate
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.tz">2006-07-26T10:55:17Z</lp0:creationdate>
+                <lp0:getlastmodified
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.rfc1123">Wed, 26 Jul 2006 10:55:17 GMT</lp0:getlastmodified>
+                <lp0:getetag>"a001f05e-6-44c74a15"</lp0:getetag>
+                <D:supportedlock>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:exclusive />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:shared />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                </D:supportedlock>
+                <D:lockdiscovery />
+                <D:resourcetype>
+                    <D:collection />
+                </D:resourcetype>
+                <D:getcontenttype>httpd/unix-directory</D:getcontenttype>
+            </D:prop>
+            <D:status>HTTP/1.1 200 OK</D:status>
+        </D:propstat>
+    </D:response>
+    <D:response
+        xmlns:lp0="DAV:"
+        xmlns:lp1="http://apache.org/dav/props/">
+        <D:href>/Meine%20Dokumente/</D:href>
+        <D:propstat>
+            <D:prop>
+                <lp0:creationdate
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.tz">2008-12-07T13:31:04Z</lp0:creationdate>
+                <lp0:getlastmodified
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.rfc1123">Sun, 07 Dec 2008 13:31:04 GMT</lp0:getlastmodified>
+                <lp0:getetag>"8001f977-1000-493bd018"</lp0:getetag>
+                <D:supportedlock>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:exclusive />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:shared />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                </D:supportedlock>
+                <D:lockdiscovery />
+                <D:resourcetype>
+                    <D:collection />
+                </D:resourcetype>
+                <D:getcontenttype>httpd/unix-directory</D:getcontenttype>
+            </D:prop>
+            <D:status>HTTP/1.1 200 OK</D:status>
+        </D:propstat>
+    </D:response>
+    <D:response
+        xmlns:lp0="DAV:"
+        xmlns:lp1="http://apache.org/dav/props/">
+        <D:href>/Meine%20Bilder/</D:href>
+        <D:propstat>
+            <D:prop>
+                <lp0:creationdate
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.tz">2006-10-19T14:45:32Z</lp0:creationdate>
+                <lp0:getlastmodified
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.rfc1123">Thu, 19 Oct 2006 14:45:32 GMT</lp0:getlastmodified>
+                <lp0:getetag>"5002077d-71-45378f8c"</lp0:getetag>
+                <D:supportedlock>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:exclusive />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:shared />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                </D:supportedlock>
+                <D:lockdiscovery />
+                <D:resourcetype>
+                    <D:collection />
+                </D:resourcetype>
+                <D:getcontenttype>httpd/unix-directory</D:getcontenttype>
+            </D:prop>
+            <D:status>HTTP/1.1 200 OK</D:status>
+        </D:propstat>
+    </D:response>
+    <D:response
+        xmlns:lp0="DAV:"
+        xmlns:lp1="http://apache.org/dav/props/">
+        <D:href>/Gel%c3%b6schte%20Dateien/</D:href>
+        <D:propstat>
+            <D:prop>
+                <lp0:creationdate
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.tz">2005-12-07T14:29:54Z</lp0:creationdate>
+                <lp0:getlastmodified
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.rfc1123">Wed, 07 Dec 2005 14:29:54 GMT</lp0:getlastmodified>
+                <lp0:getetag>"4001f373-6-4396f1e2"</lp0:getetag>
+                <D:supportedlock>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:exclusive />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:shared />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                </D:supportedlock>
+                <D:lockdiscovery />
+                <D:resourcetype>
+                    <D:collection />
+                </D:resourcetype>
+                <D:getcontenttype>httpd/unix-directory</D:getcontenttype>
+            </D:prop>
+            <D:status>HTTP/1.1 200 OK</D:status>
+        </D:propstat>
+    </D:response>
+    <D:response
+        xmlns:lp0="DAV:"
+        xmlns:lp1="http://apache.org/dav/props/">
+        <D:href>/</D:href>
+        <D:propstat>
+            <D:prop>
+                <lp0:creationdate
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.tz">2007-07-16T13:35:48Z</lp0:creationdate>
+                <lp0:getlastmodified
+                    xmlns:b="urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/"
+                    b:dt="dateTime.rfc1123">Mon, 16 Jul 2007 13:35:48 GMT</lp0:getlastmodified>
+                <lp0:getetag>"3001ecfa-1000-469b7434"</lp0:getetag>
+                <D:supportedlock>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:exclusive />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                    <D:lockentry>
+                        <D:lockscope>
+                            <D:shared />
+                        </D:lockscope>
+                        <D:locktype>
+                            <D:write />
+                        </D:locktype>
+                    </D:lockentry>
+                </D:supportedlock>
+                <D:lockdiscovery />
+                <D:resourcetype>
+                    <D:collection />
+                </D:resourcetype>
+                <D:getcontenttype>httpd/unix-directory</D:getcontenttype>
+            </D:prop>
+            <D:status>HTTP/1.1 200 OK</D:status>
+        </D:propstat>
+    </D:response>
+</D:multistatus>

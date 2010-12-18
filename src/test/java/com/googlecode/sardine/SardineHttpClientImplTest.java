@@ -46,6 +46,11 @@ public class SardineHttpClientImplTest {
     /**
      * 
      */
+    private static final String GMX_BASE_URL = "https://mediacenter.gmx.net/";
+
+    /**
+     * 
+     */
     private static final String SVN_BASE_URL = "https://svn.java.net/svn/hudson~svn/tags/jswidgets-1.5/";
 
     /**
@@ -230,11 +235,26 @@ public class SardineHttpClientImplTest {
     }
 
     @Test
+    public void testAnotherStaticContent() throws SardineException, JAXBException, IOException {
+        final Multistatus multiStatus = loadFromResources("propfind2.xml");
+        final int multiStatusSize = multiStatus.getResponse().size();        
+        final List<DavResource> fromMultiStatus = sardine.fromMultiStatus(URI.create(GMX_BASE_URL), multiStatus);
+        assertEquals(multiStatusSize, fromMultiStatus.size());        
+        final HashMap<String, DavResource> resources = toMap(fromMultiStatus);        
+        assertEquals(multiStatusSize, resources.size());
+        final DavResource strangeDirectoryName = resources.get("Ich%20&%20Du,%20M%c3%bcllers%20Kuh");
+        assertEquals("Ich & Du, Müllers Kuh", strangeDirectoryName.getNameDecoded());
+        assertTrue(strangeDirectoryName.isDirectory());
+        final DavResource image = resources.get("imm002_0A-9.jpg");
+        assertEquals("image/jpeg", image.getContentType());
+    }
+    
+    @Test
     public void testInjectedHttpClient() throws SardineException {
         final DefaultHttpClient httpClient = new DefaultHttpClient(HttpClientUtils.createDefaultHttpParams());
         HttpClientUtils.enableCompression(httpClient);
         final SardineHttpClientImpl sardine = new SardineHttpClientImpl(httpClient);
-        checkMultipleResources(toMap(sardine.getResources(SVN_BASE_URL)));
+        checkMultipleResources(toMap(sardine.getResources(SVN_BASE_URL)));        
     }
     
     /**
@@ -260,7 +280,7 @@ public class SardineHttpClientImplTest {
      */
     HashMap<String, DavResource> toMap(final List<DavResource> resources) {
         final HashMap<String, DavResource> map = new HashMap<String, DavResource>();
-        for (final DavResource davResource : resources) {
+        for (final DavResource davResource : resources) {            
             map.put(davResource.getName(), davResource);
         }
         return map;
