@@ -24,7 +24,7 @@ public interface Sardine {
             throws SardineException;
 
     /**
-     * Uses HttpGet to get an input stream for a url
+     * Get an input stream for url. It is the callers responsibility to close the stream after usage.
      */
     public InputStream getInputStream(String url) throws SardineException;
 

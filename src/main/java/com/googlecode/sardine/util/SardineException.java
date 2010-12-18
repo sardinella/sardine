@@ -46,7 +46,7 @@ public class SardineException extends IOException {
 
     /** */
     public SardineException(String msg, String url, int statusCode, String responsePhrase, Exception initCause) {
-        super(msg + ", response: " + responsePhrase + ", statusCode: " + statusCode, initCause);
+        super(msg + ", url=" + url + ", response: " + responsePhrase + ", statusCode: " + statusCode, initCause);
         this.url = url;
         this.statusCode = statusCode;
         this.responsePhrase = responsePhrase;

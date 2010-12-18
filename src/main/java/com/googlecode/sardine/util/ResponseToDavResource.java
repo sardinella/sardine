@@ -28,19 +28,19 @@ public class ResponseToDavResource {
     private final Prop prop;
 
     /**
-     * 
+     * The default date if nothing is provided for {@link Creationdate} or {@link Getlastmodified}.
      */
-    public static final String DEFAULT_DATE = "1970-01-01'T'00:00:00.000'Z'";
+    static final String DEFAULT_DATE = "1970-01-01'T'00:00:00.000'Z'";
 
     /**
-     * The default content-type if nothing is in the {@link Multistatus} response.
+     * The default content-type if {@link Getcontenttype} is not set in the {@link Multistatus} response.
      */
-    public static final String DEFAULT_CONTENT_TYPE = "application/octetstream";
+    static final String DEFAULT_CONTENT_TYPE = "application/octetstream";
 
     /**
-     * The default content-lenght if nothing is in the {@link Multistatus} response.
+     * The default content-lenght if {@link Getcontentlength} is not set in the {@link Multistatus} response.
      */
-    public static final String DEFAULT_CONTENT_LENGTH = "0";
+    static final String DEFAULT_CONTENT_LENGTH = "0";
 
     /**
      * content-type for {@link Collection}.
@@ -51,6 +51,9 @@ public class ResponseToDavResource {
 
     private final String hostPart;
 
+    /**
+     * Is this a directory.
+     */
     private final boolean isDirectory;
 
     /**
@@ -67,7 +70,8 @@ public class ResponseToDavResource {
     }
 
     /**
-     * Retrieves modifieddate from props. modifieddate is sometimes not set if that's the case, use creationdate
+     * Retrieves modifieddate from props. modifieddate is sometimes not set if that's the case, use creation date
+     * instead.
      * 
      * @param creationdate
      * @return
@@ -86,7 +90,7 @@ public class ResponseToDavResource {
     /**
      * Retrieves creationdate from props. If it is not available return {@link ResponseToDavResource#DEFAULT_DATE}.
      * 
-     * @return creationdate
+     * @return creation date
      */
     String retrieveCreationDate() {
         final String creationdate;
@@ -100,8 +104,9 @@ public class ResponseToDavResource {
     }
 
     /**
-     * Retrieves the contenttype from prop or set it to {@link ResponseToDavResource#DEFAULT_CONTENT_TYPE}. If
-     * isDirectory always set the contenttype to {@link ResponseToDavResource#HTTPD_UNIX_DIRECTORY_CONTENT_TYPE}.
+     * Retrieves the content-type from prop or set it to {@link ResponseToDavResource#DEFAULT_CONTENT_TYPE}. If
+     * isDirectory always set the content-type to {@link ResponseToDavResource#HTTPD_UNIX_DIRECTORY_CONTENT_TYPE}.
+     * 
      * @param prop
      *            from {@link Multistatus}
      * 

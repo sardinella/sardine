@@ -21,6 +21,7 @@ import java.util.List;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.client.ClientProtocolException;
@@ -114,6 +115,15 @@ public class SardineHttpClientImplTest {
         checkPom(resources);
     }
 
+    @Test
+    public void testGetPomContentIntegrative() throws IOException {
+        final InputStream stream = sardine.getInputStream(SVN_POM_BASE_URL);
+        try {
+            assertEquals(7863, IOUtils.toString(stream).length());
+        } finally {
+            stream.close();
+        }        
+    }
     /**
      * @throws SardineException
      */

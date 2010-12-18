@@ -42,6 +42,7 @@ import com.googlecode.sardine.httpclient.HttpPropFind;
 import com.googlecode.sardine.httpclient.HttpPropPatch;
 import com.googlecode.sardine.httpclient.MultiStatusResponseHandler;
 import com.googlecode.sardine.httpclient.VoidResponseHandler;
+import com.googlecode.sardine.httpclient.WrappedInputStream;
 import com.googlecode.sardine.model.Multistatus;
 import com.googlecode.sardine.model.Response;
 import com.googlecode.sardine.util.ResponseToDavResource;
@@ -151,12 +152,17 @@ public class SardineHttpClientImpl implements Sardine {
     }
 
     /**
+     * Returns a List of {@link DavResource}s from the given {@link Multistatus}. The name of the resource is calculated
+     * from the last path element of the Href.
+     * 
      * @param uri
+     *            of the initial request.
      * @param multistatus
-     * @return
+     *            from the request.
+     * @return a List of {@link DavResource}s
      */
     List<DavResource> fromMultiStatus(final URI uri, Multistatus multistatus) {
-        
+
         final List<Response> responses = multistatus.getResponse();
         final List<DavResource> resources = new ArrayList<DavResource>(responses.size());
 
@@ -195,18 +201,16 @@ public class SardineHttpClientImpl implements Sardine {
 
     /** {@inheritDoc} */
     public InputStream getInputStream(String url) throws SardineException {
-        HttpGet get = new HttpGet(url);
-
-        HttpResponse response = this.executeWrapper(get);
-
-        StatusLine statusLine = response.getStatusLine();
+        final HttpGet get = new HttpGet(url);
+        final HttpResponse response = this.executeWrapper(get);
+        final StatusLine statusLine = response.getStatusLine();
         if (!SardineUtil.isGoodResponse(statusLine.getStatusCode())) {
             get.abort();
             throw new SardineException(url, statusLine.getStatusCode(), statusLine.getReasonPhrase());
         }
 
         try {
-            return response.getEntity().getContent();
+            return new WrappedInputStream(url, response);
         } catch (IOException ex) {
             get.abort();
             throw new SardineException(ex);
@@ -230,11 +234,7 @@ public class SardineHttpClientImpl implements Sardine {
         put(url, dataStream, null);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.googlecode.sardine.Sardine#put(java.lang.String, java.io.InputStream, java.lang.String)
-     */
+    /** {@inheritDoc} */
     public void put(String url, InputStream dataStream, String contentType) throws SardineException {
         HttpPut put = new HttpPut(url);
         // A length of -1 means "go until end of stream"
@@ -308,7 +308,7 @@ public class SardineHttpClientImpl implements Sardine {
      */
     void setAuthenticationOnMethod(HttpRequestBase base) throws AuthenticationException {
         if (this.authEnabled) {
-            Credentials creds = this.client.getCredentialsProvider().getCredentials(AuthScope.ANY);
+            final Credentials creds = this.client.getCredentialsProvider().getCredentials(AuthScope.ANY);
             AuthParams.setCredentialCharset(base.getParams(), AuthParams.getCredentialCharset(client.getParams()));
             base.setHeader(new BasicScheme().authenticate(creds, base));
         }
