@@ -4,6 +4,7 @@
 
 package com.googlecode.sardine.httpclient;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -49,7 +50,7 @@ public class WithPasswordTest {
      */
     public WithPasswordTest() throws IOException {
         final Properties properties = new Properties();
-        final File sardineProperties = new File(System.getProperty("user.home"), "sardine.properties");
+        final File sardineProperties = new File(System.getProperty("user.home"), "sardine-it-test.properties");
         final FileInputStream in = new FileInputStream(sardineProperties);
         try {
             properties.loadFromXML(in);
