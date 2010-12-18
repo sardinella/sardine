@@ -121,7 +121,7 @@
             <version>1.8.1</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <!-- test utilities -->
         <dependency>
             <groupId>junit</groupId>
@@ -136,10 +136,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-        	<groupId>commons-io</groupId>
-        	<artifactId>commons-io</artifactId>
-        	<version>2.0</version>
-        	<scope>test</scope>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <licenses>
@@ -153,6 +153,11 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-changes-plugin</artifactId>
                 <version>2.3</version>
             </plugin>
@@ -163,6 +168,7 @@
                 <configuration>
                     <excludes>com/googlecode/sardine/model/*.java,com/googlecode/sardine/ant/*.java,com/googlecode/sardine/ant/command/*.java</excludes>
                     <configLocation>src/conf/checkstyle-ruleset.xml</configLocation>
+                    <enableRulesSummary>false</enableRulesSummary>
                 </configuration>
             </plugin>
             <plugin>
@@ -192,11 +198,6 @@
                         <link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
                     </links>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jxr-plugin</artifactId>
-                <version>2.2</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
