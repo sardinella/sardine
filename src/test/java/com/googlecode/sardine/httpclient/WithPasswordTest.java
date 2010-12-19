@@ -4,7 +4,6 @@
 
 package com.googlecode.sardine.httpclient;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -14,21 +13,22 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.auth.params.AuthParams;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
+import com.googlecode.sardine.DavResource;
 import com.googlecode.sardine.SardineHttpClientImpl;
 import com.googlecode.sardine.util.SardineException;
 
 /**
- * @author mirko
- * A little integrative tests, environment is set in $user.home/sardine.properties, an xml file. 
+ * @author mirko A little integrative tests, environment is set in $user.home/sardine.properties, an xml file.
  */
 public class WithPasswordTest {
 
@@ -66,7 +66,7 @@ public class WithPasswordTest {
         assumeThat(password, notNullValue());
         sardine = new SardineHttpClientImpl(userName, password);
         AuthParams.setCredentialCharset(sardine.getHttpClient().getParams(), passwordEncoding);
-        testDirectory = server + "sardine-test/";        
+        testDirectory = server + "sardine-test/";
     }
 
     @Before
@@ -89,11 +89,12 @@ public class WithPasswordTest {
         final String content = "hällo welt";
         sardine.put(testDirectory + "foo.txt", content.getBytes());
         assertEquals(2, sardine.getResources(testDirectory).size());
-        sardine.copy(testDirectory + "foo.txt",  testDirectory + "bar.txt");
+        sardine.copy(testDirectory + "foo.txt", testDirectory + "bar.txt");
         assertEquals(3, sardine.getResources(testDirectory).size());
         final String renamed = testDirectory + "bar-renamed.txt";
         sardine.move(testDirectory + "bar.txt", renamed);
-        assertEquals(3, sardine.getResources(testDirectory).size());        
+        final List<DavResource> resources = sardine.getResources(testDirectory);
+        assertEquals(3, resources.size());
         final InputStream stream = sardine.getInputStream(renamed);
         try {
             assertEquals(content, IOUtils.toString(stream));
@@ -101,8 +102,14 @@ public class WithPasswordTest {
             stream.close();
         }
         assertTrue(sardine.exists(renamed));
+        final DavResource davResource = resources.get(1);
+        final Map<String, String> customProps = davResource.getCustomProps();
+        customProps.put("mööp", "müüp");
+        sardine.setCustomProps(renamed, customProps, null);
+        final Map<String, String> newCustomProps = sardine.getResources(renamed).get(0).getCustomProps();
+        assertEquals(newCustomProps.get("mööp"), "müüp");
     }
-    
+
     @Test
     public void moreTestsGzipped() throws IOException {
         HttpClientUtils.enableCompression(sardine.getHttpClient());
