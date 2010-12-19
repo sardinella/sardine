@@ -5,11 +5,11 @@
 package com.googlecode.sardine.httpclient;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ResponseHandler;
 
 import com.googlecode.sardine.util.SardineException;
-import com.googlecode.sardine.util.SardineUtil;
 
 /**
  * @author mirko
@@ -41,9 +41,10 @@ public abstract class BasicResponseHandler<T> implements ResponseHandler<T> {
      * @param msg
      * @throws SardineException
      */
-    protected void checkGoodResponse(HttpResponse response, String msg) throws SardineException {
+    void checkGoodResponse(HttpResponse response, String msg) throws SardineException {
         final StatusLine statusLine = response.getStatusLine();
-        if (!SardineUtil.isGoodResponse(statusLine.getStatusCode())) {
+        final int statusCode = statusLine.getStatusCode();
+        if (!((statusCode >= HttpStatus.SC_OK) && (statusCode < HttpStatus.SC_MULTIPLE_CHOICES))) {
             throw new SardineException(msg, getUrl(), statusLine.getStatusCode(), statusLine.getReasonPhrase());
         }
     }
