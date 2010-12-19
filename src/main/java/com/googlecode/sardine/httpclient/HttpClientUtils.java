@@ -28,27 +28,27 @@ import com.googlecode.sardine.util.SardineException;
 public final class HttpClientUtils {
 
     /**
-     * Helper class with static methods 
+     * Helper class with static methods
      */
     private HttpClientUtils() {
         // TODO Auto-generated constructor stub
     }
 
     /**
+     * Adds handling of compression to the client.
+     * 
      * @param client
+     *            the {@link DefaultHttpClient}.
      */
-    public static void disableCompression(final DefaultHttpClient client) {
-        client.removeRequestInterceptorByClass(GzipSupportRequestInterceptor.class);
-        client.removeResponseInterceptorByClass(GzipSupportResponseInterceptor.class);
-    }
-
     public static void enableCompression(DefaultHttpClient client) {
         client.addRequestInterceptor(new GzipSupportRequestInterceptor());
-        client.addResponseInterceptor(new GzipSupportResponseInterceptor());        
+        client.addResponseInterceptor(new GzipSupportResponseInterceptor());
     }
 
     /**
-     * @return
+     * Creates default params, set maximal total connections to 100.
+     * 
+     * @return httpParams
      */
     public static HttpParams createDefaultHttpParams() {
         HttpParams params = new BasicHttpParams();
