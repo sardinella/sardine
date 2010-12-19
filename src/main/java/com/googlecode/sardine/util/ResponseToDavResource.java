@@ -7,12 +7,10 @@ package com.googlecode.sardine.util;
 import java.util.Map;
 
 import com.googlecode.sardine.DavResource;
-import com.googlecode.sardine.model.Collection;
 import com.googlecode.sardine.model.Creationdate;
 import com.googlecode.sardine.model.Getcontentlength;
 import com.googlecode.sardine.model.Getcontenttype;
 import com.googlecode.sardine.model.Getlastmodified;
-import com.googlecode.sardine.model.Multistatus;
 import com.googlecode.sardine.model.Prop;
 import com.googlecode.sardine.model.Response;
 
@@ -67,6 +65,58 @@ public class ResponseToDavResource {
         this.hostPart = hostPart;
         prop = resp.getPropstat().get(0).getProp();
         isDirectory = prop.getResourcetype().getCollection() != null;
+    }
+
+    /**
+     * Converts the given {@link Response} to a {@link DavResource}.
+     * 
+     * @return new {@link DavResource} from {@link Response}.
+     */
+    public DavResource toDavResource() {
+
+        final String finalBaseUrl;
+        final boolean currentDirectory;
+        final String href = resp.getHref().get(0);
+
+        // figure out the name of the file and set
+        // the baseUrl if it isn't already set (like when
+        // we are looking for just one file)
+        final String name;
+        if (baseUrl != null) {
+            final String finalHref;
+            finalBaseUrl = baseUrl;
+            // Some (broken) servers don't return a href with a trailing /
+            if ((href.length() == baseUrl.length() - 1) && baseUrl.endsWith("/")) {
+                finalHref = href + "/";
+            } else {
+                finalHref = href;
+            }
+
+            if (finalHref.startsWith(hostPart)) {
+                name = finalHref.substring(hostPart.length() + baseUrl.length());
+            } else {
+                name = finalHref.substring(baseUrl.length());
+            }
+            currentDirectory = "".equals(name) || (name.length() == 0);
+        } else {
+            // figure out the name of the file
+            final int last = href.lastIndexOf("/") + 1;
+            name = href.substring(last);
+            // this is the part after the host, but without the file
+            finalBaseUrl = href.substring(0, last);
+            currentDirectory = false;
+        }
+
+        final Map<String, String> customProps = SardineUtil.extractCustomProps(prop.getAny());
+        final String creationdate = retrieveCreationDate();
+        final String modifieddate = retrieveModifiedDate(creationdate);
+        final String contentType = retrieveContentType();
+        final String contentLength = retrieveContentLength();
+        final String finalName = removeTrailingSlashFromDirectoryName(name);
+
+        return new DavResource(hostPart + finalBaseUrl, finalName, SardineUtil.parseDate(creationdate),
+                SardineUtil.parseDate(modifieddate), contentType, Long.valueOf(contentLength), currentDirectory,
+                customProps);
     }
 
     /**
@@ -147,59 +197,21 @@ public class ResponseToDavResource {
     }
 
     /**
-     * Converts the given {@link Response} to a {@link DavResource}.
+     * Removes trailing slash from name if this is a directory.
      * 
-     * @return new {@link DavResource} from {@link Response}.
+     * @param name
+     *            of the resource
+     * @return final name
      */
-    public DavResource toDavResource() {
-
-        final String finalBaseUrl;
-        final boolean currentDirectory;
-        String href = resp.getHref().get(0);
-
-        // figure out the name of the file and set
-        // the baseUrl if it isn't already set (like when
-        // we are looking for just one file)
-        final String name;
+    String removeTrailingSlashFromDirectoryName(final String name) {
         final String finalName;
-        if (baseUrl != null) {
-            finalBaseUrl = baseUrl;
-            // Some (broken) servers don't return a href with a trailing /
-            if ((href.length() == baseUrl.length() - 1) && baseUrl.endsWith("/")) {
-                href += "/";
-            }
-
-            if (href.startsWith(hostPart)) {
-                name = href.substring(hostPart.length() + baseUrl.length());
-            } else {
-                name = href.substring(baseUrl.length());
-            }
-            currentDirectory = "".equals(name) || (name.length() == 0);
-        } else {
-            // figure out the name of the file
-            int last = href.lastIndexOf("/") + 1;
-            name = href.substring(last);
-            // this is the part after the host, but without the file
-            finalBaseUrl = href.substring(0, last);
-            currentDirectory = false;
-        }
-
         // Remove the final / from the name for directories
         if (name.endsWith("/") && isDirectory) {
             finalName = name.substring(0, name.length() - 1);
         } else {
             finalName = name;
         }
-
-        final Map<String, String> customProps = SardineUtil.extractCustomProps(prop.getAny());
-        final String creationdate = retrieveCreationDate();
-        final String modifieddate = retrieveModifiedDate(creationdate);
-        final String contentType = retrieveContentType();
-        final String contentLength = retrieveContentLength();
-
-        return new DavResource(hostPart + finalBaseUrl, finalName, SardineUtil.parseDate(creationdate),
-                SardineUtil.parseDate(modifieddate), contentType, Long.valueOf(contentLength), currentDirectory,
-                customProps);
+        return finalName;
     }
 
 }

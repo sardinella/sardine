@@ -36,7 +36,7 @@ public class ResponseToDavResourceTest {
     private final Propstat propstat = Mockito.mock(Propstat.class);
 
     private final Prop prop = new Prop();
-    
+
     private final Resourcetype resourceType = new Resourcetype();
 
     @Before
@@ -121,7 +121,7 @@ public class ResponseToDavResourceTest {
         final String expected = "text/html";
         getContentType.getContent().add(expected);
         assertSame(expected, sut.retrieveContentType());
-        
+
         // always return directory if this is a collection
         resourceType.setCollection(new Collection());
         ResponseToDavResource sut2 = new ResponseToDavResource(response, null, null);
@@ -149,6 +149,19 @@ public class ResponseToDavResourceTest {
         assertSame(expected, sut.retrieveContentLength());
     }
 
+    @Test
+    public void testRemoveTrailingSlashFromDirectoryName() {
+
+        final ResponseToDavResource sut = newSut(null, null);
+        assertEquals("NoDirectoryWithSlash/", sut.removeTrailingSlashFromDirectoryName("NoDirectoryWithSlash/"));
+        assertEquals("NoDirectoryWithoutSlash", sut.removeTrailingSlashFromDirectoryName("NoDirectoryWithoutSlash"));
+
+        resourceType.setCollection(new Collection());
+        ResponseToDavResource sut2 = new ResponseToDavResource(response, null, null);
+        assertEquals("ADirectory", sut2.removeTrailingSlashFromDirectoryName("ADirectory/"));
+
+    }
+
     /**
      * Test method for {@link com.googlecode.sardine.util.ResponseToDavResource#toDavResource()}.
      */
@@ -163,7 +176,7 @@ public class ResponseToDavResourceTest {
      * @param hostPart
      * @return
      */
-    ResponseToDavResource newSut(final String baseUrl, final String hostPart) {                
+    ResponseToDavResource newSut(final String baseUrl, final String hostPart) {
         return new ResponseToDavResource(response, baseUrl, hostPart);
     }
 }

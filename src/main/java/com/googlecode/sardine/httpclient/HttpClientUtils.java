@@ -28,7 +28,12 @@ import com.googlecode.sardine.util.SardineException;
 public final class HttpClientUtils {
 
     /**
-     * Helper class with static methods
+     * 
+     */
+    private static final int MAX_TOTAL_CONNECTIONS = 100;
+
+    /**
+     * Helper class with static methods.
      */
     private HttpClientUtils() {
         // TODO Auto-generated constructor stub
@@ -52,19 +57,23 @@ public final class HttpClientUtils {
      */
     public static HttpParams createDefaultHttpParams() {
         HttpParams params = new BasicHttpParams();
-        ConnManagerParams.setMaxTotalConnections(params, 100);
+        ConnManagerParams.setMaxTotalConnections(params, MAX_TOTAL_CONNECTIONS);
         HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
         HttpProtocolParams.setUserAgent(params, "Sardine/" + Version.getSpecification());
         return params;
     }
 
     /**
+     * Creates a new {@link SchemeRegistry}.
+     * 
      * @param sslSocketFactory
+     *            alternative {@link SSLSocketFactory}.
      * @param port
-     * @return
+     *            alternate port.
+     * @return a new {@link SchemeRegistry}.
      */
     public static SchemeRegistry createDefaultSchemeRegistry(SSLSocketFactory sslSocketFactory, Integer port) {
-        SchemeRegistry schemeRegistry = new SchemeRegistry();
+        final SchemeRegistry schemeRegistry = new SchemeRegistry();
         schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), port != null ? port : 80));
         if (sslSocketFactory != null)
             schemeRegistry.register(new Scheme("https", sslSocketFactory, port != null ? port : 443));
@@ -75,14 +84,19 @@ public final class HttpClientUtils {
     }
 
     /**
+     * Creates a new {@link DefaultHttpClient} with default settings.
+     * 
      * @param sslSocketFactory
+     *            alternative {@link SSLSocketFactory}.
+     * 
      * @param port
-     * @return
+     *            alternative port
+     * @return a parameterized {@link DefaultHttpClient}.
      */
     public static DefaultHttpClient createDefaultHttpClient(SSLSocketFactory sslSocketFactory, Integer port) {
-        HttpParams params = createDefaultHttpParams();
-        SchemeRegistry schemeRegistry = createDefaultSchemeRegistry(sslSocketFactory, port);
-        ClientConnectionManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
+        final HttpParams params = createDefaultHttpParams();
+        final SchemeRegistry schemeRegistry = createDefaultSchemeRegistry(sslSocketFactory, port);
+        final ClientConnectionManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
         final DefaultHttpClient defaultHttpClient = new DefaultHttpClient(cm, params);
         return defaultHttpClient;
     }

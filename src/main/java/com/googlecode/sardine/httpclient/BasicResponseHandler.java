@@ -12,24 +12,27 @@ import org.apache.http.client.ResponseHandler;
 import com.googlecode.sardine.util.SardineException;
 
 /**
- * @author mirko
+ * @author mirko Basic response handler which takes an url for documentation.
  * 
+ * @param <T>
+ *            return type of {@link ResponseHandler#handleResponse(HttpResponse)}.
  */
 public abstract class BasicResponseHandler<T> implements ResponseHandler<T> {
 
-    /**
-     * 
-     */
+    /** url for documentation. */
     private final String url;
 
     /**
-     * 
+     * @param url
+     *            for documentation.
      */
     public BasicResponseHandler(final String url) {
         this.url = url;
     }
 
     /**
+     * Returns the url.
+     * 
      * @return the url
      */
     public String getUrl() {
@@ -37,9 +40,15 @@ public abstract class BasicResponseHandler<T> implements ResponseHandler<T> {
     }
 
     /**
+     * Checks the response for a statuscode between {@link HttpStatus#SC_OK} and {@link HttpStatus#SC_MULTIPLE_CHOICES}
+     * and throws an {@link SardineException} otherwise.
+     * 
      * @param response
+     *            to check
      * @param msg
+     *            to add
      * @throws SardineException
+     *             when the status code is not acceptable.
      */
     void checkGoodResponse(HttpResponse response, String msg) throws SardineException {
         final StatusLine statusLine = response.getStatusLine();
@@ -48,5 +57,4 @@ public abstract class BasicResponseHandler<T> implements ResponseHandler<T> {
             throw new SardineException(msg, getUrl(), statusLine.getStatusCode(), statusLine.getReasonPhrase());
         }
     }
-
 }
