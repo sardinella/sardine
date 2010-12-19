@@ -12,12 +12,11 @@ import com.googlecode.sardine.util.SardineException;
 public class HttpCopy extends HttpEntityEnclosingRequestBase {
     public HttpCopy(String sourceUrl, String destinationUrl) throws SardineException {
         super();
+        HttpClientUtils.checkConsistentSlashes(sourceUrl, destinationUrl);
         this.setHeader("Destination", destinationUrl);
         this.setHeader("Overwrite", "T");
         this.setURI(URI.create(sourceUrl));
 
-        if (sourceUrl.endsWith("/") && !destinationUrl.endsWith("/"))
-            throw new SardineException("Destinationurl must end with a /", destinationUrl);
     }
 
     @Override

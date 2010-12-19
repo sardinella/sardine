@@ -18,6 +18,7 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 
 import com.googlecode.sardine.Version;
+import com.googlecode.sardine.util.SardineException;
 
 /**
  * Helper class with static methods.
@@ -84,6 +85,22 @@ public final class HttpClientUtils {
         ClientConnectionManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
         final DefaultHttpClient defaultHttpClient = new DefaultHttpClient(cm, params);
         return defaultHttpClient;
+    }
+
+    /**
+     * Checks that destinationUrl ends with a slash when sourceUrl ends with a slash.
+     * 
+     * @param sourceUrl
+     *            source of copy or move
+     * @param destinationUrl
+     *            destination of copy or move
+     * @throws SardineException
+     *             during mismatch
+     */
+    static void checkConsistentSlashes(String sourceUrl, String destinationUrl) throws SardineException {
+        if (sourceUrl.endsWith("/") && !destinationUrl.endsWith("/")) {
+            throw new SardineException("destinationUrl must end with a / when sourceUrl ends with /", destinationUrl);
+        }
     }
 
 }
