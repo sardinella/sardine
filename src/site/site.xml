@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project
+    xmlns="project"
+    xsi:schemaLocation="project http://maven.apache.org/maven-navigation-1.0.xsd">
+    <publishDate
+        format="MM-dd-yy HH:mm" />
+    <skin>
+        <groupId>org.kohsuke</groupId>
+        <artifactId>maven-skin</artifactId>
+        <version>1.1</version>
+    </skin>
+    <body>
+        <menu
+            ref="reports" />
+    </body>
+</project>

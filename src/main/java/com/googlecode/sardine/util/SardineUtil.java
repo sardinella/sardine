@@ -56,7 +56,7 @@ public class SardineUtil {
     }
 
     /**
-     * Date formats using for Date parsing.
+     * Date formats used for Date parsing.
      */
     static final SimpleDateFormat formats[] = { new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US),
             new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US),
@@ -121,6 +121,7 @@ public class SardineUtil {
                 break;
             } catch (ParseException e) {
                 // We loop through this until we found a valid one.
+                continue;
             }
         }
 
@@ -196,13 +197,20 @@ public class SardineUtil {
         }
     }
 
-    /** */
+    /**
+     * Creates a simple Map from the given custom properties of a response. This implementation does not take into
+     * account name spaces.
+     * 
+     * @param elements
+     *            custom properties.
+     * @return a map from the custom properties.
+     */
     public static Map<String, String> extractCustomProps(List<Element> elements) {
-        Map<String, String> customPropsMap = new HashMap<String, String>(elements.size());
+        final Map<String, String> customPropsMap = new HashMap<String, String>(elements.size());
 
-        for (Element element : elements) {
-            String[] keys = element.getTagName().split(":", 2);
-            String key = (keys.length > 1) ? keys[1] : keys[0];
+        for (final Element element : elements) {
+            final String[] keys = element.getTagName().split(":", 2);
+            final String key = (keys.length > 1) ? keys[1] : keys[0];
 
             customPropsMap.put(key, element.getTextContent());
         }
