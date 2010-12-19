@@ -12,7 +12,9 @@ import org.apache.http.client.ResponseHandler;
 import com.googlecode.sardine.util.SardineException;
 
 /**
- * @author mirko Basic response handler which takes an url for documentation.
+ * Basic response handler which takes an url for documentation.
+ * 
+ * @author mirko
  * 
  * @param <T>
  *            return type of {@link ResponseHandler#handleResponse(HttpResponse)}.

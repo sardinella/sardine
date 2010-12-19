@@ -11,8 +11,9 @@ import com.googlecode.sardine.model.Multistatus;
 import com.googlecode.sardine.util.SardineUtil;
 
 /**
- * @author mirko
+ * {@link org.apache.http.client.ResponseHandler} which returns the {@link Multistatus} response of a propfind request.
  * 
+ * @author mirko
  */
 public final class MultiStatusResponseHandler extends BasicResponseHandler<Multistatus> {
 

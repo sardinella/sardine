@@ -6,12 +6,12 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
-
 import com.googlecode.sardine.util.SardineException;
 
 /**
+ * {@link org.apache.http.client.ResponseHandler} which checks wether a given resource exists.
+ *  
  * @author mirko
- * 
  */
 public final class ExistsResponseHandler extends BasicResponseHandler<Boolean> {
     /**
