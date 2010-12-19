@@ -54,7 +54,12 @@ public class Put extends Command {
      * Process an individual file with sardine.put()
      */
     protected void process(File file) throws Exception {
-        this.getTask().getSardine().put(this.url, new FileInputStream(file), contentType);
+        final FileInputStream dataStream = new FileInputStream(file);
+        try {
+            this.getTask().getSardine().put(this.url, dataStream, contentType);
+        } finally {
+            dataStream.close();
+        }
     }
 
     /** */
