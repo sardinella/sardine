@@ -7,9 +7,13 @@ package com.googlecode.sardine.util;
 import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.Arrays;
 
 import javax.xml.bind.UnmarshalException;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.http.entity.StringEntity;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -69,11 +73,19 @@ public class SardineUtilTest {
     /**
      * Test method for
      * {@link com.googlecode.sardine.util.SardineUtil#getResourcePatchEntity(java.util.Map, java.util.List)}.
+     * 
+     * @throws IOException
      */
     @Test
-    @Ignore
-    public void testGetResourcePatchEntity() {
-        fail("Not yet implemented"); // TODO
+    public void testGetResourcePatchEntity() throws IOException {
+        final StringEntity patchEntityWithTwoElements = SardineUtil.getResourcePatchEntity(null, Arrays.asList("A", "ö"));
+        assertEquals(
+                "<?xml version=\"1.0\" encoding=\"utf-8\" ?><D:propertyupdate xmlns:D=\"DAV:\" xmlns:S=\"SAR:\"><D:remove><D:prop><S:A/><S:ö/></D:prop></D:remove></D:propertyupdate>",
+                IOUtils.toString(patchEntityWithTwoElements.getContent()).replaceAll("\n", ""));
+        final StringEntity patchEntityWithEmptyRemovalList = SardineUtil.getResourcePatchEntity(null, Arrays.asList(new String[]{}));
+        assertEquals(
+                "<?xml version=\"1.0\" encoding=\"utf-8\" ?><D:propertyupdate xmlns:D=\"DAV:\" xmlns:S=\"SAR:\"><D:remove><D:prop></D:prop></D:remove></D:propertyupdate>",
+                IOUtils.toString(patchEntityWithEmptyRemovalList.getContent()).replaceAll("\n", ""));
     }
 
     /**
