@@ -1,6 +1,6 @@
 package com.googlecode.sardine.util;
 
-import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -17,7 +17,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.entity.StringEntity;
 import org.w3c.dom.Element;
 
@@ -186,14 +185,12 @@ public class SardineUtil {
     /**
      * Helper method for getting the Multistatus response processor.
      */
-    public static Multistatus getMultistatus(Unmarshaller unmarshaller, HttpResponse response, String url)
+    public static Multistatus getMultistatus(Unmarshaller unmarshaller, InputStream stream, String url)
             throws SardineException {
         try {
-            return (Multistatus) unmarshaller.unmarshal(response.getEntity().getContent());
+            return (Multistatus) unmarshaller.unmarshal(stream);
         } catch (JAXBException ex) {
             throw new SardineException("Problem unmarshalling the data", url, ex);
-        } catch (IOException ex) {
-            throw new SardineException(ex);
         }
     }
 
