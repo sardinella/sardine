@@ -4,18 +4,26 @@
 
 package com.googlecode.sardine.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.UnmarshalException;
+import javax.xml.namespace.QName;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.entity.StringEntity;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import com.googlecode.sardine.model.Prop;
 
 /**
  * @author mirko
@@ -88,6 +96,16 @@ public class SardineUtilTest {
                 IOUtils.toString(patchEntityWithEmptyRemovalList.getContent()).replaceAll("\n", ""));
     }
 
+    @Test
+    public void testGetResourcePatchEntity2() throws IOException {
+        HashMap<String,String> map = new HashMap<String, String>();
+        map.put("foo", "bar");
+        map.put("mööp", "määp");
+        final StringEntity patchEntityWithTwoElements = SardineUtil.getResourcePatchEntity2(map, null);
+        System.out.println(IOUtils.toString(patchEntityWithTwoElements.getContent()));
+        System.out.println(IOUtils.toString(SardineUtil.GET_RESOURCES.getContent()));
+    }
+    
     /**
      * Test method for
      * {@link com.googlecode.sardine.util.SardineUtil#getMultistatus(javax.xml.bind.Unmarshaller, java.io.InputStream, java.lang.String)}
@@ -124,4 +142,8 @@ public class SardineUtilTest {
         fail("Not yet implemented"); // TODO
     }
 
+    @Test
+    public void createPropfindXml() {
+        System.out.println(SardineUtil.GET_RESOURCES.getContentType());
+    }
 }

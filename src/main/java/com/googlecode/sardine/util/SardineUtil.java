@@ -1,6 +1,7 @@
 package com.googlecode.sardine.util;
 
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -11,17 +12,37 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TimeZone;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.http.entity.StringEntity;
+import org.w3c.dom.Attr;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.TypeInfo;
+import org.w3c.dom.UserDataHandler;
 
+import com.googlecode.sardine.model.Allprop;
 import com.googlecode.sardine.model.Multistatus;
 import com.googlecode.sardine.model.ObjectFactory;
+import com.googlecode.sardine.model.Prop;
+import com.googlecode.sardine.model.Propertyupdate;
+import com.googlecode.sardine.model.Propfind;
+import com.googlecode.sardine.model.Set;
 
 /**
  * Basic utility code. I borrowed some code from the webdavlib for parsing dates.
@@ -34,24 +55,39 @@ public class SardineUtil {
     final static JAXBContext CONTEXT;
 
     /** cached version of getResources() webdav xml GET request */
-    private final static StringEntity GET_RESOURCES;
+    final static StringEntity GET_RESOURCES;
 
     static {
         try {
-            GET_RESOURCES = new StringEntity(//
-                    "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n" + //
-                            "<propfind xmlns=\"DAV:\">\n" + //
-                            "   <allprop/>\n" + //
-                            "</propfind>", "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Could not find encoding, JVM broken?", e);
-        }
-        try {
             CONTEXT = JAXBContext.newInstance(ObjectFactory.class);
+            final Propfind propfind = new Propfind();
+            propfind.setAllprop(new Allprop());
+            GET_RESOURCES = newXmlStringEntityFromJaxbElement(propfind);
         } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
 
+    }
+
+    /**
+     * @param jaxbElement
+     * @return
+     * @throws JAXBException
+     * @throws UnsupportedEncodingException
+     */
+    static StringEntity newXmlStringEntityFromJaxbElement(final Object jaxbElement) throws JAXBException {
+        final Marshaller marshaller = CONTEXT.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        final StringWriter writer = new StringWriter();
+        marshaller.marshal(jaxbElement, writer);
+        StringEntity stringEntity;
+        try {
+            stringEntity = new StringEntity(writer.toString(), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Could not get encoding UTF-8?", e);
+        }
+        stringEntity.setContentType("text/xml; charset=UTF-8");
+        return stringEntity;
     }
 
     /**
@@ -108,6 +144,8 @@ public class SardineUtil {
      * Loops over all the possible date formats and tries to find the right one.
      * 
      * @param dateValue
+     *            to parse
+     * @return a valid {@link Date} or null if none of the formats matched.
      */
     public static Date parseDate(String dateValue) {
         if (dateValue == null)
@@ -145,40 +183,68 @@ public class SardineUtil {
      * Build PROPPATCH entity.
      */
     public static StringEntity getResourcePatchEntity(Map<String, String> setProps, List<String> removeProps) {
+        final StringBuilder sb = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n");
+        sb.append("<D:propertyupdate xmlns:D=\"DAV:\" xmlns:S=\"SAR:\">\n");
+
+        if (setProps != null) {
+            sb.append("<D:set>\n");
+            sb.append("<D:prop>\n");
+            for (Map.Entry<String, String> prop : setProps.entrySet()) {
+                sb.append("<S:");
+                sb.append(prop.getKey()).append(">");
+                sb.append(prop.getValue()).append("</S:");
+                sb.append(prop.getKey()).append(">\n");
+            }
+            sb.append("</D:prop>\n");
+            sb.append("</D:set>\n");
+        }
+
+        if (removeProps != null) {
+            sb.append("<D:remove>\n");
+            sb.append("<D:prop>\n");
+            for (String removeProp : removeProps) {
+                sb.append("<S:");
+                sb.append(removeProp).append("/>");
+            }
+            sb.append("</D:prop>\n");
+            sb.append("</D:remove>\n");
+        }
+
+        sb.append("</D:propertyupdate>\n");
         try {
-            final StringBuilder sb = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n");
-            sb.append("<D:propertyupdate xmlns:D=\"DAV:\" xmlns:S=\"SAR:\">\n");
-
-            if (setProps != null) {
-                sb.append("<D:set>\n");
-                sb.append("<D:prop>\n");
-                for (Map.Entry<String, String> prop : setProps.entrySet()) {
-                    sb.append("<S:");
-                    sb.append(prop.getKey()).append(">");
-                    sb.append(prop.getValue()).append("</S:");
-                    sb.append(prop.getKey()).append(">\n");
-                }
-                sb.append("</D:prop>\n");
-                sb.append("</D:set>\n");
-            }
-
-            if (removeProps != null) {
-                sb.append("<D:remove>\n");
-                sb.append("<D:prop>\n");
-                for (String removeProp : removeProps) {
-                    sb.append("<S:");
-                    sb.append(removeProp).append("/>");
-                }
-                sb.append("</D:prop>\n");
-                sb.append("</D:remove>\n");
-            }
-
-            sb.append("</D:propertyupdate>\n");
-
             return new StringEntity(sb.toString(), "UTF-8");
-
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("Could not find encoding, JVM broken?", e);
+        }
+    }
+
+    public static StringEntity getResourcePatchEntity2(Map<String, String> setProps, List<String> removeProps) {
+        final Propertyupdate propertyupdate = new Propertyupdate();
+        if (setProps != null) {
+            final Set set = new Set();
+            propertyupdate.getRemoveOrSet().add(set);
+            final Prop prop = new Prop();
+            set.setProp(prop);
+            final List<Element> any = prop.getAny();
+            final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            final DocumentBuilder documentBuilder;
+            try {
+                documentBuilder = factory.newDocumentBuilder();
+            } catch (ParserConfigurationException e) {
+                throw new RuntimeException("Message:", e);
+            }
+            final Document document = documentBuilder.newDocument();
+            for (Entry<String, String> entry : setProps.entrySet()) {
+                Element element = document.createElementNS("SAR:", entry.getKey());
+                //Element element = document.createElement(entry.getKey());
+                element.setTextContent(entry.getValue());
+                any.add(element);
+            }
+        }
+        try {            
+            return newXmlStringEntityFromJaxbElement(propertyupdate);
+        } catch (JAXBException e) {
+            throw new RuntimeException("Could not serialize: " + propertyupdate, e);
         }
     }
 

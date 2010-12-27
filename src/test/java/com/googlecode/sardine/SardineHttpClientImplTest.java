@@ -70,13 +70,6 @@ public class SardineHttpClientImplTest {
         sardine = new SardineHttpClientImpl();
     }
 
-    private static void setHttpClientLogging() {
-        System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
-        System.setProperty("org.apache.commons.logging.simplelog.showdatetime", "true");
-        System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http", "INFO");
-        System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http.wire", "DEBUG");
-    }
-
     /**
      * Test method for {@link com.googlecode.sardine.SardineHttpClientImpl#SardineImpl(com.googlecode.sardine.Factory)}.
      * 

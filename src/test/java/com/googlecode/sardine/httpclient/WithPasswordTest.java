@@ -25,10 +25,11 @@ import org.junit.Test;
 
 import com.googlecode.sardine.DavResource;
 import com.googlecode.sardine.SardineHttpClientImpl;
+import com.googlecode.sardine.TUtils;
 import com.googlecode.sardine.util.SardineException;
 
 /**
- * @author mirko A little integrative tests, environment is set in $user.home/sardine.properties, an xml file.
+ * @author mirko A little integrative tests, environment is set in $user.home/sardine-it-test.properties, an xml file.
  */
 public class WithPasswordTest {
 
@@ -64,6 +65,7 @@ public class WithPasswordTest {
         assumeThat(server, notNullValue());
         assumeThat(userName, notNullValue());
         assumeThat(password, notNullValue());
+//        TUtils.setHttpClientLogging();
         sardine = new SardineHttpClientImpl(userName, password);
         AuthParams.setCredentialCharset(sardine.getHttpClient().getParams(), passwordEncoding);
         testDirectory = server + "sardine-test/";
