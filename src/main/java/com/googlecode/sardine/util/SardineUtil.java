@@ -16,7 +16,6 @@ import java.util.Map.Entry;
 import java.util.TimeZone;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -26,15 +25,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.http.entity.StringEntity;
-import org.w3c.dom.Attr;
-import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.TypeInfo;
-import org.w3c.dom.UserDataHandler;
 
 import com.googlecode.sardine.model.Allprop;
 import com.googlecode.sardine.model.Multistatus;
@@ -60,13 +52,13 @@ public class SardineUtil {
     static {
         try {
             CONTEXT = JAXBContext.newInstance(ObjectFactory.class);
-            final Propfind propfind = new Propfind();
-            propfind.setAllprop(new Allprop());
-            GET_RESOURCES = newXmlStringEntityFromJaxbElement(propfind);
+
         } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
-
+        final Propfind propfind = new Propfind();
+        propfind.setAllprop(new Allprop());
+        GET_RESOURCES = newXmlStringEntityFromJaxbElement(propfind);
     }
 
     /**
@@ -75,16 +67,37 @@ public class SardineUtil {
      * @throws JAXBException
      * @throws UnsupportedEncodingException
      */
-    static StringEntity newXmlStringEntityFromJaxbElement(final Object jaxbElement) throws JAXBException {
-        final Marshaller marshaller = CONTEXT.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+    static StringEntity newXmlStringEntityFromJaxbElement(final Object jaxbElement) {
+        final String xml = newXmlStringFromJaxbElement(jaxbElement);
+        return newXmlStringEntityFromString(xml);
+    }
+
+    /**
+     * @param jaxbElement
+     * @return
+     */
+    static String newXmlStringFromJaxbElement(final Object jaxbElement) {
         final StringWriter writer = new StringWriter();
-        marshaller.marshal(jaxbElement, writer);
-        StringEntity stringEntity;
         try {
-            stringEntity = new StringEntity(writer.toString(), "UTF-8");
+            final Marshaller marshaller = CONTEXT.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(jaxbElement, writer);
+        } catch (JAXBException e) {
+            throw new RuntimeException("Error converting " + jaxbElement, e);
+        }
+        return writer.toString();
+    }
+
+    /**
+     * @param jaxbElementXml
+     * @return
+     */
+    static StringEntity newXmlStringEntityFromString(final String jaxbElementXml) {
+        final StringEntity stringEntity;
+        try {
+            stringEntity = new StringEntity(jaxbElementXml, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Could not get encoding UTF-8?", e);
+            throw new RuntimeException("Could not get encoding UTF-8?" + jaxbElementXml, e);
         }
         stringEntity.setContentType("text/xml; charset=UTF-8");
         return stringEntity;
@@ -93,7 +106,7 @@ public class SardineUtil {
     /**
      * Date formats used for Date parsing.
      */
-    static final SimpleDateFormat formats[] = { new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US),
+    static final SimpleDateFormat FORMATS[] = { new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US),
             new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US),
             new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'", Locale.US),
             new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US),
@@ -104,11 +117,11 @@ public class SardineUtil {
     /**
      * GMT timezone.
      */
-    final static TimeZone gmtZone = TimeZone.getTimeZone("GMT");
+    final static TimeZone GMT_ZONE = TimeZone.getTimeZone("GMT");
 
     static {
-        for (SimpleDateFormat format : formats) {
-            format.setTimeZone(gmtZone);
+        for (final SimpleDateFormat format : FORMATS) {
+            format.setTimeZone(GMT_ZONE);
         }
     }
 
@@ -152,7 +165,7 @@ public class SardineUtil {
             return null;
 
         Date date = null;
-        for (final SimpleDateFormat format : formats) {
+        for (final SimpleDateFormat format : FORMATS) {
             try {
                 date = ((SimpleDateFormat) format.clone()).parse(dateValue);
                 break;
@@ -235,17 +248,14 @@ public class SardineUtil {
             }
             final Document document = documentBuilder.newDocument();
             for (Entry<String, String> entry : setProps.entrySet()) {
-                Element element = document.createElementNS("SAR:", entry.getKey());
-                //Element element = document.createElement(entry.getKey());
+                final QName qName = new QName("SAR:", entry.getKey());
+                final Element element = document.createElementNS("SAR:", entry.getKey());
+                // Element element = document.createElement(entry.getKey());
                 element.setTextContent(entry.getValue());
                 any.add(element);
             }
         }
-        try {            
-            return newXmlStringEntityFromJaxbElement(propertyupdate);
-        } catch (JAXBException e) {
-            throw new RuntimeException("Could not serialize: " + propertyupdate, e);
-        }
+        return newXmlStringEntityFromJaxbElement(propertyupdate);
     }
 
     /**
