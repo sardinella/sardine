@@ -65,7 +65,7 @@ public class WithPasswordTest {
         assumeThat(server, notNullValue());
         assumeThat(userName, notNullValue());
         assumeThat(password, notNullValue());
-//        TUtils.setHttpClientLogging();
+        TUtils.setHttpClientLogging();
         sardine = new SardineHttpClientImpl(userName, password);
         AuthParams.setCredentialCharset(sardine.getHttpClient().getParams(), passwordEncoding);
         testDirectory = server + "sardine-test/";

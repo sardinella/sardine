@@ -34,6 +34,7 @@ import com.googlecode.sardine.model.ObjectFactory;
 import com.googlecode.sardine.model.Prop;
 import com.googlecode.sardine.model.Propertyupdate;
 import com.googlecode.sardine.model.Propfind;
+import com.googlecode.sardine.model.Remove;
 import com.googlecode.sardine.model.Set;
 
 /**
@@ -230,15 +231,13 @@ public class SardineUtil {
             throw new RuntimeException("Could not find encoding, JVM broken?", e);
         }
     }
+    static class GetResourcePatchEntity {
+        private final Propertyupdate propertyupdate = new Propertyupdate();
+        private final Map<String, String> setProps;
+        private final List<String> removeProps;
+        private final Document document;
 
-    public static StringEntity getResourcePatchEntity2(Map<String, String> setProps, List<String> removeProps) {
-        final Propertyupdate propertyupdate = new Propertyupdate();
-        if (setProps != null) {
-            final Set set = new Set();
-            propertyupdate.getRemoveOrSet().add(set);
-            final Prop prop = new Prop();
-            set.setProp(prop);
-            final List<Element> any = prop.getAny();
+        GetResourcePatchEntity(Map<String, String> setProps, List<String> removeProps) {
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             final DocumentBuilder documentBuilder;
             try {
@@ -246,16 +245,58 @@ public class SardineUtil {
             } catch (ParserConfigurationException e) {
                 throw new RuntimeException("Message:", e);
             }
-            final Document document = documentBuilder.newDocument();
+            document = documentBuilder.newDocument();
+            this.setProps = setProps;
+            this.removeProps = removeProps;
+        }
+        
+        public StringEntity getResourcePatchEntity() {
+            if (setProps != null) {
+            createSetProps();
+            }
+            if (removeProps != null) {
+                createRemoveProps();
+            }
+            return newXmlStringEntityFromJaxbElement(propertyupdate);
+        }
+        
+        /**
+         * @param propertyupdate
+         * @param setProps
+         */
+        void createSetProps() {
+            final Set set = new Set();
+            propertyupdate.getRemoveOrSet().add(set);
+            final Prop prop = new Prop();
+            set.setProp(prop);
+            final List<Element> any = prop.getAny();
             for (Entry<String, String> entry : setProps.entrySet()) {
-                final QName qName = new QName("SAR:", entry.getKey());
-                final Element element = document.createElementNS("SAR:", entry.getKey());
-                // Element element = document.createElement(entry.getKey());
+                final Element element = document.createElementNS("SAR:", "S:" + entry.getKey());                
                 element.setTextContent(entry.getValue());
                 any.add(element);
             }
         }
-        return newXmlStringEntityFromJaxbElement(propertyupdate);
+        
+        /**
+         * 
+         */
+        private void createRemoveProps() {
+            final Remove remove = new Remove();
+            propertyupdate.getRemoveOrSet().add(remove);
+            final Prop prop = new Prop();
+            remove.setProp(prop);
+            final List<Element> any = prop.getAny();
+            for (String entry : removeProps) {
+                final Element element = document.createElementNS("SAR:", "S:" + entry);                
+                any.add(element);
+            }
+        }
+
+        
+
+    }
+    public static StringEntity getResourcePatchEntity2(Map<String, String> setProps, List<String> removeProps) {
+        return new GetResourcePatchEntity(setProps, removeProps).getResourcePatchEntity();
     }
 
     /**

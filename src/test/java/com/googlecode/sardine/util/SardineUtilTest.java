@@ -101,7 +101,7 @@ public class SardineUtilTest {
         HashMap<String,String> map = new HashMap<String, String>();
         map.put("foo", "bar");
         map.put("mööp", "määp");
-        final StringEntity patchEntityWithTwoElements = SardineUtil.getResourcePatchEntity2(map, null);
+        final StringEntity patchEntityWithTwoElements = SardineUtil.getResourcePatchEntity2(map, Arrays.asList("a", "b"));
         System.out.println(IOUtils.toString(patchEntityWithTwoElements.getContent()));
         System.out.println(IOUtils.toString(SardineUtil.GET_RESOURCES.getContent()));
     }

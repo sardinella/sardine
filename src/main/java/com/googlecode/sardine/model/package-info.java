@@ -5,6 +5,10 @@
 // Generated on: 2009.12.23 at 06:27:19 PM PST 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "DAV:", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+@javax.xml.bind.annotation.XmlSchema(
+        xmlns = { @javax.xml.bind.annotation.XmlNs(prefix = "S", namespaceURI = "SAR:"),
+                  @javax.xml.bind.annotation.XmlNs(prefix = "D", namespaceURI = "DAV:") }, 
+        namespace = "DAV:", 
+        elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package com.googlecode.sardine.model;
 

@@ -5,7 +5,7 @@
 package com.googlecode.sardine;
 
 /**
- * Holds some static test methods.
+ * Holds static test helper methods.
  * @author mirko
  */
 public final class TUtils {
