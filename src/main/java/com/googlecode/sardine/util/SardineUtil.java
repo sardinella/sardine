@@ -141,7 +141,7 @@ public class SardineUtil {
     }
 
     public static String getResourcePatchXml(Map<String, String> setProps, List<String> removeProps) {
-        return newXmlStringFromJaxbElement(PropertyUpdateFactory.newPropertyupdate(setProps, removeProps));
+        return newXmlStringFromJaxbElement(PropertyupdateFactory.newPropertyupdate(setProps, removeProps));
     }
 
     /**
@@ -199,7 +199,7 @@ public class SardineUtil {
         final StringWriter writer = new StringWriter();
         try {
             final Marshaller marshaller = CONTEXT.createMarshaller();
-            //marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+//            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.marshal(jaxbElement, writer);
         } catch (JAXBException e) {
             throw new RuntimeException("Error converting " + jaxbElement, e);

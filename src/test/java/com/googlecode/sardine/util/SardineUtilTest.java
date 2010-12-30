@@ -6,8 +6,10 @@ package com.googlecode.sardine.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.junit.matchers.JUnitMatchers.containsString;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -107,11 +109,10 @@ public class SardineUtilTest {
         HashMap<String, String> setProps = new HashMap<String, String>();
         setProps.put("foo", "bar");
         setProps.put("mööp", "määp");
-        final String removeProps = SardineUtil.getResourcePatchXml(setProps, Arrays.asList("a", "b"));
-        assertEquals(
-                STANDARD_DAV_RESOURCE_START
-                        + "<D:propertyupdate xmlns:D=\"DAV:\" xmlns:S=\"SAR:\"><D:set><D:prop><S:mööp>määp</S:mööp><S:foo>bar</S:foo></D:prop></D:set><D:remove><D:prop><S:a/><S:b/></D:prop></D:remove></D:propertyupdate>",
-                removeProps);
+        final String xml = SardineUtil.getResourcePatchXml(setProps, Arrays.asList("a", "b"));        
+        assertThat(xml, containsString("<S:mööp>määp</S:mööp>"));
+        assertThat(xml, containsString("<S:foo>bar</S:foo>"));
+        assertThat(xml, containsString("<D:remove><D:prop><S:a/><S:b/></D:prop></D:remove>"));
     }
 
     /**
