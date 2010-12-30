@@ -15,7 +15,7 @@ import com.googlecode.sardine.model.Prop;
 import com.googlecode.sardine.model.Response;
 
 /**
- * Helper class to convert {@link Multistatus} to a {@link DavResource}.
+ * Helper class to convert a {@link Multistatus} Response to a {@link DavResource}.
  * 
  * @author mirko
  */
@@ -56,8 +56,11 @@ public class ResponseToDavResource {
 
     /**
      * @param resp
+     *            to convert
      * @param hostPart
+     *            including schema.
      * @param baseUrl
+     *            actually the path component.
      */
     public ResponseToDavResource(final Response resp, final String baseUrl, final String hostPart) {
         this.resp = resp;

@@ -152,7 +152,7 @@ public class SardineUtil {
         try {
             return (Multistatus) unmarshaller.unmarshal(stream);
         } catch (JAXBException ex) {
-            throw new SardineException("Problem unmarshalling the data", url, ex);
+            throw new SardineException("Problem unmarshalling the data from: ", url, ex);
         }
     }
 
@@ -164,13 +164,13 @@ public class SardineUtil {
      *            custom properties.
      * @return a map from the custom properties.
      */
-    public static Map<String, String> extractCustomProps(List<Element> elements) {
+    public static Map<String, String> extractCustomProps(final List<Element> elements) {
         final Map<String, String> customPropsMap = new HashMap<String, String>(elements.size());
 
         for (final Element element : elements) {
             final String[] keys = element.getTagName().split(":", 2);
             final String key = (keys.length > 1) ? keys[1] : keys[0];
-
+            //System.out.println(element.getTagName() + "@@" + element.getNamespaceURI() + "@@" + element.getLocalName());
             customPropsMap.put(key, element.getTextContent());
         }
 

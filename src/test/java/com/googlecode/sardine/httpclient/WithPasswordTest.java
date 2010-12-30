@@ -8,6 +8,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeThat;
+import static org.junit.Assume.assumeTrue;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,7 +30,20 @@ import com.googlecode.sardine.TUtils;
 import com.googlecode.sardine.util.SardineException;
 
 /**
- * @author mirko A little integrative tests, environment is set in $user.home/sardine-it-test.properties, an xml file.
+ * A little integrative tests, environment is set in ${user.home}/sardine-it-test.properties, an xml properties file.
+ * 
+ * <pre>
+ * &lt;?xml version="1.0" encoding="UTF-8" standalone="no"?>
+ * &lt;!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+ * &lt;properties>
+ *   &lt;entry key="webdavServer">https://webdav.example.com/&lt;/entry>
+ *   &lt;entry key="webdavUser">USERNAME&lt;/entry>
+ *   &lt;entry key="webdavPassword">PASSWORD&lt;/entry>
+ *   &lt;entry key="webdavPasswordEncoding">iso-8859-1&lt;/entry>
+ * &lt;/properties>
+ * </pre>
+ * 
+ * @author mirko
  */
 public class WithPasswordTest {
 
@@ -52,6 +66,7 @@ public class WithPasswordTest {
     public WithPasswordTest() throws IOException {
         final Properties properties = new Properties();
         final File sardineProperties = new File(System.getProperty("user.home"), "sardine-it-test.properties");
+        assumeTrue(sardineProperties.exists());
         final FileInputStream in = new FileInputStream(sardineProperties);
         try {
             properties.loadFromXML(in);
