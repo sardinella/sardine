@@ -168,8 +168,7 @@ public class SardineUtil {
         final Map<String, String> customPropsMap = new HashMap<String, String>(elements.size());
 
         for (final Element element : elements) {
-            final String[] keys = element.getTagName().split(":", 2);
-            final String key = (keys.length > 1) ? keys[1] : keys[0];
+            final String key = element.getLocalName();
             //System.out.println(element.getTagName() + "@@" + element.getNamespaceURI() + "@@" + element.getLocalName());
             customPropsMap.put(key, element.getTextContent());
         }
