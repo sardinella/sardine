@@ -14,22 +14,21 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.UnmarshalException;
-import javax.xml.namespace.QName;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.http.entity.StringEntity;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import com.googlecode.sardine.model.Prop;
 
 /**
  * @author mirko
  * 
  */
 public class SardineUtilTest {
+
+    /**
+     * 
+     */
+    private static final String STANDARD_DAV_RESOURCE_START = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>";
 
     /**
      * Test method for {@link com.googlecode.sardine.util.SardineUtil#encode(java.lang.String)}.
@@ -70,7 +69,7 @@ public class SardineUtilTest {
     }
 
     /**
-     * Test method for {@link com.googlecode.sardine.util.SardineUtil#getResourcesEntity()}.
+     * Test method for {@link com.googlecode.sardine.util.SardineUtil#getDefaultPropfindXML()}.
      */
     @Test
     @Ignore
@@ -80,32 +79,41 @@ public class SardineUtilTest {
 
     /**
      * Test method for
-     * {@link com.googlecode.sardine.util.SardineUtil#getResourcePatchEntity(java.util.Map, java.util.List)}.
+     * {@link com.googlecode.sardine.util.SardineUtil#getResourcePatchXml(java.util.Map, java.util.List)}.
      * 
      * @throws IOException
      */
     @Test
-    public void testGetResourcePatchEntity() throws IOException {
-        final StringEntity patchEntityWithTwoElements = SardineUtil.getResourcePatchEntity(null, Arrays.asList("A", "ö"));
+    public void testGetResourcePatchXmlWithTwoRemovalElements() throws IOException {
+        final String xml = SardineUtil.getResourcePatchXml(null, Arrays.asList("A", "ö"));
         assertEquals(
-                "<?xml version=\"1.0\" encoding=\"utf-8\" ?><D:propertyupdate xmlns:D=\"DAV:\" xmlns:S=\"SAR:\"><D:remove><D:prop><S:A/><S:ö/></D:prop></D:remove></D:propertyupdate>",
-                IOUtils.toString(patchEntityWithTwoElements.getContent()).replaceAll("\n", ""));
-        final StringEntity patchEntityWithEmptyRemovalList = SardineUtil.getResourcePatchEntity(null, Arrays.asList(new String[]{}));
+                STANDARD_DAV_RESOURCE_START
+                        + "<D:propertyupdate xmlns:D=\"DAV:\" xmlns:S=\"SAR:\"><D:remove><D:prop><S:A/><S:ö/></D:prop></D:remove></D:propertyupdate>",
+                xml);
+    }
+    
+    @Test
+    public void testGetResourcePatchXmlWithEmptyRemovalList() throws IOException {
+        final String xml = SardineUtil.getResourcePatchXml(null,
+                Arrays.asList(new String[] {}));
         assertEquals(
-                "<?xml version=\"1.0\" encoding=\"utf-8\" ?><D:propertyupdate xmlns:D=\"DAV:\" xmlns:S=\"SAR:\"><D:remove><D:prop></D:prop></D:remove></D:propertyupdate>",
-                IOUtils.toString(patchEntityWithEmptyRemovalList.getContent()).replaceAll("\n", ""));
+                STANDARD_DAV_RESOURCE_START
+                        + "<D:propertyupdate xmlns:D=\"DAV:\" xmlns:S=\"SAR:\"><D:remove><D:prop/></D:remove></D:propertyupdate>",
+                xml);
     }
 
     @Test
-    public void testGetResourcePatchEntity2() throws IOException {
-        HashMap<String,String> map = new HashMap<String, String>();
-        map.put("foo", "bar");
-        map.put("mööp", "määp");
-        final StringEntity patchEntityWithTwoElements = SardineUtil.getResourcePatchEntity2(map, Arrays.asList("a", "b"));
-        System.out.println(IOUtils.toString(patchEntityWithTwoElements.getContent()));
-        System.out.println(IOUtils.toString(SardineUtil.GET_RESOURCES.getContent()));
+    public void testGetResourcePatchXmlCombined() throws IOException {
+        HashMap<String, String> setProps = new HashMap<String, String>();
+        setProps.put("foo", "bar");
+        setProps.put("mööp", "määp");
+        final String removeProps = SardineUtil.getResourcePatchXml(setProps, Arrays.asList("a", "b"));
+        assertEquals(
+                STANDARD_DAV_RESOURCE_START
+                        + "<D:propertyupdate xmlns:D=\"DAV:\" xmlns:S=\"SAR:\"><D:set><D:prop><S:mööp>määp</S:mööp><S:foo>bar</S:foo></D:prop></D:set><D:remove><D:prop><S:a/><S:b/></D:prop></D:remove></D:propertyupdate>",
+                removeProps);
     }
-    
+
     /**
      * Test method for
      * {@link com.googlecode.sardine.util.SardineUtil#getMultistatus(javax.xml.bind.Unmarshaller, java.io.InputStream, java.lang.String)}
@@ -144,6 +152,8 @@ public class SardineUtilTest {
 
     @Test
     public void createPropfindXml() {
-        System.out.println(SardineUtil.GET_RESOURCES.getContentType());
+        assertEquals(
+                "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><D:propfind xmlns:D=\"DAV:\" xmlns:S=\"SAR:\"><D:allprop/></D:propfind>",
+                SardineUtil.getDefaultPropfindXML());
     }
 }

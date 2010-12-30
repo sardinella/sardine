@@ -115,7 +115,7 @@ public class SardineHttpClientImpl implements Sardine {
     public List<DavResource> getResources(final String url) throws SardineException {
         final URI uri = URI.create(url);
         HttpPropFind propFind = new HttpPropFind(uri.toASCIIString());
-        propFind.setEntity(SardineUtil.getResourcesEntity());
+        propFind.setEntity(HttpClientUtils.newXmlStringEntityFromString(SardineUtil.getDefaultPropfindXML()));
         final Unmarshaller unmarshaller = SardineUtil.createUnmarshaller();
         final MultiStatusResponseHandler responseHandler = new MultiStatusResponseHandler(url, unmarshaller);
         final Multistatus multistatus = wrapResponseHandlerExceptions(propFind, responseHandler);
@@ -193,7 +193,8 @@ public class SardineHttpClientImpl implements Sardine {
     public void setCustomProps(String url, Map<String, String> setProps, List<String> removeProps)
             throws SardineException {
         final HttpPropPatch propPatch = new HttpPropPatch(url);
-        propPatch.setEntity(SardineUtil.getResourcePatchEntity(setProps, removeProps));
+        propPatch.setEntity(HttpClientUtils.newXmlStringEntityFromString(SardineUtil.getResourcePatchXml(setProps,
+                removeProps)));
         wrapResponseHandlerExceptions(propPatch, new VoidResponseHandler(url,
                 "Failed to set custom properties on resources."));
     }

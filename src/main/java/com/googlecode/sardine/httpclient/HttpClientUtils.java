@@ -4,6 +4,8 @@
 
 package com.googlecode.sardine.httpclient;
 
+import java.io.UnsupportedEncodingException;
+
 import org.apache.http.HttpVersion;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.params.ConnManagerParams;
@@ -11,6 +13,7 @@ import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
@@ -115,6 +118,23 @@ public final class HttpClientUtils {
         if (sourceUrl.endsWith("/") && !destinationUrl.endsWith("/")) {
             throw new SardineException("destinationUrl must end with a / when sourceUrl ends with /", destinationUrl);
         }
+    }
+
+    /**
+     * Creates a new {@link StringEntity} whose Content-Type is set to text/xml.
+     * 
+     * @param xml any string, not checked for validity or wellformedness.
+     * @return
+     */
+    public static StringEntity newXmlStringEntityFromString(final String xml) {
+        final StringEntity stringEntity;
+        try {
+            stringEntity = new StringEntity(xml, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Could not get encoding UTF-8?" + xml, e);
+        }
+        stringEntity.setContentType("text/xml; charset=UTF-8");
+        return stringEntity;
     }
 
 }
