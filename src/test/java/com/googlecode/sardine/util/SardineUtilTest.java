@@ -13,8 +13,14 @@ import static org.junit.matchers.JUnitMatchers.containsString;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.xml.bind.UnmarshalException;
 
@@ -36,27 +42,40 @@ public class SardineUtilTest {
      * Test method for {@link com.googlecode.sardine.util.SardineUtil#encode(java.lang.String)}.
      */
     @Test
-    @Ignore
-    public void testEncode() {
-        fail("Not yet implemented"); // TODO
+    public void testEncodeAndDecode() {
+        final String expected = "äöü ß";
+        assertEquals(expected, SardineUtil.decode(SardineUtil.encode(expected)));
     }
 
     /**
-     * Test method for {@link com.googlecode.sardine.util.SardineUtil#decode(java.lang.String)}.
+     * Test method for {@link com.googlecode.sardine.util.SardineUtil#parseDate(java.lang.String)}. 
+     * new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US), 
+     * new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US), 
+     * new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'", Locale.US), 
+     * new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US), 
+     * new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US), 
+     * new SimpleDateFormat("EEEEEE, dd-MMM-yy HH:mm:ss zzz", Locale.US), 
+     * new SimpleDateFormat("EEE MMMM d HH:mm:ss yyyy", Locale.US)
+     * 
+     * @throws ParseException
      */
     @Test
-    @Ignore
-    public void testDecode() {
-        fail("Not yet implemented"); // TODO
-    }
+    public void testParseDate() throws ParseException {
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        final Date parsedDate = simpleDateFormat.parse("2010-12-31T13:59:01Z");
+        final long expectedTime = parsedDate.getTime();
+        final List<String> dates = Arrays.asList(//
+                "2010-12-31T13:59:01Z", //
+                "Fri, 31 Dec 2010 13:59:01 GMT", //
+                "Fri Dec 31 13:59:01 GMT 2010", //
+                "Friday, 31-Dec-10 13:59:01 GMT", //
+                "Fri December 31 13:59:01 2010");
+        for (String date : dates) {
+            final long actualTime = SardineUtil.parseDate(date).getTime();        
+            assertEquals(expectedTime, actualTime);            
+        }
 
-    /**
-     * Test method for {@link com.googlecode.sardine.util.SardineUtil#parseDate(java.lang.String)}.
-     */
-    @Test
-    @Ignore
-    public void testParseDate() {
-        fail("Not yet implemented"); // TODO
     }
 
     /**
@@ -93,11 +112,10 @@ public class SardineUtilTest {
                         + "<D:propertyupdate xmlns:D=\"DAV:\" xmlns:S=\"SAR:\"><D:remove><D:prop><S:A/><S:ö/></D:prop></D:remove></D:propertyupdate>",
                 xml);
     }
-    
+
     @Test
     public void testGetResourcePatchXmlWithEmptyRemovalList() throws IOException {
-        final String xml = SardineUtil.getResourcePatchXml(null,
-                Arrays.asList(new String[] {}));
+        final String xml = SardineUtil.getResourcePatchXml(null, Arrays.asList(new String[] {}));
         assertEquals(
                 STANDARD_DAV_RESOURCE_START
                         + "<D:propertyupdate xmlns:D=\"DAV:\" xmlns:S=\"SAR:\"><D:remove><D:prop/></D:remove></D:propertyupdate>",
@@ -109,7 +127,7 @@ public class SardineUtilTest {
         HashMap<String, String> setProps = new HashMap<String, String>();
         setProps.put("foo", "bar");
         setProps.put("mööp", "määp");
-        final String xml = SardineUtil.getResourcePatchXml(setProps, Arrays.asList("a", "b"));        
+        final String xml = SardineUtil.getResourcePatchXml(setProps, Arrays.asList("a", "b"));
         assertThat(xml, containsString("<S:mööp>määp</S:mööp>"));
         assertThat(xml, containsString("<S:foo>bar</S:foo>"));
         assertThat(xml, containsString("<D:remove><D:prop><S:a/><S:b/></D:prop></D:remove>"));

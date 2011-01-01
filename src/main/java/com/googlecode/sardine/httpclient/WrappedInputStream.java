@@ -13,7 +13,7 @@ import org.apache.http.HttpResponse;
 import com.googlecode.sardine.util.SardineException;
 
 /**
- * Wrapper for the input stream, will consume the rest of the response.
+ * Wrapper for the input stream, will consume the rest of the response on {@link WrappedInputStream#close()}.
  * 
  * @author mirko
  */
@@ -44,7 +44,7 @@ public class WrappedInputStream extends InputStream {
     @Override
     public int read() throws IOException {
         try {
-        return inputStream.read();
+            return inputStream.read();
         } catch (IOException e) {
             throw new IOException("Error while reading from " + url, e);
         }

@@ -115,7 +115,8 @@ public class SardineUtil {
         Date date = null;
         for (final SimpleDateFormat format : FORMATS) {
             try {
-                date = ((SimpleDateFormat) format.clone()).parse(dateValue);
+                final SimpleDateFormat clonedFormat = (SimpleDateFormat) format.clone();                
+                date = clonedFormat.parse(dateValue);
                 break;
             } catch (ParseException e) {
                 // We loop through this until we found a valid one.

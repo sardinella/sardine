@@ -54,7 +54,7 @@ public final class HttpClientUtils {
     }
 
     /**
-     * Creates default params, set maximal total connections to 100.
+     * Creates default params, set maximal total connections to {@link HttpClientUtils#MAX_TOTAL_CONNECTIONS}.
      * 
      * @return httpParams
      */

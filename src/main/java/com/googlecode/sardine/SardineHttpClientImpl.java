@@ -193,8 +193,8 @@ public class SardineHttpClientImpl implements Sardine {
     public void setCustomProps(String url, Map<String, String> setProps, List<String> removeProps)
             throws SardineException {
         final HttpPropPatch propPatch = new HttpPropPatch(url);
-        propPatch.setEntity(HttpClientUtils.newXmlStringEntityFromString(SardineUtil.getResourcePatchXml(setProps,
-                removeProps)));
+        final String resourcePatchXml = SardineUtil.getResourcePatchXml(setProps, removeProps);
+        propPatch.setEntity(HttpClientUtils.newXmlStringEntityFromString(resourcePatchXml));
         wrapResponseHandlerExceptions(propPatch, new VoidResponseHandler(url,
                 "Failed to set custom properties on resources."));
     }
@@ -204,9 +204,10 @@ public class SardineHttpClientImpl implements Sardine {
         final HttpGet get = new HttpGet(url);
         final HttpResponse response = this.executeWrapper(get);
         final StatusLine statusLine = response.getStatusLine();
-        if (!SardineUtil.isGoodResponse(statusLine.getStatusCode())) {
+        final int statusCode = statusLine.getStatusCode();
+        if (!SardineUtil.isGoodResponse(statusCode)) {
             get.abort();
-            throw new SardineException(url, statusLine.getStatusCode(), statusLine.getReasonPhrase());
+            throw new SardineException(url, statusCode, statusLine.getReasonPhrase());
         }
 
         try {
