@@ -93,9 +93,11 @@ public class SardineUtilTest {
      * Test method for {@link com.googlecode.sardine.util.SardineUtil#getDefaultPropfindXML()}.
      */
     @Test
-    @Ignore
-    public void testGetResourcesEntity() {
-        fail("Not yet implemented"); // TODO
+    public void testGetDefaultPropfindXML() {
+        assertEquals(
+                //
+                STANDARD_DAV_RESOURCE_START + "<D:propfind xmlns:D=\"DAV:\" xmlns:S=\"SAR:\"><D:allprop/></D:propfind>",
+                SardineUtil.getDefaultPropfindXML());
     }
 
     /**
