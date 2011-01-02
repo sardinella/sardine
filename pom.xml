@@ -11,6 +11,10 @@
     <description>An easy to use webdav client for java</description>
     <name>Sardine WEBDAV client</name>
     <url>http://code.google.com/p/sardine/</url>
+    <ciManagement>
+        <system>Hudson</system>
+        <url>http://huschteguzzel.de/hudson/job/sardine/</url>
+    </ciManagement>
     <build>
         <plugins>
             <plugin>
