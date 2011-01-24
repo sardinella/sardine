@@ -7,7 +7,7 @@ import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 /**
  * Simple class for making proppatch a bit easier to deal with.
  */
-public class HttpPropPatch extends HttpEntityEnclosingRequestBase {
+class HttpPropPatch extends HttpEntityEnclosingRequestBase {
     public HttpPropPatch(String url) {
         super();
         this.setURI(URI.create(url));

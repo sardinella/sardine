@@ -17,7 +17,7 @@ import com.googlecode.sardine.util.SardineException;
  * 
  * @author mirko
  */
-public class WrappedInputStream extends InputStream {
+class WrappedInputStream extends InputStream {
 
     private final InputStream inputStream;
 

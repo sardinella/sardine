@@ -10,7 +10,7 @@ import org.apache.http.entity.HttpEntityWrapper;
 /**
  * Simple wrapper for decompressing gzipped {@link InputStream}s on the fly.
  */
-public final class GzipDecompressingEntity extends HttpEntityWrapper {
+final class GzipDecompressingEntity extends HttpEntityWrapper {
 
     public GzipDecompressingEntity(final HttpEntity entity) {
         super(entity);

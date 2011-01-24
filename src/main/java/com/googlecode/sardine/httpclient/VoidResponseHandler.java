@@ -11,7 +11,7 @@ import org.apache.http.client.ClientProtocolException;
  * 
  * @author mirko
  */
-public final class VoidResponseHandler extends BasicResponseHandler<Void> {
+final class VoidResponseHandler extends BasicResponseHandler<Void> {
 
     private final String msg;
 

@@ -7,7 +7,7 @@ import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 /**
  * Simple class for making propfind a bit easier to deal with.
  */
-public class HttpPropFind extends HttpEntityEnclosingRequestBase {
+class HttpPropFind extends HttpEntityEnclosingRequestBase {
     public HttpPropFind(String url) {
         super();
         this.setDepth(1);

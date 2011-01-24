@@ -13,7 +13,7 @@ import com.googlecode.sardine.util.SardineException;
  *  
  * @author mirko
  */
-public final class ExistsResponseHandler extends BasicResponseHandler<Boolean> {
+final class ExistsResponseHandler extends BasicResponseHandler<Boolean> {
     /**
      * @param url
      */

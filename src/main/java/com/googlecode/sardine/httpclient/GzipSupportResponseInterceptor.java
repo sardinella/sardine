@@ -14,7 +14,7 @@ import org.apache.http.protocol.HttpContext;
  * This {@link HttpResponseInterceptor} decompresses the {@link HttpEntity} of the {@link HttpResponse} on the fly when
  * the content encoding indicates it should by replacing the entity of the response.
  */
-public final class GzipSupportResponseInterceptor implements HttpResponseInterceptor {
+final class GzipSupportResponseInterceptor implements HttpResponseInterceptor {
     public void process(final HttpResponse response, final HttpContext context) throws HttpException, IOException {
         final HttpEntity entity = response.getEntity();
         if (entity != null) {

@@ -9,7 +9,7 @@ import com.googlecode.sardine.util.SardineException;
 /**
  * Simple class for making copy a bit easier to deal with. Assumes Overwrite = T.
  */
-public class HttpCopy extends HttpEntityEnclosingRequestBase {
+class HttpCopy extends HttpEntityEnclosingRequestBase {
     public HttpCopy(String sourceUrl, String destinationUrl) throws SardineException {
         super();
         HttpClientUtils.checkConsistentSlashes(sourceUrl, destinationUrl);

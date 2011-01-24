@@ -19,7 +19,7 @@ import com.googlecode.sardine.util.SardineException;
  * @param <T>
  *            return type of {@link ResponseHandler#handleResponse(HttpResponse)}.
  */
-public abstract class BasicResponseHandler<T> implements ResponseHandler<T> {
+abstract class BasicResponseHandler<T> implements ResponseHandler<T> {
 
     /** url for documentation. */
     private final String url;

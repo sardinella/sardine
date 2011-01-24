@@ -18,7 +18,7 @@ import com.googlecode.sardine.util.SardineUtil;
  * 
  * @author mirko
  */
-public final class MultiStatusResponseHandler extends BasicResponseHandler<Multistatus> {
+final class MultiStatusResponseHandler extends BasicResponseHandler<Multistatus> {
 
     /**
      * 

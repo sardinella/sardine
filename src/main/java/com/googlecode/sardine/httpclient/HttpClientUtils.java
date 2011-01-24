@@ -28,7 +28,7 @@ import com.googlecode.sardine.util.SardineException;
  * 
  * @author mirko
  */
-public final class HttpClientUtils {
+final class HttpClientUtils {
 
     /**
      * 
