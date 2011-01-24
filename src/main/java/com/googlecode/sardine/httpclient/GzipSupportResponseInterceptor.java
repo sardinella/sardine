@@ -21,8 +21,8 @@ public final class GzipSupportResponseInterceptor implements HttpResponseInterce
             final Header ceheader = entity.getContentEncoding();
             if (ceheader != null) {
                 HeaderElement[] codecs = ceheader.getElements();
-                for (int i = 0; i < codecs.length; i++) {
-                    if (codecs[i].getName().equalsIgnoreCase("gzip")) {
+                for (final HeaderElement codec : codecs) {
+                    if (codec.getName().equalsIgnoreCase("gzip")) {
                         response.setEntity(new GzipDecompressingEntity(response.getEntity()));
                         return;
                     }

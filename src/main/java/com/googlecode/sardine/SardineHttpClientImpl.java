@@ -56,10 +56,10 @@ import com.googlecode.sardine.util.SardineUtil;
 public class SardineHttpClientImpl implements Sardine {
 
     /** */
-    final DefaultHttpClient client;
+    private final DefaultHttpClient client;
 
     /** was a username/password passed in? */
-    final boolean authEnabled;
+    private final boolean authEnabled;
 
     /** */
     public SardineHttpClientImpl() throws SardineException {
@@ -72,7 +72,7 @@ public class SardineHttpClientImpl implements Sardine {
     }
 
     /** */
-    public SardineHttpClientImpl(String username, String password, SSLSocketFactory sslSocketFactory,
+    private SardineHttpClientImpl(String username, String password, SSLSocketFactory sslSocketFactory,
             HttpRoutePlanner routePlanner) throws SardineException {
         this(username, password, sslSocketFactory, routePlanner, null);
     }
@@ -239,7 +239,7 @@ public class SardineHttpClientImpl implements Sardine {
     public void put(String url, InputStream dataStream, String contentType) throws SardineException {
         HttpPut put = new HttpPut(url);
         // A length of -1 means "go until end of stream"
-        InputStreamEntity entity = new InputStreamEntity(dataStream, -1);
+        InputStreamEntity entity = new InputStreamEntity(dataStream, -1L);
         put(url, put, entity, contentType);
     }
 

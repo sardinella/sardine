@@ -120,6 +120,7 @@ public class SardineUtil {
                 break;
             } catch (ParseException e) {
                 // We loop through this until we found a valid one.
+                //noinspection UnnecessaryContinue
                 continue;
             }
         }

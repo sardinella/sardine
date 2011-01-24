@@ -55,5 +55,6 @@ public class WrappedInputStream extends InputStream {
     public void close() throws IOException {
         response.getEntity().consumeContent();
         inputStream.close();
+        super.close();
     }
 }

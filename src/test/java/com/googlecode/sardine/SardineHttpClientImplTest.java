@@ -60,7 +60,7 @@ public class SardineHttpClientImplTest {
 
     private final static String WEBDE_BASE_URL = "https://webdav.smartdrive.web.de/";
 
-    final SardineHttpClientImpl sardine;
+    private final SardineHttpClientImpl sardine;
 
     /**
      * @throws SardineException

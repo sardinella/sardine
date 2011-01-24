@@ -16,11 +16,11 @@ public class HttpPropFind extends HttpEntityEnclosingRequestBase {
     }
 
     @Override
-    public String getMethod() {
+    public final String getMethod() {
         return "PROPFIND";
     }
 
-    public void setDepth(int val) {
+    public final void setDepth(int val) {
         this.setHeader("Depth", String.valueOf(val));
     }
 }

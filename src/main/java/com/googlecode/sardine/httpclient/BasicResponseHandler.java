@@ -28,7 +28,7 @@ public abstract class BasicResponseHandler<T> implements ResponseHandler<T> {
      * @param url
      *            for documentation.
      */
-    public BasicResponseHandler(final String url) {
+    protected BasicResponseHandler(final String url) {
         this.url = url;
     }
 
@@ -37,7 +37,7 @@ public abstract class BasicResponseHandler<T> implements ResponseHandler<T> {
      * 
      * @return the url
      */
-    public String getUrl() {
+    String getUrl() {
         return url;
     }
 

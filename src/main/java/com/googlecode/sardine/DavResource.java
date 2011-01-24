@@ -118,7 +118,7 @@ public class DavResource {
     /**
      * Does this resource have a contentType of httpd/unix-directory?
      */
-    public boolean isDirectory() {
+    public final boolean isDirectory() {
         return (this.contentType != null && this.contentType.equals("httpd/unix-directory"));
     }
 

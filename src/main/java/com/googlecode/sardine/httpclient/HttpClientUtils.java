@@ -100,8 +100,7 @@ public final class HttpClientUtils {
         final HttpParams params = createDefaultHttpParams();
         final SchemeRegistry schemeRegistry = createDefaultSchemeRegistry(sslSocketFactory, port);
         final ClientConnectionManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
-        final DefaultHttpClient defaultHttpClient = new DefaultHttpClient(cm, params);
-        return defaultHttpClient;
+        return new DefaultHttpClient(cm, params);
     }
 
     /**

@@ -26,6 +26,6 @@ public final class GzipDecompressingEntity extends HttpEntityWrapper {
     /** {@inheritDoc} */
     @Override
     public long getContentLength() {
-        return -1;
+        return -1L;
     }
 }
