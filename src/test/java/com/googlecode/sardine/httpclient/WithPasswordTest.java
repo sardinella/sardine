@@ -25,7 +25,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.googlecode.sardine.DavResource;
-import com.googlecode.sardine.SardineHttpClientImpl;
 import com.googlecode.sardine.TUtils;
 import com.googlecode.sardine.util.SardineException;
 

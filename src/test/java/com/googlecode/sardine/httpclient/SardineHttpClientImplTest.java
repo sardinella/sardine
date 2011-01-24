@@ -2,7 +2,7 @@
  * Copyright 2010 Mirko Friedenhagen 
  */
 
-package com.googlecode.sardine;
+package com.googlecode.sardine.httpclient;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
@@ -21,6 +21,9 @@ import java.util.List;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import com.googlecode.sardine.DavResource;
+import com.googlecode.sardine.DavResourceTest;
+import com.googlecode.sardine.httpclient.SardineHttpClientImpl;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthenticationException;
@@ -71,7 +74,7 @@ public class SardineHttpClientImplTest {
     }
 
     /**
-     * Test method for {@link com.googlecode.sardine.SardineHttpClientImpl#SardineImpl(com.googlecode.sardine.Factory)}.
+     * Test method for {@link com.googlecode.sardine.httpclient.SardineHttpClientImpl#SardineImpl(com.googlecode.sardine.Factory)}.
      * 
      * @throws IOException
      * @throws ClientProtocolException

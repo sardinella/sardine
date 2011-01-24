@@ -1,4 +1,4 @@
-package com.googlecode.sardine;
+package com.googlecode.sardine.httpclient;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,6 +10,8 @@ import java.util.Map;
 
 import javax.xml.bind.Unmarshaller;
 
+import com.googlecode.sardine.DavResource;
+import com.googlecode.sardine.Sardine;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.auth.AuthScope;
@@ -73,7 +75,7 @@ public class SardineHttpClientImpl implements Sardine {
 
     /** */
     private SardineHttpClientImpl(String username, String password, SSLSocketFactory sslSocketFactory,
-            HttpRoutePlanner routePlanner) throws SardineException {
+                                  HttpRoutePlanner routePlanner) throws SardineException {
         this(username, password, sslSocketFactory, routePlanner, null);
     }
 

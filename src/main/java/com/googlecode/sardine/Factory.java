@@ -1,5 +1,6 @@
 package com.googlecode.sardine;
 
+import com.googlecode.sardine.httpclient.SardineHttpClientImpl;
 import org.apache.http.conn.routing.HttpRoutePlanner;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 
