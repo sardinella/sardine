@@ -96,7 +96,7 @@ public class ResponseToDavResource {
             }
 
             if (finalHref.startsWith(hostPart)) {
-                name = finalHref.substring(hostPart.length() + baseUrl.length());
+                name = calculateNameFromComponentsHavingHostPart(finalHref);
             } else {
                 name = finalHref.substring(baseUrl.length());
             }
@@ -120,6 +120,15 @@ public class ResponseToDavResource {
         return new DavResource(hostPart + finalBaseUrl, finalName, SardineUtil.parseDate(creationdate),
                 SardineUtil.parseDate(modifieddate), contentType, Long.valueOf(contentLength), currentDirectory,
                 customProps);
+    }
+
+    /**
+     * Calculares the name of the resource.
+     * @param finalHref
+     * @return name of the resource.
+     */
+    private String calculateNameFromComponentsHavingHostPart(String finalHref) {
+        return finalHref.substring(hostPart.length() + baseUrl.length());
     }
 
     /**
