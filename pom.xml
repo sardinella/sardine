@@ -16,8 +16,8 @@
         <url>http://huschteguzzel.de/hudson/job/sardine/</url>
     </ciManagement>
     <scm>
-        <connection>git://github.com/mfriedenhagen/sardine.git</connection>
-        <developerConnection>git@github.com:mfriedenhagen/sardine.git</developerConnection>
+        <connection>scm:git:git://github.com/mfriedenhagen/sardine.git</connection>
+        <developerConnection>scm:git:git@github.com:mfriedenhagen/sardine.git</developerConnection>
         <url>https://github.com/mfriedenhagen/sardine/</url>
     </scm>
     <build>
