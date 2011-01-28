@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 Mirko Friedenhagen 
+ * Copyright 2010 Mirko Friedenhagen
  */
 
 package com.googlecode.sardine.httpclient;
@@ -13,8 +13,9 @@ import org.apache.http.HttpResponse;
 import com.googlecode.sardine.util.SardineException;
 
 /**
- * Wrapper for the input stream, will consume the rest of the response on {@link WrappedInputStream#close()}.
- * 
+ * Wrapper for the input stream, will consume the rest of the response on {@link WrappedInputStream#close()}. This class
+ * will decorate an {@link IOException} thrown while reading so you know which url was invoked.
+ *
  * @author mirko
  */
 class WrappedInputStream extends InputStream {
@@ -26,10 +27,19 @@ class WrappedInputStream extends InputStream {
     private final HttpResponse response;
 
     /**
-     * @throws IOException
+     * @param url
+     *            for exception information
+     * @param response
+     *            to get the {@link InputStream} from.
      * @throws IllegalStateException
+     *             see {@link HttpEntity#getContent()}.
+     * @throws SardineException
+     *             when {@link HttpResponse#getEntity()} is null.
+     * @throws IOException
+     *             see {@link HttpEntity#getContent()}.
      */
-    public WrappedInputStream(final String url, final HttpResponse response) throws IllegalStateException, IOException {
+    public WrappedInputStream(final String url, final HttpResponse response) throws IllegalStateException,
+            SardineException, IOException {
         this.url = url;
         this.response = response;
         final HttpEntity entity = response.getEntity();
@@ -50,7 +60,10 @@ class WrappedInputStream extends InputStream {
         }
     }
 
-    /** {@inheritDoc} */
+    /** {@inheritDoc}
+     *
+     * This method will consume the content of the {@link HttpEntity}.
+     */
     @Override
     public void close() throws IOException {
         response.getEntity().consumeContent();
