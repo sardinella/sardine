@@ -50,7 +50,7 @@ public class VoidResponseHandlerTest {
      * @throws IOException
      * @throws ClientProtocolException
      */
-    @Test//(expected=SardineException.class)
+    @Test(expected=SardineException.class)
     public void testHandleResponseInValid() throws ClientProtocolException, IOException {
         when(statusLine.getStatusCode()).thenReturn(HttpStatus.SC_BAD_GATEWAY);
         when(statusLine.getReasonPhrase()).thenReturn("Bad Gateway");
