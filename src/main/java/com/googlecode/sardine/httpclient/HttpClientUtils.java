@@ -39,7 +39,7 @@ final class HttpClientUtils {
      * Helper class with static methods.
      */
     private HttpClientUtils() {
-        // TODO Auto-generated constructor stub
+        // Helper class with static methods.
     }
 
     /**
