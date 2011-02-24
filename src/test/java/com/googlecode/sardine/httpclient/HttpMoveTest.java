@@ -20,7 +20,7 @@ public class HttpMoveTest {
      * @throws SardineException
      */
     @Test(expected=SardineException.class)
-    public void testHttpMove() throws SardineException
+    public void testHttpMoveOfDirectoryThrowsExceptionOnMoveToFile() throws SardineException
     {
         new HttpMove("http://webdav.example.com/foo/", "http://webdav.example.com/bar");
     }

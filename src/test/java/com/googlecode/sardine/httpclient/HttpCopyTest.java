@@ -19,7 +19,7 @@ public class HttpCopyTest {
      * @throws SardineException 
      */
     @Test(expected=SardineException.class)
-    public void testHttpCopy() throws SardineException {
+    public void testHttpCopyOfDirectoryThrowsExceptionOnCopyToFile() throws SardineException {
         new HttpCopy("http://webdav.example.com/foo/", "http://webdav.example.com/bar");
     }
 
