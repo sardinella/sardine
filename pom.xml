@@ -227,8 +227,8 @@
                                 <exclude>com/googlecode/sardine/ant/*.java</exclude>
                                 <exclude>com/googlecode/sardine/ant/command/*.java</exclude>
                             </excludes>
-                            <linkXref>true</linkXref>
-                            <sourceEncoding>${maven.build.sourceEncoding}</sourceEncoding>
+                            <linkXRef>true</linkXRef>
+                            <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
                             <minimumTokens>100</minimumTokens>
                             <targetJdk>1.5</targetJdk>
                         </configuration>
@@ -315,8 +315,8 @@
                         <exclude>com/googlecode/sardine/ant/*.java</exclude>
                         <exclude>com/googlecode/sardine/ant/command/*.java</exclude>
                     </excludes>
-                    <linkXref>true</linkXref>
-                    <sourceEncoding>${maven.build.sourceEncoding}</sourceEncoding>
+                    <linkXRef>true</linkXRef>
+                    <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
                     <minimumTokens>100</minimumTokens>
                     <targetJdk>1.5</targetJdk>
                 </configuration>
