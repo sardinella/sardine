@@ -22,14 +22,14 @@ import com.googlecode.sardine.util.SardineException;
  * @author mirko
  * 
  */
-public class WrappedInputStreamTest {
+public class ConsumingInputStreamTest {
 
     final HttpResponse response = Mockito.mock(HttpResponse.class);
 
     final HttpEntity entity = Mockito.mock(HttpEntity.class);
 
     /**
-     * Test method for {@link com.googlecode.sardine.httpclient.WrappedInputStream#read()}.
+     * Test method for {@link com.googlecode.sardine.httpclient.ConsumingInputStream#read()}.
      * 
      * @throws IOException
      * @throws IllegalStateException
@@ -40,7 +40,7 @@ public class WrappedInputStreamTest {
         InputStream mockInputStream = Mockito.mock(InputStream.class);
         Mockito.when(mockInputStream.read()).thenThrow(new IOException("oops"));
         Mockito.when(entity.getContent()).thenReturn(mockInputStream);
-        final WrappedInputStream stream = new WrappedInputStream("hello", response);
+        final ConsumingInputStream stream = new ConsumingInputStream("hello", response);
         try {
             try {
                 stream.read();
@@ -54,7 +54,7 @@ public class WrappedInputStreamTest {
     }
 
     /**
-     * Test method for {@link com.googlecode.sardine.httpclient.WrappedInputStream#close()}.
+     * Test method for {@link com.googlecode.sardine.httpclient.ConsumingInputStream#close()}.
      * 
      * @throws IOException
      * @throws IllegalStateException
@@ -64,7 +64,7 @@ public class WrappedInputStreamTest {
         Mockito.when(response.getEntity()).thenReturn(entity);
         final String expected = "content";
         Mockito.when(entity.getContent()).thenReturn(new ByteArrayInputStream(expected.getBytes()));
-        final WrappedInputStream stream = new WrappedInputStream("hello", response);
+        final ConsumingInputStream stream = new ConsumingInputStream("hello", response);
         try {
             assertEquals(expected, IOUtils.toString(stream));
         } finally {
@@ -74,7 +74,7 @@ public class WrappedInputStreamTest {
 
     /**
      * Test method for
-     * {@link com.googlecode.sardine.httpclient.WrappedInputStream#WrappedInputStream(java.lang.String, org.apache.http.HttpResponse)}
+     * {@link com.googlecode.sardine.httpclient.ConsumingInputStream#WrappedInputStream(java.lang.String, org.apache.http.HttpResponse)}
      * .
      * 
      * @throws IOException
@@ -82,7 +82,7 @@ public class WrappedInputStreamTest {
      */
     @Test(expected = SardineException.class)
     public void testWrappedInputStreamSardineException() throws IllegalStateException, IOException {
-        new WrappedInputStream("hello", response);
+        new ConsumingInputStream("hello", response);
     }
 
 }

@@ -43,7 +43,7 @@ import com.googlecode.sardine.httpclient.HttpPropFind;
 import com.googlecode.sardine.httpclient.HttpPropPatch;
 import com.googlecode.sardine.httpclient.MultiStatusResponseHandler;
 import com.googlecode.sardine.httpclient.VoidResponseHandler;
-import com.googlecode.sardine.httpclient.WrappedInputStream;
+import com.googlecode.sardine.httpclient.ConsumingInputStream;
 import com.googlecode.sardine.model.Multistatus;
 import com.googlecode.sardine.model.Response;
 import com.googlecode.sardine.util.ResponseToDavResource;
@@ -213,7 +213,7 @@ public class SardineHttpClientImpl implements Sardine {
         }
 
         try {
-            return new WrappedInputStream(url, response);
+            return new ConsumingInputStream(url, response);
         } catch (IOException ex) {
             get.abort();
             throw new SardineException(ex);

@@ -13,12 +13,12 @@ import org.apache.http.HttpResponse;
 import com.googlecode.sardine.util.SardineException;
 
 /**
- * Wrapper for the input stream, will consume the rest of the response on {@link WrappedInputStream#close()}. This class
+ * Wrapper for the input stream, will consume the rest of the response on {@link ConsumingInputStream#close()}. This class
  * will decorate an {@link IOException} thrown while reading so you know which url was invoked.
  *
  * @author mirko
  */
-class WrappedInputStream extends InputStream {
+class ConsumingInputStream extends InputStream {
 
     private final InputStream inputStream;
 
@@ -38,7 +38,7 @@ class WrappedInputStream extends InputStream {
      * @throws IOException
      *             see {@link HttpEntity#getContent()}.
      */
-    public WrappedInputStream(final String url, final HttpResponse response) throws IllegalStateException,
+    public ConsumingInputStream(final String url, final HttpResponse response) throws IllegalStateException,
             SardineException, IOException {
         this.url = url;
         this.response = response;
