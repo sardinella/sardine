@@ -31,6 +31,7 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HTTP;
 
 import com.googlecode.sardine.DavResource;
 import com.googlecode.sardine.Sardine;
@@ -123,7 +124,7 @@ public class SardineHttpClientImpl implements Sardine {
      * @param responseHandler
      *            for the type
      * @return parsed response
-     * @throws IOException when something goes wrong
+     * @throws IOException when something goes wrong. request will be aborted in this case.
      */
     <T> T wrapResponseHandlerExceptions(final HttpRequestBase request, final ResponseHandler<T> responseHandler)
             throws IOException {
@@ -131,10 +132,13 @@ public class SardineHttpClientImpl implements Sardine {
             setAuthenticationOnMethod(request);
             return client.execute(request, responseHandler);
         } catch (ClientProtocolException e) {
+            request.abort();
             throw new IOException(e);
         } catch (IOException e) {
+            request.abort();
             throw e;
         } catch (AuthenticationException e) {
+            request.abort();
             throw new IOException(e);
         }
     }
@@ -221,7 +225,7 @@ public class SardineHttpClientImpl implements Sardine {
     public void put(String url, byte[] data, String contentType) throws IOException {
         final HttpPut put = new HttpPut(url);
         final ByteArrayEntity entity = new ByteArrayEntity(data);
-        put(url, put, entity, null);
+        put(url, put, entity, null, true);
     }
 
     /** {@inheritDoc} */
@@ -234,17 +238,27 @@ public class SardineHttpClientImpl implements Sardine {
         final HttpPut put = new HttpPut(url);
         // A length of -1 means "go until end of stream"
         final InputStreamEntity entity = new InputStreamEntity(dataStream, -1L);
-        put(url, put, entity, contentType);
+        put(url, put, entity, contentType, true);
     }
 
+    /** {@inheritDoc} */
+    public void put(String url, InputStream dataStream, String contentType, boolean expectContinue) throws IOException {
+        final HttpPut put = new HttpPut(url);
+        // A length of -1 means "go until end of stream"
+        final InputStreamEntity entity = new InputStreamEntity(dataStream, -1L);
+        put(url, put, entity, contentType, expectContinue);
+    }
     /**
      * Private helper for doing the work of a put
      */
-    private void put(final String url, HttpPut put, AbstractHttpEntity entity, String contentType)
+    private void put(final String url, HttpPut put, AbstractHttpEntity entity, String contentType, boolean expectContinue)
             throws IOException {
         put.setEntity(entity);
         if (contentType != null) {
             put.setHeader("Content-Type", contentType);
+        }
+        if (expectContinue) {
+            put.addHeader(HTTP.EXPECT_DIRECTIVE, HTTP.EXPECT_CONTINUE);
         }
         wrapResponseHandlerExceptions(put, new VoidResponseHandler(url, "PUT failed"));
     }

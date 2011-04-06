@@ -54,6 +54,11 @@ public interface Sardine {
     public void put(String url, InputStream dataStream, String contentType) throws IOException;
 
     /**
+     * Uses webdav put to send data to a server with a specific content type header
+     */
+    public void put(String url, InputStream dataStream, String contentType, boolean expectContinue) throws IOException;
+
+    /**
      * Delete a resource at the specified url
      */
     public void delete(String url) throws IOException;
