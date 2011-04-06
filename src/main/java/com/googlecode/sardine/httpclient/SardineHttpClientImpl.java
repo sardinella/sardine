@@ -106,7 +106,7 @@ public class SardineHttpClientImpl implements Sardine {
     /** {@inheritDoc} */
     public List<DavResource> getResources(final String url) throws SardineException {
         final URI uri = URI.create(url);
-        HttpPropFind propFind = new HttpPropFind(uri.toASCIIString());
+        final HttpPropFind propFind = new HttpPropFind(uri.toASCIIString());
         propFind.setEntity(HttpClientUtils.newXmlStringEntityFromString(SardineUtil.getDefaultPropfindXML()));
         final Unmarshaller unmarshaller = SardineUtil.createUnmarshaller();
         final MultiStatusResponseHandler responseHandler = new MultiStatusResponseHandler(url, unmarshaller);
@@ -124,7 +124,7 @@ public class SardineHttpClientImpl implements Sardine {
      * @param responseHandler
      *            for the type
      * @return parsed response
-     * @throws SardineException
+     * @throws SardineException when something goes wrong
      */
     <T> T wrapResponseHandlerExceptions(final HttpRequestBase request, final ResponseHandler<T> responseHandler)
             throws SardineException {
@@ -222,8 +222,8 @@ public class SardineHttpClientImpl implements Sardine {
 
     /** {@inheritDoc} */
     public void put(String url, byte[] data, String contentType) throws SardineException {
-        HttpPut put = new HttpPut(url);
-        ByteArrayEntity entity = new ByteArrayEntity(data);
+        final HttpPut put = new HttpPut(url);
+        final ByteArrayEntity entity = new ByteArrayEntity(data);
         put(url, put, entity, null);
     }
 
@@ -234,9 +234,9 @@ public class SardineHttpClientImpl implements Sardine {
 
     /** {@inheritDoc} */
     public void put(String url, InputStream dataStream, String contentType) throws SardineException {
-        HttpPut put = new HttpPut(url);
+        final HttpPut put = new HttpPut(url);
         // A length of -1 means "go until end of stream"
-        InputStreamEntity entity = new InputStreamEntity(dataStream, -1L);
+        final InputStreamEntity entity = new InputStreamEntity(dataStream, -1L);
         put(url, put, entity, contentType);
     }
 
@@ -260,14 +260,14 @@ public class SardineHttpClientImpl implements Sardine {
 
     /** {@inheritDoc} */
     public void move(String sourceUrl, String destinationUrl) throws SardineException {
-        HttpMove move = new HttpMove(sourceUrl, destinationUrl);
+        final HttpMove move = new HttpMove(sourceUrl, destinationUrl);
         wrapResponseHandlerExceptions(move, new VoidResponseHandler(sourceUrl, "MOVE sourceUrl: " + sourceUrl
                 + " to destinationUrl: " + destinationUrl + " failed"));
     }
 
     /** {@inheritDoc} */
     public void copy(String sourceUrl, String destinationUrl) throws SardineException {
-        HttpCopy copy = new HttpCopy(sourceUrl, destinationUrl);
+        final HttpCopy copy = new HttpCopy(sourceUrl, destinationUrl);
         wrapResponseHandlerExceptions(copy, new VoidResponseHandler(sourceUrl, "COPY sourceUrl: " + sourceUrl
                 + " to destinationUrl: " + destinationUrl + " failed"));
     }
