@@ -5,14 +5,14 @@ import java.util.Date;
 import java.util.Map;
 
 import com.googlecode.sardine.util.SardineUtil;
-import com.sun.xml.txw2.IllegalAnnotationException;
 
 /**
  * Describes a resource on a remote server. This could be a directory or an actual file.
- * 
+ *
  * @author jonstevens
  */
 public class DavResource {
+
     private final String baseUrl;
 
     private final String name;
@@ -35,7 +35,7 @@ public class DavResource {
 
     /**
      * Represents a webdav response block.
-     * 
+     *
      * @param name
      *            the name of the resource, with all /'s removed
      */
@@ -54,7 +54,7 @@ public class DavResource {
         try {
             baseUri = URI.create(baseUrl + "/").normalize();
         } catch (IllegalArgumentException e) {
-            throw new IllegalAnnotationException("Could not create URI from baseUrl=" + baseUrl, e);
+            throw new IllegalArgumentException("Could not create URI from baseUrl=" + baseUrl, e);
         }
         try {
             if (isDirectory() && currentDirectory) {
