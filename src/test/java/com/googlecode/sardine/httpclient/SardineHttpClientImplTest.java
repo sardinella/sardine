@@ -62,7 +62,7 @@ public class SardineHttpClientImplTest {
     private final SardineHttpClientImpl sardine;
 
     /**
-     * @throws SardineException
+     * @throws IOException
      *
      */
     public SardineHttpClientImplTest() throws IOException {
@@ -122,7 +122,7 @@ public class SardineHttpClientImplTest {
         }
     }
     /**
-     * @throws SardineException
+     * @throws IOException
      */
     @Test
     public void testExists() throws IOException {
@@ -130,7 +130,7 @@ public class SardineHttpClientImplTest {
     }
 
     /**
-     * @throws SardineException
+     * @throws IOException
      */
     @Test
     public void testDoesNotExist() throws IOException {
@@ -235,7 +235,7 @@ public class SardineHttpClientImplTest {
     /**
      * @param resourcename
      * @return
-     * @throws SardineException
+     * @throws IOException
      * @throws JAXBException
      * @throws IOException
      */

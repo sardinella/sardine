@@ -79,7 +79,7 @@ public class ConsumingInputStreamTest {
      * @throws IllegalStateException
      */
     @Test(expected = IOException.class)
-    public void testWrappedInputStreamSardineException() throws IllegalStateException, IOException {
+    public void testWrappedInputStreamIOException() throws IllegalStateException, IOException {
         new ConsumingInputStream("hello", response);
     }
 

@@ -114,7 +114,7 @@ public class SardineHttpClientImpl implements Sardine {
     }
 
     /**
-     * Wraps all checked exceptions coming from the responseHandler to {@link SardineException}.
+     * Wraps all checked exceptions coming from the responseHandler to {@link IOException}.
      *
      * @param <T>
      *            return type
@@ -282,7 +282,7 @@ public class SardineHttpClientImpl implements Sardine {
     }
 
     /**
-     * Small wrapper around HttpClient.execute() in order to wrap the IOException into a SardineException.
+     * Small wrapper around HttpClient.execute() in order to wrap the IOException into a IOException.
      */
     private HttpResponse executeWrapper(HttpRequestBase base) throws IOException {
         try {

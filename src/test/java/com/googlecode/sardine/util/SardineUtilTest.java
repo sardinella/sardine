@@ -151,14 +151,14 @@ public class SardineUtilTest {
      * {@link com.googlecode.sardine.util.SardineUtil#getMultistatus(javax.xml.bind.Unmarshaller, java.io.InputStream, java.lang.String)}
      * .
      *
-     * @throws SardineException
+     * @throws IOException
      */
     @Test
     public void testGetMultistatus() {
         try {
             SardineUtil.getMultistatus(SardineUtil.createUnmarshaller(), new ByteArrayInputStream("noxml".getBytes()),
                     "http://webdav.example.com/");
-            fail("Expected a SardineException.");
+            fail("Expected a IOException.");
         } catch (IOException e) {
             assertEquals(UnmarshalException.class, e.getCause().getClass());
         }

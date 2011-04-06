@@ -43,7 +43,7 @@ abstract class BasicResponseHandler<T> implements ResponseHandler<T> {
 
     /**
      * Checks the response for a statuscode between {@link HttpStatus#SC_OK} and {@link HttpStatus#SC_MULTIPLE_CHOICES}
-     * and throws an {@link SardineException} otherwise.
+     * and throws an {@link IOException} otherwise.
      *
      * @param response
      *            to check

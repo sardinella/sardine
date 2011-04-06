@@ -17,7 +17,7 @@ public class HttpMoveTest {
 
     /**
      * Test method for {@link HttpMove#HttpMove(String, String)}.
-     * @throws SardineException
+     * @throws IOException
      */
     @Test(expected=IllegalArgumentException.class)
     public void testHttpMoveOfDirectoryThrowsExceptionOnMoveToFile() throws IOException

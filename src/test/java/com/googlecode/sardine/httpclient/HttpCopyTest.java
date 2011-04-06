@@ -16,7 +16,7 @@ public class HttpCopyTest {
 
     /**
      * Test method for {@link com.googlecode.sardine.httpclient.HttpCopy#HttpCopy(java.lang.String, java.lang.String)}.
-     * @throws SardineException
+     * @throws IOException
      */
     @Test(expected=IllegalArgumentException.class)
     public void testHttpCopyOfDirectoryThrowsExceptionOnCopyToFile() throws IOException {

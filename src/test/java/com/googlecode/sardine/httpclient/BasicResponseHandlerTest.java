@@ -20,7 +20,7 @@ public class BasicResponseHandlerTest extends ResponseHandlerTestBase {
 
     /**
      * Test method for {@link com.googlecode.sardine.httpclient.BasicResponseHandler#checkGoodResponse(org.apache.http.HttpResponse, java.lang.String)}.
-     * @throws SardineException
+     * @throws IOException
      */
     @Test(expected=IOException.class)
     public void testCheckGoodResponseUpperLimit() throws IOException {
@@ -34,7 +34,7 @@ public class BasicResponseHandlerTest extends ResponseHandlerTestBase {
     }
     /**
      * Test method for {@link com.googlecode.sardine.httpclient.BasicResponseHandler#checkGoodResponse(org.apache.http.HttpResponse, java.lang.String)}.
-     * @throws SardineException
+     * @throws IOException
      */
     @Test(expected=IOException.class)
     public void testCheckGoodResponseLowerLimit() throws IOException {
