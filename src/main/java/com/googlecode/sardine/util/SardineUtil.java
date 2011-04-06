@@ -1,5 +1,6 @@
 package com.googlecode.sardine.util;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
@@ -28,7 +29,7 @@ import com.googlecode.sardine.model.Propfind;
 
 /**
  * Basic utility code. I borrowed some code from the webdavlib for parsing dates.
- * 
+ *
  * @author jonstevens
  */
 public class SardineUtil {
@@ -86,7 +87,7 @@ public class SardineUtil {
 
     /**
      * Hides the irritating declared exception.
-     * 
+     *
      * @return null if there is an IllegalArgumentException
      * @throws RuntimeException
      *             if there is an UnsupportedEncodingException
@@ -103,7 +104,7 @@ public class SardineUtil {
 
     /**
      * Loops over all the possible date formats and tries to find the right one.
-     * 
+     *
      * @param dateValue
      *            to parse
      * @return a valid {@link Date} or null if none of the formats matched.
@@ -115,7 +116,7 @@ public class SardineUtil {
         Date date = null;
         for (final SimpleDateFormat format : FORMATS) {
             try {
-                final SimpleDateFormat clonedFormat = (SimpleDateFormat) format.clone();                
+                final SimpleDateFormat clonedFormat = (SimpleDateFormat) format.clone();
                 date = clonedFormat.parse(dateValue);
                 break;
             } catch (ParseException e) {
@@ -150,18 +151,18 @@ public class SardineUtil {
      * Helper method for getting the Multistatus response processor.
      */
     public static Multistatus getMultistatus(Unmarshaller unmarshaller, InputStream stream, String url)
-            throws SardineException {
+            throws IOException {
         try {
             return (Multistatus) unmarshaller.unmarshal(stream);
         } catch (JAXBException ex) {
-            throw new SardineException("Problem unmarshalling the data from: ", url, ex);
+            throw new IOException("Problem unmarshalling the data from: " + url, ex);
         }
     }
 
     /**
      * Creates a simple Map from the given custom properties of a response. This implementation does not take into
      * account name spaces.
-     * 
+     *
      * @param elements
      *            custom properties.
      * @return a map from the custom properties.
@@ -180,7 +181,7 @@ public class SardineUtil {
 
     /**
      * Creates an {@link Unmarshaller} from the {@link SardineUtil#CONTEXT}.
-     * 
+     *
      * @return a new Unmarshaller.
      * @throws JAXBException
      */

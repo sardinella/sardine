@@ -10,18 +10,17 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 
 import com.googlecode.sardine.model.Multistatus;
-import com.googlecode.sardine.util.SardineException;
 import com.googlecode.sardine.util.SardineUtil;
 
 /**
  * {@link org.apache.http.client.ResponseHandler} which returns the {@link Multistatus} response of a propfind request.
- * 
+ *
  * @author mirko
  */
 final class MultiStatusResponseHandler extends BasicResponseHandler<Multistatus> {
 
     /**
-     * 
+     *
      */
     private final Unmarshaller unmarshaller;
 
@@ -40,8 +39,8 @@ final class MultiStatusResponseHandler extends BasicResponseHandler<Multistatus>
         final HttpEntity entity = response.getEntity();
         final StatusLine statusLine = response.getStatusLine();
         if (entity == null) {
-            throw new SardineException("No entity found in response", getUrl(), statusLine.getStatusCode(),
-                    statusLine.getReasonPhrase());
+            throw new IOException("No entity found in response for " + getUrl() + ", " + statusLine.getStatusCode()
+                    + " " + statusLine.getReasonPhrase());
         }
         return SardineUtil.getMultistatus(unmarshaller, entity.getContent(), getUrl());
     }

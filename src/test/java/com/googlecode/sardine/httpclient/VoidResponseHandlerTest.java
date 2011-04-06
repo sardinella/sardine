@@ -16,8 +16,6 @@ import org.apache.http.client.ClientProtocolException;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.googlecode.sardine.util.SardineException;
-
 /**
  * @author mirko
  */
@@ -50,7 +48,7 @@ public class VoidResponseHandlerTest {
      * @throws IOException
      * @throws ClientProtocolException
      */
-    @Test(expected=SardineException.class)
+    @Test(expected=IOException.class)
     public void testHandleResponseInValid() throws ClientProtocolException, IOException {
         when(statusLine.getStatusCode()).thenReturn(HttpStatus.SC_BAD_GATEWAY);
         when(statusLine.getReasonPhrase()).thenReturn("Bad Gateway");

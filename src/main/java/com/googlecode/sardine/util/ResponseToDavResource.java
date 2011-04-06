@@ -11,6 +11,7 @@ import com.googlecode.sardine.model.Creationdate;
 import com.googlecode.sardine.model.Getcontentlength;
 import com.googlecode.sardine.model.Getcontenttype;
 import com.googlecode.sardine.model.Getlastmodified;
+import com.googlecode.sardine.model.Multistatus;
 import com.googlecode.sardine.model.Prop;
 import com.googlecode.sardine.model.Response;
 

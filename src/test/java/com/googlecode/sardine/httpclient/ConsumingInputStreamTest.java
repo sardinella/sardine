@@ -1,10 +1,10 @@
 /**
- * Copyright 2010 Mirko Friedenhagen 
+ * Copyright 2010 Mirko Friedenhagen
  */
 
 package com.googlecode.sardine.httpclient;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -16,11 +16,9 @@ import org.apache.http.HttpResponse;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.googlecode.sardine.util.SardineException;
-
 /**
  * @author mirko
- * 
+ *
  */
 public class ConsumingInputStreamTest {
 
@@ -30,7 +28,7 @@ public class ConsumingInputStreamTest {
 
     /**
      * Test method for {@link com.googlecode.sardine.httpclient.ConsumingInputStream#read()}.
-     * 
+     *
      * @throws IOException
      * @throws IllegalStateException
      */
@@ -55,7 +53,7 @@ public class ConsumingInputStreamTest {
 
     /**
      * Test method for {@link com.googlecode.sardine.httpclient.ConsumingInputStream#close()}.
-     * 
+     *
      * @throws IOException
      * @throws IllegalStateException
      */
@@ -76,11 +74,11 @@ public class ConsumingInputStreamTest {
      * Test method for
      * {@link com.googlecode.sardine.httpclient.ConsumingInputStream#WrappedInputStream(java.lang.String, org.apache.http.HttpResponse)}
      * .
-     * 
+     *
      * @throws IOException
      * @throws IllegalStateException
      */
-    @Test(expected = SardineException.class)
+    @Test(expected = IOException.class)
     public void testWrappedInputStreamSardineException() throws IllegalStateException, IOException {
         new ConsumingInputStream("hello", response);
     }

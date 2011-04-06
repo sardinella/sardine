@@ -4,9 +4,9 @@
 
 package com.googlecode.sardine.httpclient;
 
-import org.junit.Test;
+import java.io.IOException;
 
-import com.googlecode.sardine.util.SardineException;
+import org.junit.Test;
 
 
 /**
@@ -19,8 +19,8 @@ public class HttpMoveTest {
      * Test method for {@link HttpMove#HttpMove(String, String)}.
      * @throws SardineException
      */
-    @Test(expected=SardineException.class)
-    public void testHttpMoveOfDirectoryThrowsExceptionOnMoveToFile() throws SardineException
+    @Test(expected=IllegalArgumentException.class)
+    public void testHttpMoveOfDirectoryThrowsExceptionOnMoveToFile() throws IOException
     {
         new HttpMove("http://webdav.example.com/foo/", "http://webdav.example.com/bar");
     }

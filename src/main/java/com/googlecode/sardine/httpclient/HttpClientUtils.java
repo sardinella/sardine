@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 Mirko Friedenhagen 
+ * Copyright 2010 Mirko Friedenhagen
  */
 
 package com.googlecode.sardine.httpclient;
@@ -21,17 +21,16 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 
 import com.googlecode.sardine.Version;
-import com.googlecode.sardine.util.SardineException;
 
 /**
  * Helper class with static methods.
- * 
+ *
  * @author mirko
  */
 final class HttpClientUtils {
 
     /**
-     * 
+     *
      */
     private static final int MAX_TOTAL_CONNECTIONS = 100;
 
@@ -44,7 +43,7 @@ final class HttpClientUtils {
 
     /**
      * Adds handling of compression to the client.
-     * 
+     *
      * @param client
      *            the {@link DefaultHttpClient}.
      */
@@ -55,7 +54,7 @@ final class HttpClientUtils {
 
     /**
      * Creates default params, set maximal total connections to {@link HttpClientUtils#MAX_TOTAL_CONNECTIONS}.
-     * 
+     *
      * @return httpParams
      */
     public static HttpParams createDefaultHttpParams() {
@@ -68,7 +67,7 @@ final class HttpClientUtils {
 
     /**
      * Creates a new {@link SchemeRegistry}.
-     * 
+     *
      * @param sslSocketFactory
      *            alternative {@link SSLSocketFactory}.
      * @param port
@@ -88,10 +87,10 @@ final class HttpClientUtils {
 
     /**
      * Creates a new {@link DefaultHttpClient} with default settings.
-     * 
+     *
      * @param sslSocketFactory
      *            alternative {@link SSLSocketFactory}.
-     * 
+     *
      * @param port
      *            alternative port
      * @return a parameterized {@link DefaultHttpClient}.
@@ -105,23 +104,23 @@ final class HttpClientUtils {
 
     /**
      * Checks that destinationUrl ends with a slash when sourceUrl ends with a slash.
-     * 
+     *
      * @param sourceUrl
      *            source of copy or move
      * @param destinationUrl
      *            destination of copy or move
-     * @throws SardineException
+     * @throws IllegalArgumentException
      *             during mismatch
      */
-    static void checkConsistentSlashes(String sourceUrl, String destinationUrl) throws SardineException {
+    static void checkConsistentSlashes(String sourceUrl, String destinationUrl) {
         if (sourceUrl.endsWith("/") && !destinationUrl.endsWith("/")) {
-            throw new SardineException("destinationUrl must end with a / when sourceUrl ends with /", destinationUrl);
+            throw new IllegalArgumentException("destinationUrl must end with a / when sourceUrl ends with / " + destinationUrl);
         }
     }
 
     /**
      * Creates a new {@link StringEntity} whose Content-Type is set to text/xml.
-     * 
+     *
      * @param xml any string, not checked for validity or wellformedness.
      * @return
      */

@@ -26,7 +26,6 @@ import org.junit.Test;
 
 import com.googlecode.sardine.DavResource;
 import com.googlecode.sardine.TUtils;
-import com.googlecode.sardine.util.SardineException;
 
 /**
  * A little integrative tests, environment is set in ${user.home}/sardine-it-test.properties, an xml properties file.
@@ -86,17 +85,17 @@ public class WithPasswordTest {
     }
 
     @Before
-    public void createTestDirectory() throws SardineException {
+    public void createTestDirectory() throws IOException {
         sardine.createDirectory(testDirectory);
     }
 
     @After
-    public void deleteTestDirectory() throws SardineException {
+    public void deleteTestDirectory() throws IOException {
         sardine.delete(testDirectory);
     }
 
     @Test
-    public void listDirectory() throws SardineException {
+    public void listDirectory() throws IOException {
         assertEquals(1, sardine.getResources(testDirectory).size());
     }
 

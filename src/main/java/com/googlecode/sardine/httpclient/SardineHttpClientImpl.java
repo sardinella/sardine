@@ -10,8 +10,6 @@ import java.util.Map;
 
 import javax.xml.bind.Unmarshaller;
 
-import com.googlecode.sardine.DavResource;
-import com.googlecode.sardine.Sardine;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.auth.AuthScope;
@@ -34,10 +32,11 @@ import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.googlecode.sardine.DavResource;
+import com.googlecode.sardine.Sardine;
 import com.googlecode.sardine.model.Multistatus;
 import com.googlecode.sardine.model.Response;
 import com.googlecode.sardine.util.ResponseToDavResource;
-import com.googlecode.sardine.util.SardineException;
 import com.googlecode.sardine.util.SardineUtil;
 
 /**
@@ -54,18 +53,18 @@ public class SardineHttpClientImpl implements Sardine {
     private final boolean authEnabled;
 
     /** */
-    public SardineHttpClientImpl() throws SardineException {
+    public SardineHttpClientImpl() throws IOException {
         this(null, null, null, null, null);
     }
 
     /** */
-    public SardineHttpClientImpl(String username, String password) throws SardineException {
+    public SardineHttpClientImpl(String username, String password) throws IOException {
         this(username, password, null, null);
     }
 
     /** */
     private SardineHttpClientImpl(String username, String password, SSLSocketFactory sslSocketFactory,
-                                  HttpRoutePlanner routePlanner) throws SardineException {
+                                  HttpRoutePlanner routePlanner) throws IOException {
         this(username, password, sslSocketFactory, routePlanner, null);
     }
 
@@ -76,7 +75,7 @@ public class SardineHttpClientImpl implements Sardine {
 
     /** */
     public SardineHttpClientImpl(final DefaultHttpClient httpClient, String username, String password)
-            throws SardineException {
+            throws IOException {
         this.client = httpClient;
         this.client.getCredentialsProvider().setCredentials(new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT),
                 new UsernamePasswordCredentials(username, password));
@@ -87,7 +86,7 @@ public class SardineHttpClientImpl implements Sardine {
      * Main constructor.
      */
     public SardineHttpClientImpl(String username, String password, SSLSocketFactory sslSocketFactory,
-            HttpRoutePlanner routePlanner, Integer port) throws SardineException {
+            HttpRoutePlanner routePlanner, Integer port) throws IOException {
         this.client = HttpClientUtils.createDefaultHttpClient(sslSocketFactory, port);
 
         // for proxy configurations
@@ -104,7 +103,7 @@ public class SardineHttpClientImpl implements Sardine {
     }
 
     /** {@inheritDoc} */
-    public List<DavResource> getResources(final String url) throws SardineException {
+    public List<DavResource> getResources(final String url) throws IOException {
         final URI uri = URI.create(url);
         final HttpPropFind propFind = new HttpPropFind(uri.toASCIIString());
         propFind.setEntity(HttpClientUtils.newXmlStringEntityFromString(SardineUtil.getDefaultPropfindXML()));
@@ -124,21 +123,19 @@ public class SardineHttpClientImpl implements Sardine {
      * @param responseHandler
      *            for the type
      * @return parsed response
-     * @throws SardineException when something goes wrong
+     * @throws IOException when something goes wrong
      */
     <T> T wrapResponseHandlerExceptions(final HttpRequestBase request, final ResponseHandler<T> responseHandler)
-            throws SardineException {
+            throws IOException {
         try {
             setAuthenticationOnMethod(request);
             return client.execute(request, responseHandler);
         } catch (ClientProtocolException e) {
-            throw new SardineException(e);
-        } catch (SardineException e) {
-            throw e;
+            throw new IOException(e);
         } catch (IOException e) {
-            throw new SardineException(e);
+            throw e;
         } catch (AuthenticationException e) {
-            throw new SardineException(e);
+            throw new IOException(e);
         }
     }
 
@@ -183,7 +180,7 @@ public class SardineHttpClientImpl implements Sardine {
 
     /** {@inheritDoc} */
     public void setCustomProps(String url, Map<String, String> setProps, List<String> removeProps)
-            throws SardineException {
+            throws IOException {
         final HttpPropPatch propPatch = new HttpPropPatch(url);
         final String resourcePatchXml = SardineUtil.getResourcePatchXml(setProps, removeProps);
         propPatch.setEntity(HttpClientUtils.newXmlStringEntityFromString(resourcePatchXml));
@@ -192,48 +189,48 @@ public class SardineHttpClientImpl implements Sardine {
     }
 
     /** {@inheritDoc} */
-    public InputStream get(String url) throws SardineException {
+    public InputStream get(String url) throws IOException {
         return getInputStream(url);
     }
 
     /** {@inheritDoc} */
-    public InputStream getInputStream(String url) throws SardineException {
+    public InputStream getInputStream(String url) throws IOException {
         final HttpGet get = new HttpGet(url);
         final HttpResponse response = this.executeWrapper(get);
         final StatusLine statusLine = response.getStatusLine();
         final int statusCode = statusLine.getStatusCode();
         if (!SardineUtil.isGoodResponse(statusCode)) {
             get.abort();
-            throw new SardineException(url, statusCode, statusLine.getReasonPhrase());
+            throw new IOException(url + ", " + statusCode + " " + statusLine.getReasonPhrase());
         }
 
         try {
             return new ConsumingInputStream(url, response);
         } catch (IOException ex) {
             get.abort();
-            throw new SardineException("Error while accessing", url, ex);
+            throw new IOException("Error while accessing " + url, ex);
         }
     }
 
     /** {@inheritDoc} */
-    public void put(String url, byte[] data) throws SardineException {
+    public void put(String url, byte[] data) throws IOException {
         put(url, data, null);
     }
 
     /** {@inheritDoc} */
-    public void put(String url, byte[] data, String contentType) throws SardineException {
+    public void put(String url, byte[] data, String contentType) throws IOException {
         final HttpPut put = new HttpPut(url);
         final ByteArrayEntity entity = new ByteArrayEntity(data);
         put(url, put, entity, null);
     }
 
     /** {@inheritDoc} */
-    public void put(String url, InputStream dataStream) throws SardineException {
+    public void put(String url, InputStream dataStream) throws IOException {
         put(url, dataStream, null);
     }
 
     /** {@inheritDoc} */
-    public void put(String url, InputStream dataStream, String contentType) throws SardineException {
+    public void put(String url, InputStream dataStream, String contentType) throws IOException {
         final HttpPut put = new HttpPut(url);
         // A length of -1 means "go until end of stream"
         final InputStreamEntity entity = new InputStreamEntity(dataStream, -1L);
@@ -244,7 +241,7 @@ public class SardineHttpClientImpl implements Sardine {
      * Private helper for doing the work of a put
      */
     private void put(final String url, HttpPut put, AbstractHttpEntity entity, String contentType)
-            throws SardineException {
+            throws IOException {
         put.setEntity(entity);
         if (contentType != null) {
             put.setHeader("Content-Type", contentType);
@@ -253,33 +250,33 @@ public class SardineHttpClientImpl implements Sardine {
     }
 
     /** {@inheritDoc} */
-    public void delete(String url) throws SardineException {
+    public void delete(String url) throws IOException {
         final HttpDelete delete = new HttpDelete(url);
         wrapResponseHandlerExceptions(delete, new VoidResponseHandler(url, "DELETE failed"));
     }
 
     /** {@inheritDoc} */
-    public void move(String sourceUrl, String destinationUrl) throws SardineException {
+    public void move(String sourceUrl, String destinationUrl) throws IOException {
         final HttpMove move = new HttpMove(sourceUrl, destinationUrl);
         wrapResponseHandlerExceptions(move, new VoidResponseHandler(sourceUrl, "MOVE sourceUrl: " + sourceUrl
                 + " to destinationUrl: " + destinationUrl + " failed"));
     }
 
     /** {@inheritDoc} */
-    public void copy(String sourceUrl, String destinationUrl) throws SardineException {
+    public void copy(String sourceUrl, String destinationUrl) throws IOException {
         final HttpCopy copy = new HttpCopy(sourceUrl, destinationUrl);
         wrapResponseHandlerExceptions(copy, new VoidResponseHandler(sourceUrl, "COPY sourceUrl: " + sourceUrl
                 + " to destinationUrl: " + destinationUrl + " failed"));
     }
 
     /** {@inheritDoc} */
-    public void createDirectory(String url) throws SardineException {
+    public void createDirectory(String url) throws IOException {
         HttpMkCol mkcol = new HttpMkCol(url);
         wrapResponseHandlerExceptions(mkcol, new VoidResponseHandler(url, "MKCOL failed"));
     }
 
     /** {@inheritDoc} */
-    public boolean exists(final String url) throws SardineException {
+    public boolean exists(final String url) throws IOException {
         final HttpHead head = new HttpHead(url);
         return wrapResponseHandlerExceptions(head, new ExistsResponseHandler(url));
     }
@@ -287,16 +284,16 @@ public class SardineHttpClientImpl implements Sardine {
     /**
      * Small wrapper around HttpClient.execute() in order to wrap the IOException into a SardineException.
      */
-    private HttpResponse executeWrapper(HttpRequestBase base) throws SardineException {
+    private HttpResponse executeWrapper(HttpRequestBase base) throws IOException {
         try {
             setAuthenticationOnMethod(base);
             return this.client.execute(base);
         } catch (IOException ex) {
             base.abort();
-            throw new SardineException(ex);
+            throw new IOException(ex);
         } catch (AuthenticationException e) {
             base.abort();
-            throw new SardineException(e);
+            throw new IOException(e);
         }
     }
 

@@ -159,7 +159,7 @@ public class SardineUtilTest {
             SardineUtil.getMultistatus(SardineUtil.createUnmarshaller(), new ByteArrayInputStream("noxml".getBytes()),
                     "http://webdav.example.com/");
             fail("Expected a SardineException.");
-        } catch (SardineException e) {
+        } catch (IOException e) {
             assertEquals(UnmarshalException.class, e.getCause().getClass());
         }
     }

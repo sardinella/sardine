@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 Mirko Friedenhagen 
+ * Copyright 2010 Mirko Friedenhagen
  */
 
 package com.googlecode.sardine.httpclient;
@@ -12,8 +12,6 @@ import org.apache.http.client.ClientProtocolException;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.googlecode.sardine.util.SardineException;
-
 /**
  * @author mirko
  *
@@ -22,10 +20,10 @@ public class BasicResponseHandlerTest extends ResponseHandlerTestBase {
 
     /**
      * Test method for {@link com.googlecode.sardine.httpclient.BasicResponseHandler#checkGoodResponse(org.apache.http.HttpResponse, java.lang.String)}.
-     * @throws SardineException 
+     * @throws SardineException
      */
-    @Test(expected=SardineException.class)
-    public void testCheckGoodResponseUpperLimit() throws SardineException {
+    @Test(expected=IOException.class)
+    public void testCheckGoodResponseUpperLimit() throws IOException {
         Mockito.when(statusLine.getStatusCode()).thenReturn(HttpStatus.SC_MULTIPLE_CHOICES);
         Mockito.when(statusLine.getReasonPhrase()).thenReturn("Multiple Choices");
         new BasicResponseHandler<String>("http://webdav.example.com") {
@@ -36,10 +34,10 @@ public class BasicResponseHandlerTest extends ResponseHandlerTestBase {
     }
     /**
      * Test method for {@link com.googlecode.sardine.httpclient.BasicResponseHandler#checkGoodResponse(org.apache.http.HttpResponse, java.lang.String)}.
-     * @throws SardineException 
+     * @throws SardineException
      */
-    @Test(expected=SardineException.class)
-    public void testCheckGoodResponseLowerLimit() throws SardineException {
+    @Test(expected=IOException.class)
+    public void testCheckGoodResponseLowerLimit() throws IOException {
         Mockito.when(statusLine.getStatusCode()).thenReturn(HttpStatus.SC_CONTINUE);
         Mockito.when(statusLine.getReasonPhrase()).thenReturn("Continue");
         new BasicResponseHandler<String>("http://webdav.example.com") {
