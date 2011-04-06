@@ -20,7 +20,7 @@ import com.googlecode.sardine.util.SardineException;
  */
 class ConsumingInputStream extends InputStream {
 
-    private final InputStream inputStream;
+    private final InputStream delegate;
 
     private final String url;
 
@@ -46,7 +46,7 @@ class ConsumingInputStream extends InputStream {
         if (entity == null) {
             throw new SardineException("Has no entity", url);
         } else {
-            this.inputStream = entity.getContent();
+            this.delegate = entity.getContent();
         }
     }
 
@@ -54,7 +54,7 @@ class ConsumingInputStream extends InputStream {
     @Override
     public int read() throws IOException {
         try {
-            return inputStream.read();
+            return delegate.read();
         } catch (IOException e) {
             throw new IOException("Error while reading from " + url, e);
         }
@@ -67,7 +67,7 @@ class ConsumingInputStream extends InputStream {
     @Override
     public void close() throws IOException {
         response.getEntity().consumeContent();
-        inputStream.close();
+        delegate.close();
         super.close();
     }
 }

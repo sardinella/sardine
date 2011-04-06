@@ -52,7 +52,7 @@ import com.googlecode.sardine.util.SardineUtil;
 
 /**
  * Implementation of the Sardine interface. This is where the meat of the Sardine library lives.
- * 
+ *
  * @author jonstevens
  */
 public class SardineHttpClientImpl implements Sardine {
@@ -126,7 +126,7 @@ public class SardineHttpClientImpl implements Sardine {
 
     /**
      * Wraps all checked exceptions coming from the responseHandler to {@link SardineException}.
-     * 
+     *
      * @param <T>
      *            return type
      * @param request
@@ -155,7 +155,7 @@ public class SardineHttpClientImpl implements Sardine {
     /**
      * Returns a List of {@link DavResource}s from the given {@link Multistatus}. The name of the resource is calculated
      * from the last path element of the Href.
-     * 
+     *
      * @param uri
      *            of the initial request.
      * @param multistatus
@@ -202,6 +202,11 @@ public class SardineHttpClientImpl implements Sardine {
     }
 
     /** {@inheritDoc} */
+    public InputStream get(String url) throws SardineException {
+        return getInputStream(url);
+    }
+
+    /** {@inheritDoc} */
     public InputStream getInputStream(String url) throws SardineException {
         final HttpGet get = new HttpGet(url);
         final HttpResponse response = this.executeWrapper(get);
@@ -216,7 +221,7 @@ public class SardineHttpClientImpl implements Sardine {
             return new ConsumingInputStream(url, response);
         } catch (IOException ex) {
             get.abort();
-            throw new SardineException(ex);
+            throw new SardineException("Error while accessing", url, ex);
         }
     }
 

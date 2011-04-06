@@ -8,7 +8,7 @@ import com.googlecode.sardine.util.SardineException;
 
 /**
  * The main interface for Sardine operations.
- * 
+ *
  * @author jonstevens
  */
 public interface Sardine {
@@ -22,6 +22,11 @@ public interface Sardine {
      */
     public void setCustomProps(String url, Map<String, String> addProps, List<String> removeProps)
             throws SardineException;
+
+    /**
+     * Get an input stream for url. It is the callers responsibility to close the stream after usage.
+     */
+    public InputStream get(String url) throws SardineException;
 
     /**
      * Get an input stream for url. It is the callers responsibility to close the stream after usage.
