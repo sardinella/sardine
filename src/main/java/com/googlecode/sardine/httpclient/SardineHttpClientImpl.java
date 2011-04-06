@@ -34,16 +34,6 @@ import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import com.googlecode.sardine.httpclient.ExistsResponseHandler;
-import com.googlecode.sardine.httpclient.HttpClientUtils;
-import com.googlecode.sardine.httpclient.HttpCopy;
-import com.googlecode.sardine.httpclient.HttpMkCol;
-import com.googlecode.sardine.httpclient.HttpMove;
-import com.googlecode.sardine.httpclient.HttpPropFind;
-import com.googlecode.sardine.httpclient.HttpPropPatch;
-import com.googlecode.sardine.httpclient.MultiStatusResponseHandler;
-import com.googlecode.sardine.httpclient.VoidResponseHandler;
-import com.googlecode.sardine.httpclient.ConsumingInputStream;
 import com.googlecode.sardine.model.Multistatus;
 import com.googlecode.sardine.model.Response;
 import com.googlecode.sardine.util.ResponseToDavResource;
