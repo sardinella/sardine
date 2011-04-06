@@ -11,7 +11,6 @@ import java.util.Map;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.auth.Credentials;
@@ -194,26 +193,24 @@ public class SardineHttpClientImpl implements Sardine {
 
     /** {@inheritDoc} */
     public InputStream get(String url) throws IOException {
-        return getInputStream(url);
-    }
-
-    /** {@inheritDoc} */
-    public InputStream getInputStream(String url) throws IOException {
+        // This method can not use a ResponseHandler,
+        // as InputStream is consumed otherwise.
         final HttpGet get = new HttpGet(url);
         final HttpResponse response = this.executeWrapper(get);
-        final StatusLine statusLine = response.getStatusLine();
-        final int statusCode = statusLine.getStatusCode();
-        if (!SardineUtil.isGoodResponse(statusCode)) {
-            get.abort();
-            throw new IOException(url + ", " + statusCode + " " + statusLine.getReasonPhrase());
-        }
-
+        final VoidResponseHandler handler = new VoidResponseHandler(url, "GET failed");
         try {
+            handler.handleResponse(response);
+            // Will consume the entity when the stream is closed
             return new ConsumingInputStream(url, response);
         } catch (IOException ex) {
             get.abort();
             throw new IOException("Error while accessing " + url, ex);
         }
+    }
+
+    /** {@inheritDoc} */
+    public InputStream getInputStream(String url) throws IOException {
+        return get(url);
     }
 
     /** {@inheritDoc} */
@@ -296,7 +293,8 @@ public class SardineHttpClientImpl implements Sardine {
     }
 
     /**
-     * Small wrapper around HttpClient.execute() in order to wrap the IOException into a IOException.
+     * Small wrapper around HttpClient.execute() in order to wrap the IOException into a IOException
+     * and setting authentication.
      */
     private HttpResponse executeWrapper(HttpRequestBase base) throws IOException {
         try {
