@@ -1,9 +1,10 @@
 /**
- * Copyright 2010 Mirko Friedenhagen 
+ * Copyright 2010 Mirko Friedenhagen
  */
 
 package com.googlecode.sardine.util;
 
+import static org.hamcrest.CoreMatchers.anyOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
@@ -29,12 +30,12 @@ import org.junit.Test;
 
 /**
  * @author mirko
- * 
+ *
  */
 public class SardineUtilTest {
 
     /**
-     * 
+     *
      */
     private static final String STANDARD_DAV_RESOURCE_START = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>";
 
@@ -48,15 +49,15 @@ public class SardineUtilTest {
     }
 
     /**
-     * Test method for {@link com.googlecode.sardine.util.SardineUtil#parseDate(java.lang.String)}. 
-     * new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US), 
-     * new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US), 
-     * new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'", Locale.US), 
-     * new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US), 
-     * new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US), 
-     * new SimpleDateFormat("EEEEEE, dd-MMM-yy HH:mm:ss zzz", Locale.US), 
+     * Test method for {@link com.googlecode.sardine.util.SardineUtil#parseDate(java.lang.String)}.
+     * new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US),
+     * new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US),
+     * new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'", Locale.US),
+     * new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US),
+     * new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US),
+     * new SimpleDateFormat("EEEEEE, dd-MMM-yy HH:mm:ss zzz", Locale.US),
      * new SimpleDateFormat("EEE MMMM d HH:mm:ss yyyy", Locale.US)
-     * 
+     *
      * @throws ParseException
      */
     @Test
@@ -72,8 +73,8 @@ public class SardineUtilTest {
                 "Friday, 31-Dec-10 13:59:01 GMT", //
                 "Fri December 31 13:59:01 2010");
         for (String date : dates) {
-            final long actualTime = SardineUtil.parseDate(date).getTime();        
-            assertEquals(expectedTime, actualTime);            
+            final long actualTime = SardineUtil.parseDate(date).getTime();
+            assertEquals(expectedTime, actualTime);
         }
 
     }
@@ -94,34 +95,39 @@ public class SardineUtilTest {
      */
     @Test
     public void testGetDefaultPropfindXML() {
-        assertEquals(
-                //
-                STANDARD_DAV_RESOURCE_START + "<D:propfind xmlns:D=\"DAV:\" xmlns:S=\"SAR:\"><D:allprop/></D:propfind>",
-                SardineUtil.getDefaultPropfindXML());
+        final String defaultPropfindXML = SardineUtil.getDefaultPropfindXML();
+        checkXmlDeclaration(defaultPropfindXML);
+        assertThat(defaultPropfindXML, containsString("allprop/>"));
+    }
+
+    /**
+     * @param xml
+     */
+    void checkXmlDeclaration(final String xml) {
+        assertTrue(xml + " must start with " + STANDARD_DAV_RESOURCE_START, xml.startsWith(STANDARD_DAV_RESOURCE_START));
     }
 
     /**
      * Test method for
      * {@link com.googlecode.sardine.util.SardineUtil#getResourcePatchXml(java.util.Map, java.util.List)}.
-     * 
+     *
      * @throws IOException
      */
     @Test
     public void testGetResourcePatchXmlWithTwoRemovalElements() throws IOException {
         final String xml = SardineUtil.getResourcePatchXml(null, Arrays.asList("A", "ö"));
-        assertEquals(
-                STANDARD_DAV_RESOURCE_START
-                        + "<D:propertyupdate xmlns:D=\"DAV:\" xmlns:S=\"SAR:\"><D:remove><D:prop><S:A/><S:ö/></D:prop></D:remove></D:propertyupdate>",
-                xml);
+        checkXmlDeclaration(xml);
+        assertThat(xml, containsString("remove>"));
+        assertThat(xml, containsString("S:ö"));
+        assertThat(xml, containsString("S:A"));
     }
 
     @Test
     public void testGetResourcePatchXmlWithEmptyRemovalList() throws IOException {
         final String xml = SardineUtil.getResourcePatchXml(null, Arrays.asList(new String[] {}));
-        assertEquals(
-                STANDARD_DAV_RESOURCE_START
-                        + "<D:propertyupdate xmlns:D=\"DAV:\" xmlns:S=\"SAR:\"><D:remove><D:prop/></D:remove></D:propertyupdate>",
-                xml);
+        checkXmlDeclaration(xml);
+        assertThat(xml, containsString("remove>"));
+        assertThat(xml, containsString("prop/>"));
     }
 
     @Test
@@ -130,16 +136,21 @@ public class SardineUtilTest {
         setProps.put("foo", "bar");
         setProps.put("mööp", "määp");
         final String xml = SardineUtil.getResourcePatchXml(setProps, Arrays.asList("a", "b"));
-        assertThat(xml, containsString("<S:mööp>määp</S:mööp>"));
-        assertThat(xml, containsString("<S:foo>bar</S:foo>"));
-        assertThat(xml, containsString("<D:remove><D:prop><S:a/><S:b/></D:prop></D:remove>"));
+        checkXmlDeclaration(xml);
+        assertThat(xml, containsString("määp</S:mööp>"));
+        assertThat(xml, containsString("bar</S:foo>"));
+        assertThat(
+                xml,
+                anyOf(containsString("<D:remove><D:prop><S:a/><S:b/></D:prop></D:remove>"),
+                      containsString("<remove><prop><S:a xmlns:S=\"SAR:\"/><S:b xmlns:S=\"SAR:\"/></prop></remove>")));
+
     }
 
     /**
      * Test method for
      * {@link com.googlecode.sardine.util.SardineUtil#getMultistatus(javax.xml.bind.Unmarshaller, java.io.InputStream, java.lang.String)}
      * .
-     * 
+     *
      * @throws SardineException
      */
     @Test
@@ -173,8 +184,9 @@ public class SardineUtilTest {
 
     @Test
     public void createPropfindXml() {
-        assertEquals(
-                "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><D:propfind xmlns:D=\"DAV:\" xmlns:S=\"SAR:\"><D:allprop/></D:propfind>",
-                SardineUtil.getDefaultPropfindXML());
+        final String xml = SardineUtil.getDefaultPropfindXML();
+        checkXmlDeclaration(xml);
+        assertThat(xml, containsString("propfind>"));
+        assertThat(xml, containsString("allprop/>"));
     }
 }
