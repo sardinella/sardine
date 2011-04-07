@@ -164,7 +164,7 @@ public class SardineHttpClientImpl implements Sardine {
             hostPart = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null)
                     .toASCIIString();
         } catch (URISyntaxException e) {
-            throw new RuntimeException("Could not get hostpart from " + uri, e);
+            throw new IllegalArgumentException("Could not get hostpart from " + uri, e);
         }
 
         final String baseUrl;
@@ -209,6 +209,7 @@ public class SardineHttpClientImpl implements Sardine {
     }
 
     /** {@inheritDoc} */
+    @Deprecated
     public InputStream getInputStream(String url) throws IOException {
         return get(url);
     }

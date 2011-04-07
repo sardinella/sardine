@@ -1,5 +1,5 @@
 /**
- * Copyright 2010 Mirko Friedenhagen 
+ * Copyright 2010 Mirko Friedenhagen
  */
 
 package com.googlecode.sardine.httpclient;
@@ -29,7 +29,7 @@ import com.googlecode.sardine.TUtils;
 
 /**
  * A little integrative tests, environment is set in ${user.home}/sardine-it-test.properties, an xml properties file.
- * 
+ *
  * <pre>
  * &lt;?xml version="1.0" encoding="UTF-8" standalone="no"?>
  * &lt;!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
@@ -40,7 +40,7 @@ import com.googlecode.sardine.TUtils;
  *   &lt;entry key="webdavPasswordEncoding">iso-8859-1&lt;/entry>
  * &lt;/properties>
  * </pre>
- * 
+ *
  * @author mirko
  */
 public class WithPasswordTest {
@@ -59,7 +59,7 @@ public class WithPasswordTest {
 
     /**
      * @throws IOException
-     * 
+     *
      */
     public WithPasswordTest() throws IOException {
         final Properties properties = new Properties();
@@ -110,7 +110,7 @@ public class WithPasswordTest {
         sardine.move(testDirectory + "bar.txt", renamed);
         final List<DavResource> resources = sardine.getResources(testDirectory);
         assertEquals(3, resources.size());
-        final InputStream stream = sardine.getInputStream(renamed);
+        final InputStream stream = sardine.get(renamed);
         try {
             assertEquals(content, IOUtils.toString(stream));
         } finally {

@@ -30,7 +30,9 @@ public interface Sardine {
 
     /**
      * Get an input stream for url. It is the callers responsibility to close the stream after usage.
+     * Use {@link Sardine#get(String)} instead.
      */
+    @Deprecated
     public InputStream getInputStream(String url) throws IOException;
 
     /**

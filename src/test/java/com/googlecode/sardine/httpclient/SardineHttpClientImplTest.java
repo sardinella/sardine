@@ -114,7 +114,7 @@ public class SardineHttpClientImplTest {
 
     @Test
     public void testGetPomContentIntegrative() throws IOException {
-        final InputStream stream = sardine.getInputStream(SVN_POM_BASE_URL);
+        final InputStream stream = sardine.get(SVN_POM_BASE_URL);
         try {
             assertEquals(7863, IOUtils.toString(stream).length());
         } finally {
