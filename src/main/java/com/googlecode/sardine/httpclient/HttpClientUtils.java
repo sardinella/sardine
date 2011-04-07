@@ -27,7 +27,7 @@ import com.googlecode.sardine.Version;
  *
  * @author mirko
  */
-final class HttpClientUtils {
+public final class HttpClientUtils {
 
     /**
      *
@@ -102,6 +102,22 @@ final class HttpClientUtils {
         return new DefaultHttpClient(cm, params);
     }
 
+    /**
+     * Creates a new {@link DefaultHttpClient} with default settings.
+     *
+     * @param sslSocketFactory
+     *            alternative {@link SSLSocketFactory}.
+     *
+     * @param port
+     *            alternative port
+     * @return a parameterized {@link DefaultHttpClient}.
+     */
+    public static DefaultHttpClient createDefaultHttpClient(ClientConnectionManager connectionManager, SSLSocketFactory sslSocketFactory, Integer port) {
+        final HttpParams params = createDefaultHttpParams();
+        final SchemeRegistry schemeRegistry = createDefaultSchemeRegistry(sslSocketFactory, port);
+        final ClientConnectionManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
+        return new DefaultHttpClient(cm, params);
+    }
     /**
      * Checks that destinationUrl ends with a slash when sourceUrl ends with a slash.
      *
