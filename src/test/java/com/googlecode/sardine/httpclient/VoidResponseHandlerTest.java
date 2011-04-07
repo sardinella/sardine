@@ -13,7 +13,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
