@@ -25,8 +25,7 @@ public class VoidResponseHandlerTest {
 
     private final StatusLine statusLine = mock(StatusLine.class);
 
-    @Before
-    public void connectStatusLine() {
+    private void connectStatusLine() {
         when(response.getStatusLine()).thenReturn(statusLine);
     }
 
@@ -38,6 +37,7 @@ public class VoidResponseHandlerTest {
      */
     @Test
     public void testHandleResponseValid() throws ClientProtocolException, IOException {
+        connectStatusLine();
         when(statusLine.getStatusCode()).thenReturn(HttpStatus.SC_OK);
         new VoidResponseHandler("http://www.example.com", "Oops").handleResponse(response);
     }
@@ -50,6 +50,7 @@ public class VoidResponseHandlerTest {
      */
     @Test(expected=IOException.class)
     public void testHandleResponseInValid() throws ClientProtocolException, IOException {
+        connectStatusLine();
         when(statusLine.getStatusCode()).thenReturn(HttpStatus.SC_BAD_GATEWAY);
         when(statusLine.getReasonPhrase()).thenReturn("Bad Gateway");
         new VoidResponseHandler("http://www.example.com", "Oops").handleResponse(response);
