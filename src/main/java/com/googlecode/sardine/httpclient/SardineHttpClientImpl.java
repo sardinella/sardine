@@ -40,13 +40,13 @@ import com.googlecode.sardine.util.ResponseToDavResource;
 import com.googlecode.sardine.util.SardineUtil;
 
 /**
- * Implementation of the Sardine interface. This is where the meat of the Sardine library lives.
+ * Implementation of the Sardine interface for {@link DefaultHttpClient}. This is where the meat of the Sardine library lives.
  *
  * @author jonstevens
  */
 public class SardineHttpClientImpl implements Sardine {
 
-    /** */
+    /** our httpclient. */
     private final DefaultHttpClient client;
 
     /** was a username/password passed in? */
