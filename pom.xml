@@ -92,7 +92,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.1.1</version>
+            <version>4.1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -373,5 +373,13 @@
             </plugin>
         </plugins>
     </reporting>
-
+    <repositories>
+        <repository>
+            <id>huschteguzzel-snapshots</id>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <url>http://huschteguzzel.de/hudson/plugin/repository/project/httpclient-4.1.x/LastSuccessful/repository/</url>
+        </repository>
+    </repositories>
 </project>
