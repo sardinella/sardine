@@ -103,6 +103,7 @@ public class WithPasswordTest {
     public void moreTests() throws IOException {
         final String content = "hällo welt";
         sardine.put(testDirectory + "foo.txt", content.getBytes());
+        System.out.println("Here");
         assertEquals(2, sardine.getResources(testDirectory).size());
         sardine.copy(testDirectory + "foo.txt", testDirectory + "bar.txt");
         assertEquals(3, sardine.getResources(testDirectory).size());
