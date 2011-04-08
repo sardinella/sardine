@@ -7,6 +7,7 @@ package com.googlecode.sardine.httpclient;
 import java.io.UnsupportedEncodingException;
 
 import org.apache.http.HttpVersion;
+import org.apache.http.client.protocol.ResponseContentEncoding;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.params.ConnManagerParams;
 import org.apache.http.conn.scheme.PlainSocketFactory;
@@ -49,7 +50,7 @@ public final class HttpClientUtils {
      */
     public static void enableCompression(DefaultHttpClient client) {
         client.addRequestInterceptor(new GzipSupportRequestInterceptor());
-        client.addResponseInterceptor(new GzipSupportResponseInterceptor());
+        client.addResponseInterceptor(new ResponseContentEncoding());
     }
 
     /**
