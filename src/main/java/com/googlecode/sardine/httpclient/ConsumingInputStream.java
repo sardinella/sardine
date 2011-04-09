@@ -9,18 +9,17 @@ import java.io.InputStream;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
 
 /**
- * Wrapper for the input stream, will consume the rest of the response on {@link ConsumingInputStream#close()}. This class
- * will decorate an {@link IOException} thrown while reading so you know which url was invoked.
+ * Wrapper for the input stream, will consume the rest of the response on {@link ConsumingInputStream#close()}. This
+ * class will decorate an {@link IOException} thrown while reading so you know which url was invoked.
  *
  * @author mirko
  */
 class ConsumingInputStream extends InputStream {
 
     private final InputStream delegate;
-
-    private final String url;
 
     private final HttpResponse response;
 
@@ -36,7 +35,6 @@ class ConsumingInputStream extends InputStream {
      */
     public ConsumingInputStream(final String url, final HttpResponse response) throws IllegalStateException,
             IOException {
-        this.url = url;
         this.response = response;
         final HttpEntity entity = response.getEntity();
         if (entity == null) {
@@ -46,24 +44,48 @@ class ConsumingInputStream extends InputStream {
         }
     }
 
-    /** {@inheritDoc} */
     @Override
-    public int read() throws IOException {
-        try {
-            return delegate.read();
-        } catch (IOException e) {
-            throw new IOException("Error while reading from " + url, e);
-        }
+    public int read(byte[] b) throws IOException {
+        return delegate.read(b);
     }
 
-    /** {@inheritDoc}
-     *
-     * This method will consume the content of the {@link HttpEntity}.
-     */
+    @Override
+    public int read(byte[] b, int off, int len) throws IOException {
+        return delegate.read(b, off, len);
+    }
+
+    @Override
+    public long skip(long n) throws IOException {
+        return delegate.skip(n);
+    }
+
+    @Override
+    public int available() throws IOException {
+        return delegate.available();
+    }
+
+    @Override
+    public void mark(int readlimit) {
+        delegate.mark(readlimit);
+    }
+
+    @Override
+    public void reset() throws IOException {
+        delegate.reset();
+    }
+
+    @Override
+    public boolean markSupported() {
+        return delegate.markSupported();
+    }
+
+    @Override
+    public int read() throws IOException {
+        return delegate.read();
+    }
+
     @Override
     public void close() throws IOException {
-        response.getEntity().consumeContent();
-        delegate.close();
-        super.close();
+        EntityUtils.consume(response.getEntity());
     }
 }

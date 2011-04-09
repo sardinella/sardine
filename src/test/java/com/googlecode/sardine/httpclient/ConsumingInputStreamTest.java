@@ -43,8 +43,7 @@ public class ConsumingInputStreamTest {
             try {
                 stream.read();
             } catch (IOException e) {
-                assertEquals("java.io.IOException: Error while reading from hello", e.toString());
-                assertEquals("java.io.IOException: oops", e.getCause().toString());
+                assertEquals("java.io.IOException: oops", e.toString());
             }
         } finally {
             stream.close();
