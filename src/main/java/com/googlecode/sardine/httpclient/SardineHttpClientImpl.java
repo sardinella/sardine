@@ -201,7 +201,7 @@ public class SardineHttpClientImpl implements Sardine {
         try {
             handler.handleResponse(response);
             // Will consume the entity when the stream is closed
-            return new ConsumingInputStream(url, response);
+            return new ConsumingInputStream(response);
         } catch (IOException ex) {
             get.abort();
             throw new IOException("Error while accessing " + url, ex);

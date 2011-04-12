@@ -12,8 +12,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 
 /**
- * Wrapper for the input stream, will consume the rest of the response on {@link ConsumingInputStream#close()}. This
- * class will decorate an {@link IOException} thrown while reading so you know which url was invoked.
+ * Wrapper for the input stream of a {@link HttpEntity}, will consume the rest of the response on
+ * {@link ConsumingInputStream#close()}.
  *
  * @author mirko
  */
@@ -24,24 +24,17 @@ class ConsumingInputStream extends InputStream {
     private final HttpResponse response;
 
     /**
-     * @param url
-     *            for exception information
      * @param response
      *            to get the {@link InputStream} from.
      * @throws IllegalStateException
      *             see {@link HttpEntity#getContent()}.
      * @throws IOException
-     *             when when {@link HttpResponse#getEntity()} is null or {@link HttpEntity#getContent()}.
+     *             when {@link HttpEntity#getContent()}.
      */
-    public ConsumingInputStream(final String url, final HttpResponse response) throws IllegalStateException,
-            IOException {
+    public ConsumingInputStream(final HttpResponse response) throws IllegalStateException, IOException {
         this.response = response;
         final HttpEntity entity = response.getEntity();
-        if (entity == null) {
-            throw new IOException("Has no entity" + url);
-        } else {
-            this.delegate = entity.getContent();
-        }
+        this.delegate = entity.getContent();
     }
 
     @Override

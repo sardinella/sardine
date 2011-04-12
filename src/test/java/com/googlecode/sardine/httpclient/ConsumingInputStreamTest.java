@@ -38,7 +38,7 @@ public class ConsumingInputStreamTest {
         InputStream mockInputStream = Mockito.mock(InputStream.class);
         Mockito.when(mockInputStream.read()).thenThrow(new IOException("oops"));
         Mockito.when(entity.getContent()).thenReturn(mockInputStream);
-        final ConsumingInputStream stream = new ConsumingInputStream("hello", response);
+        final ConsumingInputStream stream = new ConsumingInputStream(response);
         try {
             try {
                 stream.read();
@@ -61,25 +61,12 @@ public class ConsumingInputStreamTest {
         Mockito.when(response.getEntity()).thenReturn(entity);
         final String expected = "content";
         Mockito.when(entity.getContent()).thenReturn(new ByteArrayInputStream(expected.getBytes()));
-        final ConsumingInputStream stream = new ConsumingInputStream("hello", response);
+        final ConsumingInputStream stream = new ConsumingInputStream(response);
         try {
             assertEquals(expected, IOUtils.toString(stream));
         } finally {
             stream.close();
         }
-    }
-
-    /**
-     * Test method for
-     * {@link com.googlecode.sardine.httpclient.ConsumingInputStream#WrappedInputStream(java.lang.String, org.apache.http.HttpResponse)}
-     * .
-     *
-     * @throws IOException
-     * @throws IllegalStateException
-     */
-    @Test(expected = IOException.class)
-    public void testWrappedInputStreamIOException() throws IllegalStateException, IOException {
-        new ConsumingInputStream("hello", response);
     }
 
 }
