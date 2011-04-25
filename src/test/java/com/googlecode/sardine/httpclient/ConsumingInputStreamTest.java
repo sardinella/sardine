@@ -35,6 +35,7 @@ public class ConsumingInputStreamTest {
     @Test
     public void testReadWithException() throws IllegalStateException, IOException {
         Mockito.when(response.getEntity()).thenReturn(entity);
+        Mockito.when(entity.isStreaming()).thenReturn(true);
         InputStream mockInputStream = Mockito.mock(InputStream.class);
         Mockito.when(mockInputStream.read()).thenThrow(new IOException("oops"));
         Mockito.when(entity.getContent()).thenReturn(mockInputStream);
@@ -48,6 +49,7 @@ public class ConsumingInputStreamTest {
         } finally {
             stream.close();
         }
+        Mockito.verify(entity.getContent()).close();
     }
 
     /**
@@ -58,9 +60,10 @@ public class ConsumingInputStreamTest {
      */
     @Test
     public void testClose() throws IllegalStateException, IOException {
-        Mockito.when(response.getEntity()).thenReturn(entity);
+
         final String expected = "content";
         Mockito.when(entity.getContent()).thenReturn(new ByteArrayInputStream(expected.getBytes()));
+        Mockito.when(response.getEntity()).thenReturn(entity);
         final ConsumingInputStream stream = new ConsumingInputStream(response);
         try {
             assertEquals(expected, IOUtils.toString(stream));
