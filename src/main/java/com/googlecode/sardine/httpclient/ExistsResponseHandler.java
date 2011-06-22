@@ -8,7 +8,7 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 
 /**
- * {@link org.apache.http.client.ResponseHandler} which checks wether a given resource exists.
+ * {@link org.apache.http.client.ResponseHandler} which checks whether a given resource exists.
  *
  * @author mirko
  */
