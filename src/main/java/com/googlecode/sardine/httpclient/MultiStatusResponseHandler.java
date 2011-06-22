@@ -13,8 +13,9 @@ import com.googlecode.sardine.model.Multistatus;
 import com.googlecode.sardine.util.SardineUtil;
 
 /**
- * {@link org.apache.http.client.ResponseHandler} which returns the {@link Multistatus} response of a propfind request.
- *
+ * {@link org.apache.http.client.ResponseHandler} which returns the {@link Multistatus} response of a
+ * {@link HttpPropFind} request.
+ * 
  * @author mirko
  */
 final class MultiStatusResponseHandler extends BasicResponseHandler<Multistatus> {
@@ -26,7 +27,9 @@ final class MultiStatusResponseHandler extends BasicResponseHandler<Multistatus>
 
     /**
      * @param url
+     *            used for error reports.
      * @param unmarshaller
+     *            to be injected.
      */
     public MultiStatusResponseHandler(final String url, final Unmarshaller unmarshaller) {
         super(url);

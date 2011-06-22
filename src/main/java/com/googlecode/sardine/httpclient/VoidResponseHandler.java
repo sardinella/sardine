@@ -6,8 +6,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 
 /**
- * {@link org.apache.http.client.ResponseHandler} which just executes the request and checks the answer is
- * in the valid range of {@link BasicResponseHandler#checkGoodResponse(HttpResponse, String)}.
+ * {@link org.apache.http.client.ResponseHandler} which just executes the request and checks the answer is in the valid
+ * range of {@link BasicResponseHandler#checkGoodResponse(HttpResponse, String)}.
  * 
  * @author mirko
  */
@@ -17,10 +17,13 @@ final class VoidResponseHandler extends BasicResponseHandler<Void> {
 
     /**
      * @param url
+     *            used for error reports.
+     * @param errorMessage
+     *            used for error reports when the response is not good.
      */
-    public VoidResponseHandler(String url, final String msg) {
+    public VoidResponseHandler(String url, final String errorMessage) {
         super(url);
-        this.msg = msg;
+        this.msg = errorMessage;
 
     }
 

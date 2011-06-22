@@ -21,12 +21,12 @@ import org.apache.http.client.ResponseHandler;
  */
 abstract class BasicResponseHandler<T> implements ResponseHandler<T> {
 
-    /** url for documentation. */
+    /** url for documentation and error messages. */
     private final String url;
 
     /**
      * @param url
-     *            for documentation.
+     *            for documentation and error messages.
      */
     protected BasicResponseHandler(final String url) {
         this.url = url;
@@ -47,16 +47,16 @@ abstract class BasicResponseHandler<T> implements ResponseHandler<T> {
      *
      * @param response
      *            to check
-     * @param msg
+     * @param errorMessage
      *            to add
      * @throws IOException
      *             when the status code is not acceptable.
      */
-    void checkGoodResponse(HttpResponse response, String msg) throws IOException {
+    void checkGoodResponse(HttpResponse response, String errorMessage) throws IOException {
         final StatusLine statusLine = response.getStatusLine();
         final int statusCode = statusLine.getStatusCode();
         if (!((statusCode >= HttpStatus.SC_OK) && (statusCode < HttpStatus.SC_MULTIPLE_CHOICES))) {
-            throw new IOException(msg + " for: " + getUrl() + ", " + statusLine.getStatusCode() + " "
+            throw new IOException(errorMessage + " for: " + getUrl() + ", " + statusLine.getStatusCode() + " "
                     + statusLine.getReasonPhrase());
         }
     }
