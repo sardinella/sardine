@@ -15,6 +15,7 @@ class HttpPropPatch extends HttpEntityEnclosingRequestBase {
         this.setHeader("Content-Type", "text/xml" + HTTP.CHARSET_PARAM + "UTF-8");
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getMethod() {
         return "PROPPATCH";

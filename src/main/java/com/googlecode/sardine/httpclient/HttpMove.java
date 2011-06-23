@@ -18,6 +18,7 @@ class HttpMove extends HttpEntityEnclosingRequestBase {
         this.setURI(URI.create(sourceUrl));
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getMethod() {
         return "MOVE";

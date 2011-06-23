@@ -13,6 +13,7 @@ class HttpMkCol extends HttpEntityEnclosingRequestBase {
         this.setURI(URI.create(url));
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getMethod() {
         return "MKCOL";

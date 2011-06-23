@@ -19,6 +19,7 @@ class HttpCopy extends HttpEntityEnclosingRequestBase {
 
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getMethod() {
         return "COPY";
