@@ -10,11 +10,11 @@ import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
  * Simple class for making copy a bit easier to deal with. Assumes Overwrite = T.
  */
 class HttpCopy extends HttpEntityEnclosingRequestBase {
-    public HttpCopy(String sourceUrl, String destinationUrl) throws IOException {
+    public HttpCopy(String sourceUrl, String destinationUrl, boolean overwrite) throws IOException {
         super();
         HttpClientUtils.checkConsistentSlashes(sourceUrl, destinationUrl);
         this.setHeader("Destination", destinationUrl);
-        this.setHeader("Overwrite", "T");
+        this.setHeader("Overwrite", overwrite ? "T" : "F");
         this.setURI(URI.create(sourceUrl));
 
     }

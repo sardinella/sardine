@@ -269,16 +269,16 @@ public class SardineHttpClientImpl implements Sardine {
 
     /** {@inheritDoc} */
     public void move(String sourceUrl, String destinationUrl) throws IOException {
-        final HttpMove move = new HttpMove(sourceUrl, destinationUrl);
-        wrapResponseHandlerExceptions(move, new VoidResponseHandler(sourceUrl, "MOVE sourceUrl: " + sourceUrl
-                + " to destinationUrl: " + destinationUrl + " failed"));
+        final HttpMove move = new HttpMove(sourceUrl, destinationUrl, true);
+        wrapResponseHandlerExceptions(move, new VoidResponseHandler(sourceUrl, "MOVE '" + sourceUrl
+                + "' to '" + destinationUrl + "' failed"));
     }
 
     /** {@inheritDoc} */
     public void copy(String sourceUrl, String destinationUrl) throws IOException {
-        final HttpCopy copy = new HttpCopy(sourceUrl, destinationUrl);
-        wrapResponseHandlerExceptions(copy, new VoidResponseHandler(sourceUrl, "COPY sourceUrl: " + sourceUrl
-                + " to destinationUrl: " + destinationUrl + " failed"));
+        final HttpCopy copy = new HttpCopy(sourceUrl, destinationUrl, true);
+        wrapResponseHandlerExceptions(copy, new VoidResponseHandler(sourceUrl, "COPY '" + sourceUrl
+                + " to '" + destinationUrl + "' failed"));
     }
 
     /** {@inheritDoc} */

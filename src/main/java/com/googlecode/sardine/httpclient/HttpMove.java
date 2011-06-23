@@ -10,11 +10,12 @@ import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
  * Simple class for making move a bit easier to deal with.
  */
 class HttpMove extends HttpEntityEnclosingRequestBase {
-    public HttpMove(String sourceUrl, String destinationUrl) throws IOException {
+
+    public HttpMove(String sourceUrl, String destinationUrl, boolean overwrite) throws IOException {
         super();
         HttpClientUtils.checkConsistentSlashes(sourceUrl, destinationUrl);
         this.setHeader("Destination", destinationUrl);
-        this.setHeader("Overwrite", "T");
+        this.setHeader("Overwrite", overwrite ? "T" : "F");
         this.setURI(URI.create(sourceUrl));
     }
 

@@ -12,72 +12,78 @@ import java.util.Map;
  * @author jonstevens
  */
 public interface Sardine {
+
     /**
      * Gets a directory listing.
      */
+    @WebdavOnly
     public List<DavResource> getResources(String url) throws IOException;
 
     /**
-     * Add or remove custom properties for a url.
+     * Adds or removes custom properties for a url.
      */
+    @WebdavOnly
     public void setCustomProps(String url, Map<String, String> addProps, List<String> removeProps)
             throws IOException;
 
     /**
-     * Get an input stream for url. It is the callers responsibility to close the stream after usage.
+     * Gets an input stream for url. It is the callers responsibility to close the stream after usage.
      */
     public InputStream get(String url) throws IOException;
 
     /**
-     * Get an input stream for url. It is the callers responsibility to close the stream after usage.
+     * Gets an input stream for url. It is the callers responsibility to close the stream after usage.
      * Use {@link Sardine#get(String)} instead.
      */
     @Deprecated
     public InputStream getInputStream(String url) throws IOException;
 
     /**
-     * Uses webdav put to send data to a server
+     * Sends data given as a byte array to a server.
      */
     public void put(String url, byte[] data) throws IOException;
 
     /**
-     * Uses webdav put to send data to a server
+     * Sends data given as an {@link InputStream} to a server.
      */
     public void put(String url, InputStream dataStream) throws IOException;
 
     /**
-     * Uses webdav put to send data to a server with a specific content type header
+     * Sends data given as a byte array to a server with a specific content type header.
      */
     public void put(String url, byte[] data, String contentType) throws IOException;
 
     /**
-     * Uses webdav put to send data to a server with a specific content type header
+     * Sends data given as an {@link InputStream} to a server with a specific content type header.
      */
     public void put(String url, InputStream dataStream, String contentType) throws IOException;
 
     /**
-     * Uses webdav put to send data to a server with a specific content type header
+     * Sends data given as an {@link InputStream} to a server with a specific content type header.
      */
     public void put(String url, InputStream dataStream, String contentType, boolean expectContinue) throws IOException;
 
     /**
-     * Delete a resource at the specified url
+     * Deletes a resource at the specified url.
      */
     public void delete(String url) throws IOException;
 
     /**
-     * Uses webdav to create a directory at the specified url
+     * Creates a directory at the specified url
      */
+    @WebdavOnly
     public void createDirectory(String url) throws IOException;
 
     /**
-     * Move a url to from source to destination. Assumes overwrite.
+     * Moves from source to destination. Assumes overwrite.
      */
+    @WebdavOnly
     public void move(String sourceUrl, String destinationUrl) throws IOException;
 
     /**
-     * Copy a url from source to destination. Assumes overwrite.
+     * Copies from source to destination. Assumes overwrite.
      */
+    @WebdavOnly
     public void copy(String sourceUrl, String destinationUrl) throws IOException;
 
     /**

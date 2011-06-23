@@ -16,13 +16,13 @@ import org.junit.Test;
 public class HttpMoveTest {
 
     /**
-     * Test method for {@link HttpMove#HttpMove(String, String)}.
+     * Test method for {@link HttpMove#HttpMove(String, String, boolean)}.
      * @throws IOException
      */
     @Test(expected=IllegalArgumentException.class)
     public void testHttpMoveOfDirectoryThrowsExceptionOnMoveToFile() throws IOException
     {
-        new HttpMove("http://webdav.example.com/foo/", "http://webdav.example.com/bar");
+        new HttpMove("http://webdav.example.com/foo/", "http://webdav.example.com/bar", true);
     }
 
 }
