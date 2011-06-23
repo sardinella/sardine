@@ -49,37 +49,6 @@ public class SardineUtilTest {
     }
 
     /**
-     * Test method for {@link com.googlecode.sardine.util.SardineUtil#parseDate(java.lang.String)}.
-     * new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US),
-     * new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US),
-     * new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'", Locale.US),
-     * new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US),
-     * new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US),
-     * new SimpleDateFormat("EEEEEE, dd-MMM-yy HH:mm:ss zzz", Locale.US),
-     * new SimpleDateFormat("EEE MMMM d HH:mm:ss yyyy", Locale.US)
-     *
-     * @throws ParseException
-     */
-    @Test
-    public void testParseDate() throws ParseException {
-        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-        final Date parsedDate = simpleDateFormat.parse("2010-12-31T13:59:01Z");
-        final long expectedTime = parsedDate.getTime();
-        final List<String> dates = Arrays.asList(//
-                "2010-12-31T13:59:01Z", //
-                "Fri, 31 Dec 2010 13:59:01 GMT", //
-                "Fri Dec 31 13:59:01 GMT 2010", //
-                "Friday, 31-Dec-10 13:59:01 GMT", //
-                "Fri December 31 13:59:01 2010");
-        for (String date : dates) {
-            final long actualTime = SardineUtil.parseDate(date).getTime();
-            assertEquals(expectedTime, actualTime);
-        }
-
-    }
-
-    /**
      * Test method for {@link com.googlecode.sardine.util.SardineUtil#isGoodResponse(int)}.
      */
     @Test
