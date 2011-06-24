@@ -31,6 +31,8 @@ import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.googlecode.sardine.DavResource;
 import com.googlecode.sardine.Sardine;
@@ -45,6 +47,9 @@ import com.googlecode.sardine.util.SardineUtil;
  * @author jonstevens
  */
 public class SardineHttpClientImpl implements Sardine {
+
+    /** Logger. */
+    private final static Logger LOG = LoggerFactory.getLogger(SardineHttpClientImpl.class);
 
     /** our httpclient. */
     private final DefaultHttpClient client;
@@ -184,6 +189,7 @@ public class SardineHttpClientImpl implements Sardine {
     /** {@inheritDoc} */
     public void setCustomProps(String url, Map<String, String> setProps, List<String> removeProps)
             throws IOException {
+        LOG.trace("PROPPATCH '{}', setProps={}, removeProps={}", new Object[] { url, setProps, removeProps });
         final HttpPropPatch propPatch = new HttpPropPatch(url);
         final String resourcePatchXml = SardineUtil.getResourcePatchXml(setProps, removeProps);
         propPatch.setEntity(HttpClientUtils.newXmlStringEntityFromString(resourcePatchXml));
@@ -193,6 +199,7 @@ public class SardineHttpClientImpl implements Sardine {
 
     /** {@inheritDoc} */
     public InputStream get(String url) throws IOException {
+        LOG.trace("GET '{}'", url);
         // This method can not use a ResponseHandler,
         // as InputStream is consumed otherwise.
         final HttpGet get = new HttpGet(url);
@@ -216,6 +223,7 @@ public class SardineHttpClientImpl implements Sardine {
 
     /** {@inheritDoc} */
     public void put(String url, byte[] data) throws IOException {
+        LOG.trace("PUT '{}', data.length={}", url, data.length);
         put(url, data, null);
     }
 
@@ -251,6 +259,7 @@ public class SardineHttpClientImpl implements Sardine {
      */
     private void put(final String url, HttpPut put, AbstractHttpEntity entity, String contentType, boolean expectContinue)
             throws IOException {
+        LOG.trace("PUT '{}', entity={}, contentType='{}', expectContinue='{}'", new Object[]{url, entity, contentType, expectContinue});
         put.setEntity(entity);
         if (contentType != null) {
             put.setHeader("Content-Type", contentType);
@@ -263,6 +272,7 @@ public class SardineHttpClientImpl implements Sardine {
 
     /** {@inheritDoc} */
     public void delete(String url) throws IOException {
+        LOG.trace("DELETE '{}'", url);
         final HttpDelete delete = new HttpDelete(url);
         wrapResponseHandlerExceptions(delete, new VoidResponseHandler(url, "DELETE failed"));
     }
@@ -285,6 +295,7 @@ public class SardineHttpClientImpl implements Sardine {
      * @throws IOException
      */
     private void move(String sourceUrl, String destinationUrl, final boolean overwrite) throws IOException {
+        LOG.trace("MOVE '{}' to '{}', overwrite={}", new Object[] { sourceUrl, destinationUrl, overwrite });
         final HttpMove move = new HttpMove(sourceUrl, destinationUrl, overwrite);
         wrapResponseHandlerExceptions(move, new VoidResponseHandler(sourceUrl, "MOVE '" + sourceUrl
                 + "' to '" + destinationUrl + "' failed"));
@@ -307,6 +318,7 @@ public class SardineHttpClientImpl implements Sardine {
      * @throws IOException
      */
     private void copy(String sourceUrl, String destinationUrl, final boolean overwrite) throws IOException {
+        LOG.trace("COPY '{}' to '{}', overwrite={}", new Object[] { sourceUrl, destinationUrl, overwrite });
         final HttpCopy copy = new HttpCopy(sourceUrl, destinationUrl, overwrite);
         wrapResponseHandlerExceptions(copy, new VoidResponseHandler(sourceUrl, "COPY '" + sourceUrl
                 + " to '" + destinationUrl + "' failed"));
@@ -314,12 +326,14 @@ public class SardineHttpClientImpl implements Sardine {
 
     /** {@inheritDoc} */
     public void createDirectory(String url) throws IOException {
+        LOG.trace("MKCOL '{}'", url);
         HttpMkCol mkcol = new HttpMkCol(url);
         wrapResponseHandlerExceptions(mkcol, new VoidResponseHandler(url, "MKCOL failed"));
     }
 
     /** {@inheritDoc} */
     public boolean exists(final String url) throws IOException {
+        LOG.trace("HEAD '{}'", url);
         final HttpHead head = new HttpHead(url);
         return wrapResponseHandlerExceptions(head, new ExistsResponseHandler(url));
     }
