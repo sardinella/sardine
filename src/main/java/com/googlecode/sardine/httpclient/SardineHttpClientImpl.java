@@ -33,6 +33,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import com.googlecode.sardine.DavResource;
 import com.googlecode.sardine.Sardine;
@@ -81,6 +82,7 @@ public class SardineHttpClientImpl implements Sardine {
     /** */
     public SardineHttpClientImpl(final DefaultHttpClient httpClient, String username, String password)
             throws IOException {
+        MDC.put("userName", username == null ? "ANONYMOUS" : username);
         this.client = httpClient;
         this.client.getCredentialsProvider().setCredentials(new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT),
                 new UsernamePasswordCredentials(username, password));
@@ -92,6 +94,7 @@ public class SardineHttpClientImpl implements Sardine {
      */
     public SardineHttpClientImpl(String username, String password, SSLSocketFactory sslSocketFactory,
             HttpRoutePlanner routePlanner, Integer port) throws IOException {
+        MDC.put("userName", username == null ? "ANONYMOUS" : username);
         this.client = HttpClientUtils.createDefaultHttpClient(sslSocketFactory, port);
 
         // for proxy configurations
