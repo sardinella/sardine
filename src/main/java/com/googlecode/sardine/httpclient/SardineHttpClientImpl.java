@@ -132,7 +132,7 @@ public class SardineHttpClientImpl implements Sardine {
             return client.execute(request, responseHandler);
         } catch (ClientProtocolException e) {
             request.abort();
-            throw new IOException(e);
+            throw e;
         } catch (IOException e) {
             request.abort();
             throw e;

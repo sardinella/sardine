@@ -4,13 +4,13 @@
 
 package com.googlecode.sardine.httpclient;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeThat;
 import static org.junit.Assume.assumeTrue;
-import static org.junit.matchers.JUnitMatchers.containsString;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,13 +21,16 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpStatus;
 import org.apache.http.auth.params.AuthParams;
+import org.apache.http.client.HttpResponseException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.googlecode.sardine.DavResource;
-import com.googlecode.sardine.TUtils;
 
 /**
  * A little integrative tests, environment is set in ${user.home}/sardine-it-test.properties, an xml properties file.
@@ -46,6 +49,8 @@ import com.googlecode.sardine.TUtils;
  * @author mirko
  */
 public class WithPasswordTest {
+    
+    private final static Logger LOG = LoggerFactory.getLogger(WithPasswordTest.class);
 
     final String server;
 
@@ -82,7 +87,6 @@ public class WithPasswordTest {
         assumeThat(server, notNullValue());
         assumeThat(userName, notNullValue());
         assumeThat(password, notNullValue());
-        TUtils.setHttpClientLogging();
         sardine = new SardineHttpClientImpl(userName, password);
         AuthParams.setCredentialCharset(sardine.getHttpClient().getParams(), passwordEncoding);
         testDirectory = server + "sardine-test/";
@@ -136,8 +140,9 @@ public class WithPasswordTest {
         assertEquals(3, sardine.getResources(testDirectory).size());
         try {
             sardine.copy(testDirectory + "foo.txt", testDirectory + "bar.txt");
-        } catch (IOException e) {
-            assertThat("Expected 412 Precondition failed ", e.toString(), containsString("412"));
+        } catch (HttpResponseException e) {
+            LOG.debug("{}", e.toString());
+            assertThat("Expected 412 Precondition failed ", e.getStatusCode(), is(HttpStatus.SC_PRECONDITION_FAILED));
         }
         assertEquals(3, sardine.getResources(testDirectory).size());
         sardine.copyReplacing(testDirectory + "foo.txt", testDirectory + "bar.txt");
@@ -152,8 +157,9 @@ public class WithPasswordTest {
         assertEquals(3, sardine.getResources(testDirectory).size());
         try {
             sardine.move(testDirectory + "foo.txt", testDirectory + "bar.txt");
-        } catch (IOException e) {
-            assertThat("Expected 412 Precondition failed ", e.toString(), containsString("412"));
+        } catch (HttpResponseException e) {
+            LOG.debug("{}", e.toString());
+            assertThat("Expected 412 Precondition failed ", e.getStatusCode(), is(HttpStatus.SC_PRECONDITION_FAILED));
         }
         assertEquals(3, sardine.getResources(testDirectory).size());
         sardine.moveReplacing(testDirectory + "foo.txt", testDirectory + "bar.txt");

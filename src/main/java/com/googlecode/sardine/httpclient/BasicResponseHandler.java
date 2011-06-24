@@ -9,6 +9,7 @@ import java.io.IOException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
 
 /**
@@ -56,8 +57,8 @@ abstract class BasicResponseHandler<T> implements ResponseHandler<T> {
         final StatusLine statusLine = response.getStatusLine();
         final int statusCode = statusLine.getStatusCode();
         if (!((statusCode >= HttpStatus.SC_OK) && (statusCode < HttpStatus.SC_MULTIPLE_CHOICES))) {
-            throw new IOException(errorMessage + " for: " + getUrl() + ", " + statusLine.getStatusCode() + " "
-                    + statusLine.getReasonPhrase());
+            throw new HttpResponseException(statusLine.getStatusCode(),
+                    statusLine.getReasonPhrase() + " - " + errorMessage + " for: " + getUrl());
         }
     }
 }

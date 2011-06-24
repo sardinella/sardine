@@ -155,17 +155,13 @@ public class SardineHttpClientImplTest {
         assertEquals(SVN_POM_BASE_URL, pom.getAbsoluteUrl());
     }
 
-    @Test
+    @Test(expected=ClientProtocolException.class)
     public void wrapResponseHandlerExceptionsClientProtocolException() throws IOException {
-        try {
-            sardine.wrapResponseHandlerExceptions(new HttpGet(SVN_BASE_URL), new ResponseHandler<Void>() {
-                public Void handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
-                    throw new ClientProtocolException();
-                }
-            });
-        } catch (IOException e) {
-            assertEquals(ClientProtocolException.class, e.getCause().getClass());
-        }
+        sardine.wrapResponseHandlerExceptions(new HttpGet(SVN_BASE_URL), new ResponseHandler<Void>() {
+            public Void handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
+                throw new ClientProtocolException();
+            }
+        });
     }
 
     @Test(expected=IOException.class)
