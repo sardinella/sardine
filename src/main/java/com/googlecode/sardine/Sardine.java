@@ -16,13 +16,13 @@ public interface Sardine {
     /**
      * Gets a directory listing.
      */
-    @WebdavOnly
+    @WebdavOnly(method="PROPFIND")
     public List<DavResource> getResources(String url) throws IOException;
 
     /**
      * Adds or removes custom properties for a url.
      */
-    @WebdavOnly
+    @WebdavOnly(method="PROPPATCH")
     public void setCustomProps(String url, Map<String, String> addProps, List<String> removeProps)
             throws IOException;
 
@@ -71,20 +71,32 @@ public interface Sardine {
     /**
      * Creates a directory at the specified url
      */
-    @WebdavOnly
+    @WebdavOnly(method="MKCOL")
     public void createDirectory(String url) throws IOException;
+
+    /**
+     * Moves from source to destination. Does not assume overwrite.
+     */
+    @WebdavOnly(method="MOVE")
+    public void move(String sourceUrl, String destinationUrl) throws IOException;
 
     /**
      * Moves from source to destination. Assumes overwrite.
      */
-    @WebdavOnly
-    public void move(String sourceUrl, String destinationUrl) throws IOException;
+    @WebdavOnly(method="MOVE")
+    public void moveReplacing(String sourceUrl, String destinationUrl) throws IOException;
+
+    /**
+     * Copies from source to destination. Does not assume overwrite.
+     */
+    @WebdavOnly(method="COPY")
+    public void copy(String sourceUrl, String destinationUrl) throws IOException;
 
     /**
      * Copies from source to destination. Assumes overwrite.
      */
-    @WebdavOnly
-    public void copy(String sourceUrl, String destinationUrl) throws IOException;
+    @WebdavOnly(method="COPY")
+    public void copyReplacing(String sourceUrl, String destinationUrl) throws IOException;
 
     /**
      * Performs a HEAD request to see if a resource exists or not. Anything outside of the 200-299 response code range

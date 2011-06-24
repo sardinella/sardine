@@ -269,14 +269,45 @@ public class SardineHttpClientImpl implements Sardine {
 
     /** {@inheritDoc} */
     public void move(String sourceUrl, String destinationUrl) throws IOException {
-        final HttpMove move = new HttpMove(sourceUrl, destinationUrl, true);
+        move(sourceUrl, destinationUrl, false);
+    }
+
+
+    /** {@inheritDoc} */
+    public void moveReplacing(String sourceUrl, String destinationUrl) throws IOException {
+        move(sourceUrl, destinationUrl, true);
+    }
+
+    /**
+     * @param sourceUrl
+     * @param destinationUrl
+     * @param overwrite
+     * @throws IOException
+     */
+    private void move(String sourceUrl, String destinationUrl, final boolean overwrite) throws IOException {
+        final HttpMove move = new HttpMove(sourceUrl, destinationUrl, overwrite);
         wrapResponseHandlerExceptions(move, new VoidResponseHandler(sourceUrl, "MOVE '" + sourceUrl
                 + "' to '" + destinationUrl + "' failed"));
     }
-
+    
     /** {@inheritDoc} */
     public void copy(String sourceUrl, String destinationUrl) throws IOException {
-        final HttpCopy copy = new HttpCopy(sourceUrl, destinationUrl, true);
+        copy(sourceUrl, destinationUrl, false);
+    }
+
+    /** {@inheritDoc} */
+    public void copyReplacing(String sourceUrl, String destinationUrl) throws IOException {
+        copy(sourceUrl, destinationUrl, true);
+    }
+
+    /**
+     * @param sourceUrl
+     * @param destinationUrl
+     * @param overwrite
+     * @throws IOException
+     */
+    private void copy(String sourceUrl, String destinationUrl, final boolean overwrite) throws IOException {
+        final HttpCopy copy = new HttpCopy(sourceUrl, destinationUrl, overwrite);
         wrapResponseHandlerExceptions(copy, new VoidResponseHandler(sourceUrl, "COPY '" + sourceUrl
                 + " to '" + destinationUrl + "' failed"));
     }
@@ -326,4 +357,5 @@ public class SardineHttpClientImpl implements Sardine {
     public DefaultHttpClient getHttpClient() {
         return client;
     }
+
 }

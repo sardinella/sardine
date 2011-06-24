@@ -6,9 +6,11 @@ package com.googlecode.sardine.httpclient;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeThat;
 import static org.junit.Assume.assumeTrue;
+import static org.junit.matchers.JUnitMatchers.containsString;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -57,6 +59,8 @@ public class WithPasswordTest {
 
     private String testDirectory;
 
+    private static String FILE_CONTENT = "hällo welt";
+
     /**
      * @throws IOException
      *
@@ -101,9 +105,7 @@ public class WithPasswordTest {
 
     @Test
     public void moreTests() throws IOException {
-        final String content = "hällo welt";
-        sardine.put(testDirectory + "foo.txt", content.getBytes());
-        System.out.println("Here");
+        sardine.put(testDirectory + "foo.txt", FILE_CONTENT.getBytes());
         assertEquals(2, sardine.getResources(testDirectory).size());
         sardine.copy(testDirectory + "foo.txt", testDirectory + "bar.txt");
         assertEquals(3, sardine.getResources(testDirectory).size());
@@ -113,7 +115,7 @@ public class WithPasswordTest {
         assertEquals(3, resources.size());
         final InputStream stream = sardine.get(renamed);
         try {
-            assertEquals(content, IOUtils.toString(stream));
+            assertEquals(FILE_CONTENT, IOUtils.toString(stream));
         } finally {
             stream.close();
         }
@@ -124,6 +126,38 @@ public class WithPasswordTest {
         sardine.setCustomProps(renamed, customProps, null);
         final Map<String, String> newCustomProps = sardine.getResources(renamed).get(0).getCustomProps();
         assertEquals(newCustomProps.get("mööp"), "müüp");
+    }
+
+    @Test
+    public void testCopyWithoutAndWithOverWrite() throws IOException {
+        sardine.put(testDirectory + "foo.txt", FILE_CONTENT.getBytes());
+        assertEquals(2, sardine.getResources(testDirectory).size());
+        sardine.copy(testDirectory + "foo.txt", testDirectory + "bar.txt");
+        assertEquals(3, sardine.getResources(testDirectory).size());
+        try {
+            sardine.copy(testDirectory + "foo.txt", testDirectory + "bar.txt");
+        } catch (IOException e) {
+            assertThat("Expected 412 Precondition failed ", e.toString(), containsString("412"));
+        }
+        assertEquals(3, sardine.getResources(testDirectory).size());
+        sardine.copyReplacing(testDirectory + "foo.txt", testDirectory + "bar.txt");
+        assertEquals(3, sardine.getResources(testDirectory).size());
+    }
+
+    @Test
+    public void testMoveWithoutAndWithOverWrite() throws IOException {
+        sardine.put(testDirectory + "foo.txt", FILE_CONTENT.getBytes());
+        assertEquals(2, sardine.getResources(testDirectory).size());
+        sardine.copy(testDirectory + "foo.txt", testDirectory + "bar.txt");
+        assertEquals(3, sardine.getResources(testDirectory).size());
+        try {
+            sardine.move(testDirectory + "foo.txt", testDirectory + "bar.txt");
+        } catch (IOException e) {
+            assertThat("Expected 412 Precondition failed ", e.toString(), containsString("412"));
+        }
+        assertEquals(3, sardine.getResources(testDirectory).size());
+        sardine.moveReplacing(testDirectory + "foo.txt", testDirectory + "bar.txt");
+        assertEquals(2, sardine.getResources(testDirectory).size());
     }
 
     @Test

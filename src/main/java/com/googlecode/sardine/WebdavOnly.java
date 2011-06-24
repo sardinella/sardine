@@ -9,5 +9,8 @@ package com.googlecode.sardine;
  * @author mirko
  */
 public @interface WebdavOnly {
-
+    /**
+     * @return the WEBDAV method used.
+     */
+    public String method();
 }
