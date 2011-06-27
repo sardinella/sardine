@@ -3,6 +3,7 @@ package com.googlecode.sardine.httpclient;
 import java.io.IOException;
 import java.net.URI;
 
+import org.apache.http.HttpHeaders;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 
 
@@ -13,8 +14,8 @@ class HttpCopy extends HttpEntityEnclosingRequestBase {
     public HttpCopy(String sourceUrl, String destinationUrl, boolean overwrite) throws IOException {
         super();
         HttpClientUtils.checkConsistentSlashes(sourceUrl, destinationUrl);
-        this.setHeader("Destination", destinationUrl);
-        this.setHeader("Overwrite", overwrite ? "T" : "F");
+        this.setHeader(HttpHeaders.DESTINATION, destinationUrl);
+        this.setHeader(HttpHeaders.OVERWRITE, overwrite ? "T" : "F");
         this.setURI(URI.create(sourceUrl));
 
     }
