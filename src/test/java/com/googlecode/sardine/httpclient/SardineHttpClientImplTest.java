@@ -11,8 +11,10 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.matchers.JUnitMatchers.containsString;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +32,7 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -268,6 +271,20 @@ public class SardineHttpClientImplTest {
         sardine.put(uri, request, new StringEntity("hallo"), "text/xml", true);
     }
 
+    @Test
+    public void testIsStatusExpectationFailedAndEntityRepeatable() throws UnsupportedEncodingException {
+        final SardineHttpClientImpl sardine = new SardineHttpClientImpl(new DefaultHttpClient());
+        final HttpResponseException exceptionExpectationFailed = new HttpResponseException(HttpStatus.SC_EXPECTATION_FAILED, "Expectation failed");
+        final HttpResponseException otherException = new HttpResponseException(HttpStatus.SC_CONFLICT, "Conflict");
+        final StringEntity repeatableEntity = new StringEntity("hallo");
+        final InputStreamEntity nonRepeatableEntity = new InputStreamEntity(new ByteArrayInputStream("hallo".getBytes()), -1);
+        assertTrue(repeatableEntity.isRepeatable());
+        assertFalse(nonRepeatableEntity.isRepeatable());
+        assertTrue(sardine.isStatusExpectationFailedAndEntityRepeatable(exceptionExpectationFailed, repeatableEntity));
+        assertFalse(sardine.isStatusExpectationFailedAndEntityRepeatable(otherException, repeatableEntity));
+        assertFalse(sardine.isStatusExpectationFailedAndEntityRepeatable(exceptionExpectationFailed, nonRepeatableEntity));
+        assertFalse(sardine.isStatusExpectationFailedAndEntityRepeatable(otherException, nonRepeatableEntity));
+    }
     /**
      * @param resourcename
      * @return

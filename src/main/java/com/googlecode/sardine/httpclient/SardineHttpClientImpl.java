@@ -284,13 +284,27 @@ public class SardineHttpClientImpl implements Sardine {
         try {
             wrapResponseHandlerExceptions(put, new VoidResponseHandler(url, "PUT failed"));
         } catch (HttpResponseException e) {
-            if (e.getStatusCode() == HttpStatus.SC_EXPECTATION_FAILED) {
+            if (isStatusExpectationFailedAndEntityRepeatable(e, entity)) {
                 put.removeHeaders(HTTP.EXPECT_DIRECTIVE);
                 wrapResponseHandlerExceptions(put, new VoidResponseHandler(url, "PUT failed even with removed " + HTTP.EXPECT_DIRECTIVE));
             } else {
                 throw e;
             }
         }
+    }
+
+    /**
+     * Helper method for non integrative testing of error condition of
+     * {@link SardineHttpClientImpl#put(String, HttpPut, AbstractHttpEntity, String, boolean)}.
+     * 
+     * @param e
+     *            received Exception
+     * @param entity
+     *            to put
+     * @return true when {@link HttpStatus#SC_EXPECTATION_FAILED} and
+     */
+    boolean isStatusExpectationFailedAndEntityRepeatable(HttpResponseException e, AbstractHttpEntity entity) {
+        return e.getStatusCode() == HttpStatus.SC_EXPECTATION_FAILED && entity.isRepeatable();
     }
 
     /** {@inheritDoc} */
