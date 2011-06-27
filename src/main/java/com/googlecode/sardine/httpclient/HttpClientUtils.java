@@ -21,6 +21,7 @@ import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
+import org.apache.http.util.VersionInfo;
 
 import com.googlecode.sardine.Version;
 
@@ -63,7 +64,8 @@ public final class HttpClientUtils {
         HttpParams params = new BasicHttpParams();
         ConnManagerParams.setMaxTotalConnections(params, MAX_TOTAL_CONNECTIONS);
         HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-        HttpProtocolParams.setUserAgent(params, "Sardine/" + Version.getSpecification());
+        final String specification = Version.getSpecification();
+        HttpProtocolParams.setUserAgent(params, "Sardine/" + specification == null ? VersionInfo.UNAVAILABLE : specification);
         return params;
     }
 
