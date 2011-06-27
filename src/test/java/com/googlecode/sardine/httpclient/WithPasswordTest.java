@@ -104,18 +104,18 @@ public class WithPasswordTest {
 
     @Test
     public void listDirectory() throws IOException {
-        assertEquals(1, sardine.getResources(testDirectory).size());
+        assertEquals(1, sardine.list(testDirectory).size());
     }
 
     @Test
     public void moreTests() throws IOException {
         sardine.put(testDirectory + "foo.txt", FILE_CONTENT.getBytes());
-        assertEquals(2, sardine.getResources(testDirectory).size());
+        assertEquals(2, sardine.list(testDirectory).size());
         sardine.copy(testDirectory + "foo.txt", testDirectory + "bar.txt");
-        assertEquals(3, sardine.getResources(testDirectory).size());
+        assertEquals(3, sardine.list(testDirectory).size());
         final String renamed = testDirectory + "bar-renamed.txt";
         sardine.move(testDirectory + "bar.txt", renamed);
-        final List<DavResource> resources = sardine.getResources(testDirectory);
+        final List<DavResource> resources = sardine.list(testDirectory);
         assertEquals(3, resources.size());
         final InputStream stream = sardine.get(renamed);
         try {
@@ -127,43 +127,43 @@ public class WithPasswordTest {
         final DavResource davResource = resources.get(1);
         final Map<String, String> customProps = davResource.getCustomProps();
         customProps.put("mööp", "müüp");
-        sardine.setCustomProps(renamed, customProps, null);
-        final Map<String, String> newCustomProps = sardine.getResources(renamed).get(0).getCustomProps();
+        sardine.patch(renamed, customProps, null);
+        final Map<String, String> newCustomProps = sardine.list(renamed).get(0).getCustomProps();
         assertEquals(newCustomProps.get("mööp"), "müüp");
     }
 
     @Test
     public void testCopyWithoutAndWithOverWrite() throws IOException {
         sardine.put(testDirectory + "foo.txt", FILE_CONTENT.getBytes());
-        assertEquals(2, sardine.getResources(testDirectory).size());
+        assertEquals(2, sardine.list(testDirectory).size());
         sardine.copy(testDirectory + "foo.txt", testDirectory + "bar.txt");
-        assertEquals(3, sardine.getResources(testDirectory).size());
+        assertEquals(3, sardine.list(testDirectory).size());
         try {
             sardine.copy(testDirectory + "foo.txt", testDirectory + "bar.txt");
         } catch (HttpResponseException e) {
             LOG.debug("{}", e.toString());
             assertThat("Expected 412 Precondition failed ", e.getStatusCode(), is(HttpStatus.SC_PRECONDITION_FAILED));
         }
-        assertEquals(3, sardine.getResources(testDirectory).size());
+        assertEquals(3, sardine.list(testDirectory).size());
         sardine.copyReplacing(testDirectory + "foo.txt", testDirectory + "bar.txt");
-        assertEquals(3, sardine.getResources(testDirectory).size());
+        assertEquals(3, sardine.list(testDirectory).size());
     }
 
     @Test
     public void testMoveWithoutAndWithOverWrite() throws IOException {
         sardine.put(testDirectory + "foo.txt", FILE_CONTENT.getBytes());
-        assertEquals(2, sardine.getResources(testDirectory).size());
+        assertEquals(2, sardine.list(testDirectory).size());
         sardine.copy(testDirectory + "foo.txt", testDirectory + "bar.txt");
-        assertEquals(3, sardine.getResources(testDirectory).size());
+        assertEquals(3, sardine.list(testDirectory).size());
         try {
             sardine.move(testDirectory + "foo.txt", testDirectory + "bar.txt");
         } catch (HttpResponseException e) {
             LOG.debug("{}", e.toString());
             assertThat("Expected 412 Precondition failed ", e.getStatusCode(), is(HttpStatus.SC_PRECONDITION_FAILED));
         }
-        assertEquals(3, sardine.getResources(testDirectory).size());
+        assertEquals(3, sardine.list(testDirectory).size());
         sardine.moveReplacing(testDirectory + "foo.txt", testDirectory + "bar.txt");
-        assertEquals(2, sardine.getResources(testDirectory).size());
+        assertEquals(2, sardine.list(testDirectory).size());
     }
 
     @Test

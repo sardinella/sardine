@@ -85,7 +85,7 @@ public class SardineHttpClientImplTest {
     @Test
     public void testSvnContentIntegrative() throws ClientProtocolException, IOException {
         // setHttpClientLogging();
-        final HashMap<String, DavResource> resourceMap = toMap(sardine.getResources(SVN_BASE_URL));
+        final HashMap<String, DavResource> resourceMap = toMap(sardine.list(SVN_BASE_URL));
         checkMultipleResources(resourceMap);
     }
 
@@ -115,7 +115,7 @@ public class SardineHttpClientImplTest {
 
     @Test
     public void testPomContentIntegrative() throws IOException {
-        final HashMap<String, DavResource> resources = toMap(sardine.getResources(SVN_POM_BASE_URL));
+        final HashMap<String, DavResource> resources = toMap(sardine.list(SVN_POM_BASE_URL));
         checkPom(resources);
     }
 
@@ -232,7 +232,7 @@ public class SardineHttpClientImplTest {
         final DefaultHttpClient httpClient = new DefaultHttpClient(HttpClientUtils.createDefaultHttpParams());
         HttpClientUtils.enableCompression(httpClient);
         final SardineHttpClientImpl sardine = new SardineHttpClientImpl(httpClient);
-        checkMultipleResources(toMap(sardine.getResources(SVN_BASE_URL)));
+        checkMultipleResources(toMap(sardine.list(SVN_BASE_URL)));
     }
 
     @Test(expected=HttpResponseException.class)

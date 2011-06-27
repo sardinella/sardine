@@ -17,13 +17,13 @@ public interface Sardine {
      * Gets a directory listing.
      */
     @WebdavOnly(method="PROPFIND")
-    public List<DavResource> getResources(String url) throws IOException;
+    public List<DavResource> list(String url) throws IOException;
 
     /**
      * Adds or removes custom properties for a url.
      */
     @WebdavOnly(method="PROPPATCH")
-    public void setCustomProps(String url, Map<String, String> addProps, List<String> removeProps)
+    public void patch(String url, Map<String, String> addProps, List<String> removeProps)
             throws IOException;
 
     /**

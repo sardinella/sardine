@@ -122,7 +122,7 @@ public class SardineHttpClientImpl implements Sardine {
     }
 
     /** {@inheritDoc} */
-    public List<DavResource> getResources(final String url) throws IOException {
+    public List<DavResource> list(final String url) throws IOException {
         final URI uri = URI.create(url);
         final HttpPropFind propFind = new HttpPropFind(uri.toASCIIString());
         propFind.setEntity(HttpClientUtils.newXmlStringEntityFromString(SardineUtil.getDefaultPropfindXML()));
@@ -201,7 +201,7 @@ public class SardineHttpClientImpl implements Sardine {
     }
 
     /** {@inheritDoc} */
-    public void setCustomProps(String url, Map<String, String> setProps, List<String> removeProps)
+    public void patch(String url, Map<String, String> setProps, List<String> removeProps)
             throws IOException {
         LOG.trace("PROPPATCH '{}', setProps={}, removeProps={}", new Object[] { url, setProps, removeProps });
         final HttpPropPatch propPatch = new HttpPropPatch(url);
