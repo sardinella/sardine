@@ -22,11 +22,15 @@ import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.Test;
@@ -226,6 +230,42 @@ public class SardineHttpClientImplTest {
         HttpClientUtils.enableCompression(httpClient);
         final SardineHttpClientImpl sardine = new SardineHttpClientImpl(httpClient);
         checkMultipleResources(toMap(sardine.getResources(SVN_BASE_URL)));
+    }
+
+    @Test(expected=HttpResponseException.class)
+    public void testExpectationFailedTwice() throws ClientProtocolException, IOException {
+        final String uri = "http://example.com/";
+        final HttpPut request = new HttpPut(uri);
+        final SardineHttpClientImpl sardine = new SardineHttpClientImpl(new DefaultHttpClient()) {
+            /** {@inheritDoc} */
+            @Override
+            <T> T wrapResponseHandlerExceptions(HttpRequestBase request, ResponseHandler<T> responseHandler)
+                    throws IOException {
+                throw new HttpResponseException(HttpStatus.SC_EXPECTATION_FAILED, "Expectation failed");
+            }
+        };
+        sardine.put(uri, request, new StringEntity("hallo"), "text/xml", true);
+    }
+
+    @Test
+    public void testExpectationFailedOnce() throws ClientProtocolException, IOException {
+        final String uri = "http://example.com/";
+        final HttpPut request = new HttpPut(uri);
+        final SardineHttpClientImpl sardine = new SardineHttpClientImpl(new DefaultHttpClient()) {
+            int i = 0;
+            /** {@inheritDoc} */
+            @Override
+            <T> T wrapResponseHandlerExceptions(HttpRequestBase request, ResponseHandler<T> responseHandler)
+                    throws IOException {
+                if (i == 0) {
+                    i++;
+                    throw new HttpResponseException(HttpStatus.SC_EXPECTATION_FAILED, "Expectation failed");
+                } else {
+                    return null;
+                }
+            }
+        };
+        sardine.put(uri, request, new StringEntity("hallo"), "text/xml", true);
     }
 
     /**

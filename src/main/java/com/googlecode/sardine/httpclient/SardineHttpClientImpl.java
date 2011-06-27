@@ -11,12 +11,14 @@ import java.util.Map;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.auth.params.AuthParams;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -269,7 +271,7 @@ public class SardineHttpClientImpl implements Sardine {
     /**
      * Private helper for doing the work of a put
      */
-    private void put(final String url, HttpPut put, AbstractHttpEntity entity, String contentType, boolean expectContinue)
+    void put(final String url, HttpPut put, AbstractHttpEntity entity, String contentType, boolean expectContinue)
             throws IOException {
         LOG.trace("PUT '{}', entity={}, contentType='{}', expectContinue='{}'", new Object[]{url, entity, contentType, expectContinue});
         put.setEntity(entity);
@@ -279,7 +281,16 @@ public class SardineHttpClientImpl implements Sardine {
         if (expectContinue) {
             put.addHeader(HTTP.EXPECT_DIRECTIVE, HTTP.EXPECT_CONTINUE);
         }
-        wrapResponseHandlerExceptions(put, new VoidResponseHandler(url, "PUT failed"));
+        try {
+            wrapResponseHandlerExceptions(put, new VoidResponseHandler(url, "PUT failed"));
+        } catch (HttpResponseException e) {
+            if (e.getStatusCode() == HttpStatus.SC_EXPECTATION_FAILED) {
+                put.removeHeaders(HTTP.EXPECT_DIRECTIVE);
+                wrapResponseHandlerExceptions(put, new VoidResponseHandler(url, "PUT failed even with removed " + HTTP.EXPECT_DIRECTIVE));
+            } else {
+                throw e;
+            }
+        }
     }
 
     /** {@inheritDoc} */
