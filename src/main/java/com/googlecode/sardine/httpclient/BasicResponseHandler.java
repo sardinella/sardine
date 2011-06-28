@@ -11,6 +11,8 @@ import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Basic response handler which takes an url for documentation.
@@ -21,6 +23,8 @@ import org.apache.http.client.ResponseHandler;
  *            return type of {@link ResponseHandler#handleResponse(HttpResponse)}.
  */
 abstract class BasicResponseHandler<T> implements ResponseHandler<T> {
+
+    private static final Logger LOG = LoggerFactory.getLogger(BasicResponseHandler.class);
 
     /** url for documentation and error messages. */
     private final String url;
@@ -56,9 +60,11 @@ abstract class BasicResponseHandler<T> implements ResponseHandler<T> {
     void checkGoodResponse(HttpResponse response, String errorMessage) throws IOException {
         final StatusLine statusLine = response.getStatusLine();
         final int statusCode = statusLine.getStatusCode();
+        final String reasonPhrase = statusLine.getReasonPhrase();
+        LOG.trace("{}: {} {}", new Object[] { getUrl(), statusCode, reasonPhrase });
         if (!((statusCode >= HttpStatus.SC_OK) && (statusCode < HttpStatus.SC_MULTIPLE_CHOICES))) {
             throw new HttpResponseException(statusLine.getStatusCode(),
-                    statusLine.getReasonPhrase() + " - " + errorMessage + " for: " + getUrl());
+                    reasonPhrase + " - " + errorMessage + " for: " + getUrl());
         }
     }
 }

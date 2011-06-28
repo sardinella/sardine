@@ -123,6 +123,7 @@ public class SardineHttpClientImpl implements Sardine {
 
     /** {@inheritDoc} */
     public List<DavResource> list(final String url) throws IOException {
+        LOG.trace("PROPFIND {}", url);
         final URI uri = URI.create(url);
         final HttpPropFind propFind = new HttpPropFind(uri.toASCIIString());
         propFind.setEntity(HttpClientUtils.newXmlStringEntityFromString(SardineUtil.getDefaultPropfindXML()));
@@ -150,14 +151,13 @@ public class SardineHttpClientImpl implements Sardine {
             setAuthenticationOnMethod(request);
             return client.execute(request, responseHandler);
         } catch (ClientProtocolException e) {
-            request.abort();
             throw e;
         } catch (IOException e) {
-            request.abort();
             throw e;
         } catch (AuthenticationException e) {
-            request.abort();
             throw new IOException(e);
+        } finally {
+            request.abort();
         }
     }
 
@@ -223,9 +223,9 @@ public class SardineHttpClientImpl implements Sardine {
             handler.handleResponse(response);
             // Will consume the entity when the stream is closed
             return new ConsumingInputStream(response);
-        } catch (IOException ex) {
+        } catch (IOException e) {
             get.abort();
-            throw new IOException("Error while accessing " + url, ex);
+            throw new IOException("Error while accessing " + url, e);
         }
     }
 
