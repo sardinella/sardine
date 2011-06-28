@@ -21,9 +21,11 @@ public interface Sardine {
 
     /**
      * Adds or removes custom properties for a url.
+     *
+     * @return a list with the modified resource.
      */
     @WebdavOnly(method="PROPPATCH")
-    public void patch(String url, Map<String, String> addProps, List<String> removeProps)
+    public List<DavResource> patch(String url, Map<String, String> addProps, List<String> removeProps)
             throws IOException;
 
     /**

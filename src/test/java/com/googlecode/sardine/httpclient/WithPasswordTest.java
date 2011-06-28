@@ -124,14 +124,27 @@ public class WithPasswordTest {
             stream.close();
         }
         assertTrue(sardine.exists(renamed));
-        final DavResource davResource = resources.get(1);
-        final Map<String, String> customProps = davResource.getCustomProps();
-        customProps.put("mööp", "müüp");
-        sardine.patch(renamed, customProps, null);
-        final Map<String, String> newCustomProps = sardine.list(renamed).get(0).getCustomProps();
-        assertEquals(newCustomProps.get("mööp"), "müüp");
+        assertEquals(1, sardine.list(renamed).size());
     }
 
+    @Test
+    public void testPatch() throws IOException {
+        final String url = testDirectory + "foo.txt";
+        sardine.put(url, FILE_CONTENT.getBytes());
+        assertEquals(2, sardine.list(testDirectory).size());
+        final List<DavResource> resources = sardine.list(testDirectory);
+        final DavResource davResource = resources.get(1);
+        final Map<String, String> customProps = davResource.getCustomProps();
+        final String key = "mööp";
+        final String value = "müüp";
+        customProps.put(key, value);
+        final List<DavResource> result = sardine.patch(url, customProps, null);
+        assertEquals(1, result.size());
+        assertTrue(result.get(0).getCustomProps().containsKey(key));
+        final Map<String, String> newCustomProps = sardine.list(url).get(0).getCustomProps();
+        assertEquals(newCustomProps.get(key), value);
+    }
+    
     @Test
     public void testCopyWithoutAndWithOverWrite() throws IOException {
         sardine.put(testDirectory + "foo.txt", FILE_CONTENT.getBytes());

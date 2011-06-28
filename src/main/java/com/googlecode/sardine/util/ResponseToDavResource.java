@@ -13,6 +13,7 @@ import com.googlecode.sardine.model.Getcontenttype;
 import com.googlecode.sardine.model.Getlastmodified;
 import com.googlecode.sardine.model.Multistatus;
 import com.googlecode.sardine.model.Prop;
+import com.googlecode.sardine.model.Resourcetype;
 import com.googlecode.sardine.model.Response;
 
 /**
@@ -68,7 +69,12 @@ public class ResponseToDavResource {
         this.baseUrl = baseUrl;
         this.hostPart = hostPart;
         prop = resp.getPropstat().get(0).getProp();
-        isDirectory = prop.getResourcetype().getCollection() != null;
+        final Resourcetype resourcetype = prop.getResourcetype();
+        if (resourcetype != null) {
+            isDirectory = resourcetype.getCollection() != null;
+        } else {
+            isDirectory = false;
+        }
     }
 
     /**

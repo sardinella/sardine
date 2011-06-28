@@ -21,6 +21,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpPut;
@@ -127,9 +128,17 @@ public class SardineHttpClientImpl implements Sardine {
         final URI uri = URI.create(url);
         final HttpPropFind propFind = new HttpPropFind(uri.toASCIIString());
         propFind.setEntity(HttpClientUtils.newXmlStringEntityFromString(SardineUtil.getDefaultPropfindXML()));
+        return extractDavResourceList(url, uri, propFind);
+    }
+
+    /**
+     * Creates a list of DavResources for {@link Sardine#list(String)} and {@link Sardine#patch(String, Map, List)}.
+     */
+    List<DavResource> extractDavResourceList(final String url, final URI uri, final HttpEntityEnclosingRequestBase request)
+            throws IOException {
         final Unmarshaller unmarshaller = SardineUtil.createUnmarshaller();
         final MultiStatusResponseHandler responseHandler = new MultiStatusResponseHandler(url, unmarshaller);
-        final Multistatus multistatus = wrapResponseHandlerExceptions(propFind, responseHandler);
+        final Multistatus multistatus = wrapResponseHandlerExceptions(request, responseHandler);
         return fromMultiStatus(uri, multistatus);
     }
 
@@ -201,14 +210,14 @@ public class SardineHttpClientImpl implements Sardine {
     }
 
     /** {@inheritDoc} */
-    public void patch(String url, Map<String, String> setProps, List<String> removeProps)
+    public List<DavResource> patch(String url, Map<String, String> setProps, List<String> removeProps)
             throws IOException {
         LOG.trace("PROPPATCH '{}', setProps={}, removeProps={}", new Object[] { url, setProps, removeProps });
+        final URI uri = URI.create(url);
         final HttpPropPatch propPatch = new HttpPropPatch(url);
         final String resourcePatchXml = SardineUtil.getResourcePatchXml(setProps, removeProps);
         propPatch.setEntity(HttpClientUtils.newXmlStringEntityFromString(resourcePatchXml));
-        wrapResponseHandlerExceptions(propPatch, new VoidResponseHandler(url,
-                "Failed to set custom properties on resources."));
+        return extractDavResourceList(url, uri, propPatch);
     }
 
     /** {@inheritDoc} This implementation will automatically consume the rest of the respone.
