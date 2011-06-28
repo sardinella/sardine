@@ -211,7 +211,8 @@ public class SardineHttpClientImpl implements Sardine {
                 "Failed to set custom properties on resources."));
     }
 
-    /** {@inheritDoc} */
+    /** {@inheritDoc} This implementation will automatically consume the rest of the respone.
+     */
     public InputStream get(String url) throws IOException {
         LOG.trace("GET '{}'", url);
         // This method can not use a ResponseHandler,
