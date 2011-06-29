@@ -10,7 +10,6 @@ import org.apache.http.HttpVersion;
 import org.apache.http.client.protocol.RequestAcceptEncoding;
 import org.apache.http.client.protocol.ResponseContentEncoding;
 import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.params.ConnManagerParams;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
@@ -62,7 +61,6 @@ public final class HttpClientUtils {
      */
     public static HttpParams createDefaultHttpParams() {
         HttpParams params = new BasicHttpParams();
-        ConnManagerParams.setMaxTotalConnections(params, MAX_TOTAL_CONNECTIONS);
         HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
         final String specification = Version.getSpecification();
         HttpProtocolParams.setUserAgent(params, "Sardine/" + specification == null ? VersionInfo.UNAVAILABLE : specification);
@@ -80,12 +78,13 @@ public final class HttpClientUtils {
      */
     public static SchemeRegistry createDefaultSchemeRegistry(SSLSocketFactory sslSocketFactory, Integer port) {
         final SchemeRegistry schemeRegistry = new SchemeRegistry();
-        schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), port != null ? port : 80));
-        if (sslSocketFactory != null)
-            schemeRegistry.register(new Scheme("https", sslSocketFactory, port != null ? port : 443));
-        else
-            schemeRegistry
-                    .register(new Scheme("https", SSLSocketFactory.getSocketFactory(), port != null ? port : 443));
+        schemeRegistry.register(new Scheme("http", port != null ? port : 80, PlainSocketFactory.getSocketFactory()));
+        final int sslPort = port != null ? port : 443;
+        if (sslSocketFactory != null) {
+            schemeRegistry.register(new Scheme("https", sslPort, sslSocketFactory));
+        } else {
+            schemeRegistry.register(new Scheme("https", sslPort, SSLSocketFactory.getSocketFactory()));
+        }
         return schemeRegistry;
     }
 
@@ -102,26 +101,22 @@ public final class HttpClientUtils {
     public static DefaultHttpClient createDefaultHttpClient(SSLSocketFactory sslSocketFactory, Integer port) {
         final HttpParams params = createDefaultHttpParams();
         final SchemeRegistry schemeRegistry = createDefaultSchemeRegistry(sslSocketFactory, port);
-        final ClientConnectionManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
+        final ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(schemeRegistry);
+        cm.setMaxTotal(MAX_TOTAL_CONNECTIONS);
         return new DefaultHttpClient(cm, params);
     }
 
     /**
      * Creates a new {@link DefaultHttpClient} with default settings.
-     *
-     * @param sslSocketFactory
-     *            alternative {@link SSLSocketFactory}.
-     *
-     * @param port
-     *            alternative port
+     * 
+     * @param connectionManager
+     *            to use.
      * @return a parameterized {@link DefaultHttpClient}.
      */
-    public static DefaultHttpClient createDefaultHttpClient(ClientConnectionManager connectionManager, SSLSocketFactory sslSocketFactory, Integer port) {
-        final HttpParams params = createDefaultHttpParams();
-        final SchemeRegistry schemeRegistry = createDefaultSchemeRegistry(sslSocketFactory, port);
-        final ClientConnectionManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
-        return new DefaultHttpClient(cm, params);
+    public static DefaultHttpClient createDefaultHttpClient(ClientConnectionManager connectionManager) {
+        return new DefaultHttpClient(connectionManager, createDefaultHttpParams());
     }
+
     /**
      * Checks that destinationUrl ends with a slash when sourceUrl ends with a slash.
      *
