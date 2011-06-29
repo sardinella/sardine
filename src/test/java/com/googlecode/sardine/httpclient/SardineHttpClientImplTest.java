@@ -49,20 +49,12 @@ import com.googlecode.sardine.util.SardineUtil;
  */
 public class SardineHttpClientImplTest {
 
-    /**
-     *
-     */
     private static final String GMX_BASE_URL = "https://mediacenter.gmx.net/";
 
-    /**
-     *
-     */
-    private static final String SVN_BASE_URL = "https://svn.java.net/svn/hudson~svn/tags/jswidgets-1.5/";
-
-    /**
-     *
-     */
+    private static final String SVN_BASE_URL = "https://svn.jenkins-ci.org/tags/jswidgets-1.5/";
+    private static final String SVN_BASE_URL_STATIC = "https://svn.java.net/svn/hudson~svn/tags/jswidgets-1.5/";
     private static final String SVN_POM_BASE_URL = SVN_BASE_URL + "pom.xml";
+    private static final String SVN_POM_BASE_URL_STATIC = SVN_BASE_URL_STATIC + "pom.xml";
 
     private final static String WEBDE_BASE_URL = "https://webdav.smartdrive.web.de/";
 
@@ -91,7 +83,7 @@ public class SardineHttpClientImplTest {
 
     @Test
     public void testSvnContentStatic() throws JAXBException, IOException {
-        final HashMap<String, DavResource> resourceMap = toMap(sardine.fromMultiStatus(URI.create(SVN_BASE_URL),
+        final HashMap<String, DavResource> resourceMap = toMap(sardine.fromMultiStatus(URI.create(SVN_BASE_URL_STATIC),
                 loadFromResources("svn-propfind.xml")));
         checkMultipleResources(resourceMap);
     }
@@ -146,20 +138,31 @@ public class SardineHttpClientImplTest {
 
     @Test
     public void testPomContentStatic() throws JAXBException, IOException {
-        final HashMap<String, DavResource> resources = toMap(sardine.fromMultiStatus(URI.create(SVN_POM_BASE_URL),
+        final HashMap<String, DavResource> resources = toMap(sardine.fromMultiStatus(URI.create(SVN_POM_BASE_URL_STATIC),
                 loadFromResources("svn-propfind-pom.xml")));
-        checkPom(resources);
+        checkPom(resources, SVN_BASE_URL_STATIC, SVN_POM_BASE_URL_STATIC);
     }
 
     /**
      * @param pomResources
      */
     void checkPom(final HashMap<String, DavResource> pomResources) {
+        final String svnBaseUrl = SVN_BASE_URL;
+        final String svnPomBaseUrl = SVN_POM_BASE_URL;
+        checkPom(pomResources, svnBaseUrl, svnPomBaseUrl);
+    }
+
+    /**
+     * @param pomResources
+     * @param svnBaseUrl
+     * @param svnPomBaseUrl
+     */
+    void checkPom(final HashMap<String, DavResource> pomResources, final String svnBaseUrl, final String svnPomBaseUrl) {
         assertEquals(1, pomResources.size());
         final DavResource pom = pomResources.get("pom.xml");
         assertFalse(pom.isDirectory());
-        assertEquals(SVN_BASE_URL, pom.getBaseUrl());
-        assertEquals(SVN_POM_BASE_URL, pom.getAbsoluteUrl());
+        assertEquals(svnBaseUrl, pom.getBaseUrl());
+        assertEquals(svnPomBaseUrl, pom.getAbsoluteUrl());
     }
 
     @Test(expected=ClientProtocolException.class)
