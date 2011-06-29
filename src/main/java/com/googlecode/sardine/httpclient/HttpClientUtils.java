@@ -7,6 +7,7 @@ package com.googlecode.sardine.httpclient;
 import java.io.UnsupportedEncodingException;
 
 import org.apache.http.HttpVersion;
+import org.apache.http.client.params.HttpClientParams;
 import org.apache.http.client.protocol.RequestAcceptEncoding;
 import org.apache.http.client.protocol.ResponseContentEncoding;
 import org.apache.http.conn.ClientConnectionManager;
@@ -18,6 +19,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.util.VersionInfo;
@@ -55,8 +57,9 @@ public final class HttpClientUtils {
     }
 
     /**
-     * Creates default params, set maximal total connections to {@link HttpClientUtils#MAX_TOTAL_CONNECTIONS}.
-     *
+     * Creates default params, set maximal total connections to {@link HttpClientUtils#MAX_TOTAL_CONNECTIONS} and a
+     * timeout of 3 seconds.
+     * 
      * @return httpParams
      */
     public static HttpParams createDefaultHttpParams() {
@@ -64,6 +67,7 @@ public final class HttpClientUtils {
         HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
         final String specification = Version.getSpecification();
         HttpProtocolParams.setUserAgent(params, "Sardine/" + specification == null ? VersionInfo.UNAVAILABLE : specification);
+        HttpConnectionParams.setConnectionTimeout(params, 3000);
         return params;
     }
 
@@ -103,6 +107,7 @@ public final class HttpClientUtils {
         final SchemeRegistry schemeRegistry = createDefaultSchemeRegistry(sslSocketFactory, port);
         final ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(schemeRegistry);
         cm.setMaxTotal(MAX_TOTAL_CONNECTIONS);
+        cm.setDefaultMaxPerRoute(MAX_TOTAL_CONNECTIONS);
         return new DefaultHttpClient(cm, params);
     }
 
