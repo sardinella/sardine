@@ -101,12 +101,6 @@
         </dependency>
 
         <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.4</version>
-        </dependency>
-
-        <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
             <version>99.0-does-not-exist</version>
@@ -151,6 +145,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
             <version>1.6.1</version>
+            <scope>runtime</scope>
         </dependency>
         <!-- only needed for tests -->
         <dependency>
