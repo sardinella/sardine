@@ -220,7 +220,7 @@ public class SardineHttpClientImpl implements Sardine {
         return extractDavResourceList(url, uri, propPatch);
     }
 
-    /** {@inheritDoc} This implementation will automatically consume the rest of the respone.
+    /** {@inheritDoc} This implementation will automatically consume the rest of the respone upon {@link java.io.InputStream#close()}.
      */
     public InputStream get(String url) throws IOException {
         LOG.trace("GET '{}'", url);

@@ -15,6 +15,8 @@ import org.apache.http.util.EntityUtils;
  * Wrapper for the input stream of a {@link HttpEntity}, will consume the rest of the response on
  * {@link ConsumingInputStream#close()}.
  *
+ * @see SardineHttpClientImpl#get(String)
+ *
  * @author mirko
  */
 class ConsumingInputStream extends InputStream {
