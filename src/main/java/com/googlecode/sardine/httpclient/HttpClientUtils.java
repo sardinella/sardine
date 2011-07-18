@@ -147,11 +147,11 @@ public final class HttpClientUtils {
     public static StringEntity newXmlStringEntityFromString(final String xml) {
         final StringEntity stringEntity;
         try {
-            stringEntity = new StringEntity(xml, "UTF-8");
+            stringEntity = new StringEntity(xml, "utf-8");
         } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Could not get encoding UTF-8?" + xml, e);
+            throw new RuntimeException("Could not get encoding utf-8?" + xml, e);
         }
-        stringEntity.setContentType("text/xml; charset=UTF-8");
+        stringEntity.setContentType("text/xml; charset=utf-8");
         return stringEntity;
     }
 
