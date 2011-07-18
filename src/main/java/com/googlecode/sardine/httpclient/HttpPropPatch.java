@@ -12,7 +12,7 @@ import org.apache.http.protocol.HTTP;
 class HttpPropPatch extends HttpEntityEnclosingRequestBase {
     public HttpPropPatch(String url) {
         super();
-        this.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml" + HTTP.CHARSET_PARAM + "UTF-8");
+        this.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml" + HTTP.CHARSET_PARAM + "utf-8");
         this.setURI(URI.create(url));
     }
 

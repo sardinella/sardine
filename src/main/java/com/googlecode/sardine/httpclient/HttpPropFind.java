@@ -18,7 +18,7 @@ class HttpPropFind extends HttpEntityEnclosingRequestBase {
     public HttpPropFind(String url, int depth) {
         super();
         this.setHeader(HttpHeaders.DEPTH, String.valueOf(depth));
-        this.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml" + HTTP.CHARSET_PARAM + "UTF-8");
+        this.setHeader(HttpHeaders.CONTENT_TYPE, "text/xml" + HTTP.CHARSET_PARAM + "utf-8");
         this.setURI(URI.create(url));
     }
 
