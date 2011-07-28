@@ -3,8 +3,6 @@ package com.googlecode.sardine.httpclient;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,12 +34,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 import com.googlecode.sardine.DavResource;
 import com.googlecode.sardine.Sardine;
 import com.googlecode.sardine.model.Multistatus;
-import com.googlecode.sardine.model.Response;
 import com.googlecode.sardine.util.ResponseToDavResource;
 import com.googlecode.sardine.util.SardineUtil;
 
@@ -85,7 +81,7 @@ public class SardineHttpClientImpl implements Sardine {
     /** */
     public SardineHttpClientImpl(final DefaultHttpClient httpClient, String username, String password)
             throws IOException {
-        putUsernameInMDC(username);
+        SardineUtil.putUsernameInMDC(username);
         this.client = httpClient;
         this.client.getCredentialsProvider().setCredentials(new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT),
                 new UsernamePasswordCredentials(username, password));
@@ -93,20 +89,11 @@ public class SardineHttpClientImpl implements Sardine {
     }
 
     /**
-     * Puts the username in the {@link MDC} for logging. If no username is given default to 'ANONYMOUS'.
-     * 
-     * @param username
-     */
-    private void putUsernameInMDC(String username) {
-        MDC.put("userName", username == null ? "ANONYMOUS" : username);
-    }
-
-    /**
      * Main constructor.
      */
     public SardineHttpClientImpl(String username, String password, SSLSocketFactory sslSocketFactory,
             HttpRoutePlanner routePlanner, Integer port) throws IOException {
-        putUsernameInMDC(username);
+        SardineUtil.putUsernameInMDC(username);
         this.client = HttpClientUtils.createDefaultHttpClient(sslSocketFactory, port);
 
         // for proxy configurations
@@ -139,7 +126,7 @@ public class SardineHttpClientImpl implements Sardine {
         final Unmarshaller unmarshaller = SardineUtil.createUnmarshaller();
         final MultiStatusResponseHandler responseHandler = new MultiStatusResponseHandler(url, unmarshaller);
         final Multistatus multistatus = wrapResponseHandlerExceptions(request, responseHandler);
-        return fromMultiStatus(uri, multistatus);
+        return ResponseToDavResource.fromMultiStatus(uri, multistatus);
     }
 
     /**
@@ -168,45 +155,6 @@ public class SardineHttpClientImpl implements Sardine {
         } finally {
             request.abort();
         }
-    }
-
-    /**
-     * Returns a List of {@link DavResource}s from the given {@link Multistatus}. The name of the resource is calculated
-     * from the last path element of the Href.
-     *
-     * @param uri
-     *            of the initial request.
-     * @param multistatus
-     *            from the request.
-     * @return a List of {@link DavResource}s
-     */
-    List<DavResource> fromMultiStatus(final URI uri, Multistatus multistatus) {
-
-        final List<Response> responses = multistatus.getResponse();
-        final List<DavResource> resources = new ArrayList<DavResource>(responses.size());
-
-        // Get the part of the url from the start to the first slash
-        // ie: http://server.com
-        final String hostPart;
-        try {
-            hostPart = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null)
-                    .toASCIIString();
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException("Could not get hostpart from " + uri, e);
-        }
-
-        final String baseUrl;
-        if (uri.getPath().endsWith("/")) {
-            baseUrl = uri.getPath();
-        } else {
-            baseUrl = null;
-        }
-
-        for (final Response resp : responses) {
-            final ResponseToDavResource toDavResource = new ResponseToDavResource(resp, baseUrl, hostPart);
-            resources.add(toDavResource.toDavResource());
-        }
-        return resources;
     }
 
     /** {@inheritDoc} */

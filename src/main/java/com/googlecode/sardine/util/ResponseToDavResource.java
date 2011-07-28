@@ -4,6 +4,10 @@
 
 package com.googlecode.sardine.util;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.googlecode.sardine.DavResource;
@@ -231,6 +235,45 @@ public class ResponseToDavResource {
             finalName = name;
         }
         return finalName;
+    }
+
+    /**
+     * Returns a List of {@link DavResource}s from the given {@link Multistatus}. The name of the resource is calculated
+     * from the last path element of the Href.
+     *
+     * @param uri
+     *            of the initial request.
+     * @param multistatus
+     *            from the request.
+     * @return a List of {@link DavResource}s
+     */
+    public static List<DavResource> fromMultiStatus(final URI uri, Multistatus multistatus) {
+
+        final List<Response> responses = multistatus.getResponse();
+        final List<DavResource> resources = new ArrayList<DavResource>(responses.size());
+
+        // Get the part of the url from the start to the first slash
+        // ie: http://server.com
+        final String hostPart;
+        try {
+            hostPart = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null)
+                    .toASCIIString();
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Could not get hostpart from " + uri, e);
+        }
+
+        final String baseUrl;
+        if (uri.getPath().endsWith("/")) {
+            baseUrl = uri.getPath();
+        } else {
+            baseUrl = null;
+        }
+
+        for (final Response resp : responses) {
+            final ResponseToDavResource toDavResource = new ResponseToDavResource(resp, baseUrl, hostPart);
+            resources.add(toDavResource.toDavResource());
+        }
+        return resources;
     }
 
 }

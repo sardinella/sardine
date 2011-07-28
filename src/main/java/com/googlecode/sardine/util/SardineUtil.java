@@ -20,6 +20,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import org.slf4j.MDC;
 import org.w3c.dom.Element;
 
 import com.googlecode.sardine.model.Allprop;
@@ -207,6 +208,15 @@ public class SardineUtil {
             throw new RuntimeException("Error converting " + jaxbElement, e);
         }
         return writer.toString();
+    }
+
+    /**
+     * Puts the username in the {@link MDC} for logging. If no username is given default to 'ANONYMOUS'.
+     * 
+     * @param username
+     */
+    public static void putUsernameInMDC(String username) {
+        MDC.put("userName", username == null ? "ANONYMOUS" : username);
     }
 
 }

@@ -41,6 +41,7 @@ import org.junit.Test;
 import com.googlecode.sardine.DavResource;
 import com.googlecode.sardine.DavResourceTest;
 import com.googlecode.sardine.model.Multistatus;
+import com.googlecode.sardine.util.ResponseToDavResource;
 import com.googlecode.sardine.util.SardineUtil;
 
 /**
@@ -83,7 +84,7 @@ public class SardineHttpClientImplTest {
 
     @Test
     public void testSvnContentStatic() throws JAXBException, IOException {
-        final HashMap<String, DavResource> resourceMap = toMap(sardine.fromMultiStatus(URI.create(SVN_BASE_URL_STATIC),
+        final HashMap<String, DavResource> resourceMap = toMap(ResponseToDavResource.fromMultiStatus(URI.create(SVN_BASE_URL_STATIC),
                 loadFromResources("svn-propfind.xml")));
         checkMultipleResources(resourceMap);
     }
@@ -138,7 +139,7 @@ public class SardineHttpClientImplTest {
 
     @Test
     public void testPomContentStatic() throws JAXBException, IOException {
-        final HashMap<String, DavResource> resources = toMap(sardine.fromMultiStatus(URI.create(SVN_POM_BASE_URL_STATIC),
+        final HashMap<String, DavResource> resources = toMap(ResponseToDavResource.fromMultiStatus(URI.create(SVN_POM_BASE_URL_STATIC),
                 loadFromResources("svn-propfind-pom.xml")));
         checkPom(resources, SVN_BASE_URL_STATIC, SVN_POM_BASE_URL_STATIC);
     }
@@ -202,7 +203,7 @@ public class SardineHttpClientImplTest {
     @Test
     public void testStaticContent() throws JAXBException, IOException {
         final Multistatus multiStatus = loadFromResources("propfind.xml");
-        final List<DavResource> fromMultiStatus = sardine.fromMultiStatus(URI.create(WEBDE_BASE_URL), multiStatus);
+        final List<DavResource> fromMultiStatus = ResponseToDavResource.fromMultiStatus(URI.create(WEBDE_BASE_URL), multiStatus);
         final HashMap<String, DavResource> resources = toMap(fromMultiStatus);
         assertThat(resources.size(), is(16));
         final DavResource meineBilder = resources.get("Meine%20Bilder");
@@ -219,7 +220,7 @@ public class SardineHttpClientImplTest {
     public void testAnotherStaticContent() throws IOException, JAXBException, IOException {
         final Multistatus multiStatus = loadFromResources("propfind2.xml");
         final int multiStatusSize = multiStatus.getResponse().size();
-        final List<DavResource> fromMultiStatus = sardine.fromMultiStatus(URI.create(GMX_BASE_URL), multiStatus);
+        final List<DavResource> fromMultiStatus = ResponseToDavResource.fromMultiStatus(URI.create(GMX_BASE_URL), multiStatus);
         assertEquals(multiStatusSize, fromMultiStatus.size());
         final HashMap<String, DavResource> resources = toMap(fromMultiStatus);
         assertEquals(multiStatusSize, resources.size());

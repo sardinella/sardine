@@ -25,6 +25,7 @@ public class SardineAsyncHttpClientImpl implements Sardine {
     /** {@inheritDoc} */
     public List<DavResource> list(String url) throws IOException {
         // TODO Auto-generated method stub
+        LOG.trace("PROPFIND {}", url);
         return null;
     }
 
