@@ -21,7 +21,15 @@ public class SardineAsyncHttpClientImpl implements Sardine {
 
     /** Logger. */
     private final static Logger LOG = LoggerFactory.getLogger(SardineAsyncHttpClientImpl.class);
+    private AsyncHttpClient client;
 
+    /**
+     * 
+     */
+    public SardineAsyncHttpClientImpl() {
+        client = new AsyncHttpClient();
+    }
+    
     /** {@inheritDoc} */
     public List<DavResource> list(String url) throws IOException {
         // TODO Auto-generated method stub
