@@ -111,13 +111,6 @@
             <optional>true</optional>
         </dependency>
 
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>99.0-does-not-exist</version>
-            <scope>provided</scope>
-        </dependency>
-
         <!-- ant must be defined as provided for a succesful compile. -->
         <dependency>
             <groupId>org.apache.ant</groupId>
@@ -146,11 +139,18 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- slf4j -->
+        <!-- logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.6.1</version>
+        </dependency>
+        <!-- Mark this as provided as we include jcl-over-slf4j instead during runtime -->
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1.1</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -325,7 +325,7 @@
         <repository>
             <id>sonatype-releases</id>
             <name>Sonatype Release</name>
-            <url>http://oss.sonatype.org/content/repositories/releases</url>
+            <url>http://oss.sonatype.org/content/repositories/releases/</url>
         </repository>
     </repositories>
 </project>
