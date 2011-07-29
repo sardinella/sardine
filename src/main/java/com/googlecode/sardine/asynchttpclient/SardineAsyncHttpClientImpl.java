@@ -68,7 +68,7 @@ public class SardineAsyncHttpClientImpl implements Sardine {
     public List<DavResource> patch(String url, Map<String, String> addProps, List<String> removeProps)
             throws IOException {
         // TODO Auto-generated method stub
-        return null;
+        throw new UnsupportedOperationException("PATCH");
     }
 
     /** {@inheritDoc} */
@@ -92,74 +92,73 @@ public class SardineAsyncHttpClientImpl implements Sardine {
 
     /** {@inheritDoc} */
     public InputStream getInputStream(String url) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+        return get(url);
     }
 
     /** {@inheritDoc} */
     public void put(String url, byte[] data) throws IOException {
         // TODO Auto-generated method stub
-        
+        throw new UnsupportedOperationException("PUT");
     }
 
     /** {@inheritDoc} */
     public void put(String url, InputStream dataStream) throws IOException {
         // TODO Auto-generated method stub
-        
+        throw new UnsupportedOperationException("PUT");
     }
 
     /** {@inheritDoc} */
     public void put(String url, byte[] data, String contentType) throws IOException {
         // TODO Auto-generated method stub
-        
+        throw new UnsupportedOperationException("PUT");
     }
 
     /** {@inheritDoc} */
     public void put(String url, InputStream dataStream, String contentType) throws IOException {
         // TODO Auto-generated method stub
-        
+        throw new UnsupportedOperationException("PUT");
     }
 
     /** {@inheritDoc} */
     public void put(String url, InputStream dataStream, String contentType, boolean expectContinue) throws IOException {
         // TODO Auto-generated method stub
-        
+        throw new UnsupportedOperationException("PUT");
     }
 
     /** {@inheritDoc} */
     public void delete(String url) throws IOException {
         // TODO Auto-generated method stub
-        
+        throw new UnsupportedOperationException("PUT");
     }
 
     /** {@inheritDoc} */
     public void createDirectory(String url) throws IOException {
         // TODO Auto-generated method stub
-        
+        throw new UnsupportedOperationException("PUT");
     }
 
     /** {@inheritDoc} */
     public void move(String sourceUrl, String destinationUrl) throws IOException {
         // TODO Auto-generated method stub
-        
+        throw new UnsupportedOperationException("PUT");
     }
 
     /** {@inheritDoc} */
     public void moveReplacing(String sourceUrl, String destinationUrl) throws IOException {
         // TODO Auto-generated method stub
-        
+        throw new UnsupportedOperationException("PUT");
     }
 
     /** {@inheritDoc} */
     public void copy(String sourceUrl, String destinationUrl) throws IOException {
         // TODO Auto-generated method stub
-        
+        throw new UnsupportedOperationException("PUT");
     }
 
     /** {@inheritDoc} */
     public void copyReplacing(String sourceUrl, String destinationUrl) throws IOException {
         // TODO Auto-generated method stub
-        
+        throw new UnsupportedOperationException("PUT");
     }
 
     /** {@inheritDoc} */
