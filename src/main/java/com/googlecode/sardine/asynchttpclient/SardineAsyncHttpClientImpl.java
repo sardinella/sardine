@@ -30,15 +30,16 @@ public class SardineAsyncHttpClientImpl implements Sardine {
 
     /** Logger. */
     private final static Logger LOG = LoggerFactory.getLogger(SardineAsyncHttpClientImpl.class);
-    private AsyncHttpClient client;
+
+    private final AsyncHttpClient client;
 
     /**
      * 
      */
-    public SardineAsyncHttpClientImpl() {
-        client = new AsyncHttpClient();
+    public SardineAsyncHttpClientImpl(final AsyncHttpClient client) {
+        this.client = client;
     }
-    
+
     /** {@inheritDoc} */
     public List<DavResource> list(String url) throws IOException {
         LOG.trace("PROPFIND {}", url);

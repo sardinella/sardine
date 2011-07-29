@@ -4,19 +4,30 @@
 
 package com.googlecode.sardine.asynchttpclient;
 
+import org.junit.After;
+
 import com.googlecode.sardine.AbstractSardineImplTest;
 import com.googlecode.sardine.Sardine;
+import com.ning.http.client.AsyncHttpClient;
 
 /**
- * @author mirko
+ * @author mfriedenhagen
  *
  */
 public class SardineAsyncHttpClientImplTest extends AbstractSardineImplTest {
 
+    private AsyncHttpClient client;
+
+    @After
+    public void closeClient() {
+        client.close();
+    }
+
     /** {@inheritDoc} */
     @Override
     protected Sardine createSardine() {
-        return new SardineAsyncHttpClientImpl();
+        client = new AsyncHttpClient();
+        return new SardineAsyncHttpClientImpl(client);
     }
 
 }
