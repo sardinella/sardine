@@ -8,6 +8,7 @@
         </encoder>
     </appender>
     <logger name="org.apache.http" level="${httpclient-log:-INFO}" />
+    <logger name="com.ning.http.client" level="${httpclient-log:-INFO}" />
     <root level="trace">
         <appender-ref ref="STDERR" />
     </root>
