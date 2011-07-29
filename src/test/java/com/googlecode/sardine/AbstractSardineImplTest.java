@@ -107,7 +107,7 @@ public abstract class AbstractSardineImplTest {
      */
     @Test
     public void testExists() throws IOException {
-        assertTrue(sardine.exists("http://www.google.com/"));
+        assertTrue(sardine.exists(SVN_BASE_URL));
     }
 
     /**
@@ -115,7 +115,7 @@ public abstract class AbstractSardineImplTest {
      */
     @Test
     public void testDoesNotExist() throws IOException {
-        assertFalse(sardine.exists("http://www.google.com/idnotexist"));
+        assertFalse(sardine.exists(SVN_BASE_URL + "idnotexist"));
     }
 
     @Test

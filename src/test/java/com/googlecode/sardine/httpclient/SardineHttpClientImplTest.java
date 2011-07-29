@@ -45,11 +45,9 @@ public class SardineHttpClientImplTest extends AbstractSardineImplTest {
     /** {@inheritDoc} */
     @Override
     protected Sardine createSardine() {
-        // TODO Auto-generated method stub
         try {
             return new SardineHttpClientImpl();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             throw new RuntimeException("Message:", e);
         }
     }
