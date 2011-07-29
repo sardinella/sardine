@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,10 @@ import org.slf4j.LoggerFactory;
 import com.googlecode.sardine.DavResource;
 import com.googlecode.sardine.Sardine;
 import com.ning.http.client.AsyncHttpClient;
+import com.ning.http.client.ListenableFuture;
+import com.ning.http.client.Request;
+import com.ning.http.client.RequestBuilder;
+import com.ning.http.client.Response;
 
 /**
  * Implementation of the Sardine interface for {@link AsyncHttpClient}. This is where the meat of the Sardine library lives.
@@ -124,7 +129,20 @@ public class SardineAsyncHttpClientImpl implements Sardine {
 
     /** {@inheritDoc} */
     public boolean exists(String url) throws IOException {
-        // TODO Auto-generated method stub
+        LOG.info("HEAD {}", url);
+        final RequestBuilder builder = new RequestBuilder("HEAD");
+        final Request request = builder.setUrl(url).build();
+        final ListenableFuture<Response> executeRequest = client.executeRequest(request);
+        final Response response;
+        try {
+            response = executeRequest.get();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            throw new IOException("Message:", e);
+        } catch (ExecutionException e) {
+            throw new IOException("Message:", e);
+        }
+        LOG.info("status: {} {}", response.getStatusCode(), response.getStatusText());
         return false;
     }
 
