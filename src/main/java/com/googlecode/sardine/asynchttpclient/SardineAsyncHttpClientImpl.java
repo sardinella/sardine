@@ -60,7 +60,7 @@ public class SardineAsyncHttpClientImpl implements Sardine {
         } catch (ExecutionException e) {
             throw new IOException("Message:", e);
         }
-        LOG.info("status: {} {}", response.getStatusCode(), response.getStatusText());
+        LOG.trace("status: {} {}", response.getStatusCode(), response.getStatusText());
         final Multistatus multistatus = SardineUtil.getMultistatus(SardineUtil.createUnmarshaller(), response.getResponseBodyAsStream(), url);
         return ResponseToDavResource.fromMultiStatus(uri, multistatus);
     }
@@ -74,7 +74,7 @@ public class SardineAsyncHttpClientImpl implements Sardine {
 
     /** {@inheritDoc} */
     public InputStream get(String url) throws IOException {
-        LOG.info("GET {}", url);
+        LOG.trace("GET {}", url);
         final RequestBuilder builder = new RequestBuilder("GET");
         final Request request = builder.setUrl(url).build();
         final ListenableFuture<Response> executeRequest = client.executeRequest(request);
@@ -87,7 +87,7 @@ public class SardineAsyncHttpClientImpl implements Sardine {
         } catch (ExecutionException e) {
             throw new IOException("Message:", e);
         }
-        LOG.info("status: {} {}", response.getStatusCode(), response.getStatusText());
+        LOG.trace("status: {} {}", response.getStatusCode(), response.getStatusText());
         return response.getResponseBodyAsStream();
     }
 
@@ -129,42 +129,42 @@ public class SardineAsyncHttpClientImpl implements Sardine {
     /** {@inheritDoc} */
     public void delete(String url) throws IOException {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("PUT");
+        throw new UnsupportedOperationException("DELETE");
     }
 
     /** {@inheritDoc} */
     public void createDirectory(String url) throws IOException {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("PUT");
+        throw new UnsupportedOperationException("MKCOL");
     }
 
     /** {@inheritDoc} */
     public void move(String sourceUrl, String destinationUrl) throws IOException {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("PUT");
+        throw new UnsupportedOperationException("MOVE");
     }
 
     /** {@inheritDoc} */
     public void moveReplacing(String sourceUrl, String destinationUrl) throws IOException {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("PUT");
+        throw new UnsupportedOperationException("MOVE");
     }
 
     /** {@inheritDoc} */
     public void copy(String sourceUrl, String destinationUrl) throws IOException {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("PUT");
+        throw new UnsupportedOperationException("COPY");
     }
 
     /** {@inheritDoc} */
     public void copyReplacing(String sourceUrl, String destinationUrl) throws IOException {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("PUT");
+        throw new UnsupportedOperationException("COPY");
     }
 
     /** {@inheritDoc} */
     public boolean exists(String url) throws IOException {
-        LOG.info("HEAD {}", url);
+        LOG.trace("HEAD {}", url);
         final RequestBuilder builder = new RequestBuilder("HEAD");
         final Request request = builder.setUrl(url).build();
         final ListenableFuture<Response> executeRequest = client.executeRequest(request);
@@ -177,7 +177,7 @@ public class SardineAsyncHttpClientImpl implements Sardine {
         } catch (ExecutionException e) {
             throw new IOException("Message:", e);
         }
-        LOG.info("status: {} {}", response.getStatusCode(), response.getStatusText());
+        LOG.trace("status: {} {}", response.getStatusCode(), response.getStatusText());
         return response.getStatusCode() == 200;
     }
 
