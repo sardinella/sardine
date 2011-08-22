@@ -22,8 +22,9 @@ import com.ning.http.client.RequestBuilder;
 import com.ning.http.client.Response;
 
 /**
- * Implementation of the Sardine interface for {@link AsyncHttpClient}. This is where the meat of the Sardine library lives.
- *
+ * Implementation of the Sardine interface for {@link AsyncHttpClient}. This is where the meat of the Sardine library
+ * lives.
+ * 
  * @author mfriedenhagen
  */
 public class SardineAsyncHttpClientImpl implements Sardine {
@@ -42,26 +43,15 @@ public class SardineAsyncHttpClientImpl implements Sardine {
 
     /** {@inheritDoc} */
     public List<DavResource> list(String url) throws IOException {
-        LOG.trace("PROPFIND {}", url);
         final URI uri = URI.create(url);
-        final RequestBuilder builder = new RequestBuilder("PROPFIND");
-        final Request request = builder
-                .setHeader("Depth", "1")
-                .setHeader("Content-Type", "text/xml; charset=utf-8")
-                .setUrl(uri.toASCIIString())
-                .setBody(SardineUtil.getDefaultPropfindXML())
-                .build();
-        final ListenableFuture<Response> executeRequest = client.executeRequest(request);
-        final Response response;
-        try {
-            response = executeRequest.get();
-        } catch (InterruptedException e) {
-            throw new IOException("Message:", e);
-        } catch (ExecutionException e) {
-            throw new IOException("Message:", e);
-        }
-        LOG.trace("status: {} {}", response.getStatusCode(), response.getStatusText());
-        final Multistatus multistatus = SardineUtil.getMultistatus(SardineUtil.createUnmarshaller(), response.getResponseBodyAsStream(), url);
+        final String method = "PROPFIND";
+        final RequestBuilder builder = new RequestBuilder(method)
+            .setHeader("Depth", "1") //
+            .setHeader("Content-Type", "text/xml; charset=utf-8") //
+            .setBody(SardineUtil.getDefaultPropfindXML());
+        final Response response = getResponse(builder, method, url);
+        final Multistatus multistatus = SardineUtil.getMultistatus(SardineUtil.createUnmarshaller(),
+                response.getResponseBodyAsStream(), url);
         return ResponseToDavResource.fromMultiStatus(uri, multistatus);
     }
 
@@ -74,20 +64,7 @@ public class SardineAsyncHttpClientImpl implements Sardine {
 
     /** {@inheritDoc} */
     public InputStream get(String url) throws IOException {
-        LOG.trace("GET {}", url);
-        final RequestBuilder builder = new RequestBuilder("GET");
-        final Request request = builder.setUrl(url).build();
-        final ListenableFuture<Response> executeRequest = client.executeRequest(request);
-        final Response response;
-        try {
-            response = executeRequest.get();
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            throw new IOException("Message:", e);
-        } catch (ExecutionException e) {
-            throw new IOException("Message:", e);
-        }
-        LOG.trace("status: {} {}", response.getStatusCode(), response.getStatusText());
+        final Response response = getResponse(new RequestBuilder(), "GET", url);
         return response.getResponseBodyAsStream();
     }
 
@@ -164,21 +141,59 @@ public class SardineAsyncHttpClientImpl implements Sardine {
 
     /** {@inheritDoc} */
     public boolean exists(String url) throws IOException {
-        LOG.trace("HEAD {}", url);
-        final RequestBuilder builder = new RequestBuilder("HEAD");
-        final Request request = builder.setUrl(url).build();
-        final ListenableFuture<Response> executeRequest = client.executeRequest(request);
-        final Response response;
-        try {
-            response = executeRequest.get();
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            throw new IOException("Message:", e);
-        } catch (ExecutionException e) {
-            throw new IOException("Message:", e);
-        }
-        LOG.trace("status: {} {}", response.getStatusCode(), response.getStatusText());
+        final Response response = getResponse(new RequestBuilder(), "HEAD", url);
         return response.getStatusCode() == 200;
+    }
+
+    /**
+     * Returns the response for the {@link RequestBuilder}.
+     * 
+     * @param builder
+     *            to execute
+     * @param method
+     *            which is executed
+     * @param url
+     *            of the request
+     * @return response for the request
+     * @throws IOException
+     *             when something goes wrong.
+     * @param method
+     * @param url
+     * @return
+     * @throws IOException
+     */
+    Response getResponse(final RequestBuilder builder, final String method, String url) throws IOException {
+        final URI uri = URI.create(url);
+        final Request request = builder
+                .setMethod(method)
+                .setUrl(uri.toASCIIString())
+                .build();
+        LOG.trace("{} {}", method, url);
+        final ListenableFuture<Response> executeRequest = client.executeRequest(request);
+        final Response response1;
+        try {
+            response1 = executeRequest.get();
+        } catch (InterruptedException e) {
+            throw new IOException(createErrorMessage(method, url), e);
+        } catch (ExecutionException e) {
+            throw new IOException(createErrorMessage(method, url), e);
+        }
+        LOG.trace("status: {} {}", response1.getStatusCode(), response1.getStatusText());
+        final Response response = response1;
+        return response;
+    }
+
+    /**
+     * Creates the error message including method and url.
+     * 
+     * @param method
+     *            of the request
+     * @param url
+     *            of the request
+     * @return error message.
+     */
+    String createErrorMessage(final String method, String url) {
+        return "Could not " + method + " " + url;
     }
 
 }
