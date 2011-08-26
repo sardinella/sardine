@@ -170,16 +170,15 @@ public class SardineAsyncHttpClientImpl implements Sardine {
                 .build();
         LOG.trace("{} {}", method, url);
         final ListenableFuture<Response> executeRequest = client.executeRequest(request);
-        final Response response1;
+        final Response response;
         try {
-            response1 = executeRequest.get();
+            response = executeRequest.get();
         } catch (InterruptedException e) {
             throw new IOException(createErrorMessage(method, url), e);
         } catch (ExecutionException e) {
             throw new IOException(createErrorMessage(method, url), e);
         }
-        LOG.trace("status: {} {}", response1.getStatusCode(), response1.getStatusText());
-        final Response response = response1;
+        LOG.trace("status: {} {}", response.getStatusCode(), response.getStatusText());
         return response;
     }
 
