@@ -1,3 +1,4 @@
+
 <project
     xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -82,11 +83,17 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.9</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <logback.configurationFile>${logback.configurationFile}</logback.configurationFile>
+                    </systemPropertyVariables>
+                </configuration>
             </plugin>
         </plugins>
     </build>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <logback.configurationFile>src/test/resources/logback-test.xml</logback.configurationFile>
     </properties>
     <dependencies>
         <!-- include these if you want to use the httpclient variant. -->
@@ -222,6 +229,20 @@
                     <groupId>com.sun.xml.bind</groupId>
                     <artifactId>jaxb-impl</artifactId>
                     <version>2.1.12</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>lilith</id>
+            <properties>
+                <logback.configurationFile>src/test/resources/logback-test-lilith.xml</logback.configurationFile>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>de.huxhorn.lilith</groupId>
+                    <artifactId>de.huxhorn.lilith.logback.appender.multiplex-classic</artifactId>
+                    <version>0.9.41</version>
+                    <scope>test</scope>
                 </dependency>
             </dependencies>
         </profile>
