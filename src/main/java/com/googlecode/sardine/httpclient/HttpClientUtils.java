@@ -7,7 +7,6 @@ package com.googlecode.sardine.httpclient;
 import java.io.UnsupportedEncodingException;
 
 import org.apache.http.HttpVersion;
-import org.apache.http.client.params.HttpClientParams;
 import org.apache.http.client.protocol.RequestAcceptEncoding;
 import org.apache.http.client.protocol.ResponseContentEncoding;
 import org.apache.http.conn.ClientConnectionManager;

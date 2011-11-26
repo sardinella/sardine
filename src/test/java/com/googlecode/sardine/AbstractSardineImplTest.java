@@ -21,12 +21,9 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.io.IOUtils;
-//import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ClientProtocolException;
 import org.junit.Test;
 
-import com.googlecode.sardine.DavResource;
-import com.googlecode.sardine.Sardine;
-import com.googlecode.sardine.httpclient.SardineHttpClientImpl;
 import com.googlecode.sardine.model.Multistatus;
 import com.googlecode.sardine.util.ResponseToDavResource;
 import com.googlecode.sardine.util.SardineUtil;
