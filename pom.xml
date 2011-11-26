@@ -16,7 +16,7 @@
     <scm>
         <connection>scm:git:git://github.com/sardinella/sardine.git</connection>
         <developerConnection>scm:git:git@github.com:sardinella/sardine.git</developerConnection>
-        <url>https://github.com/mfriedenhagen/sardinella/</url>
+        <url>https://github.com/sardinella/sardine/</url>
     </scm>
     <build>
         <plugins>
