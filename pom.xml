@@ -331,6 +331,16 @@
                     <relaxed>false</relaxed>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>1.2</version>
+                <reportSets>
+                    <reportSet>dependency-updates-report</reportSet>
+                    <reportSet>plugin-updates-report</reportSet>
+                    <reportSet>property-updates-report</reportSet>
+                </reportSets>
+            </plugin>
         </plugins>
     </reporting>
     <repositories>
