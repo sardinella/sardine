@@ -337,9 +337,13 @@
                 <artifactId>versions-maven-plugin</artifactId>
                 <version>1.2</version>
                 <reportSets>
-                    <reportSet>dependency-updates-report</reportSet>
-                    <reportSet>plugin-updates-report</reportSet>
-                    <reportSet>property-updates-report</reportSet>
+                    <reportSet>
+                        <reports>
+                            <report>dependency-updates-report</report>
+                            <report>plugin-updates-report</report>
+                            <report>property-updates-report</report>
+                        </reports>
+                    </reportSet>
                 </reportSets>
             </plugin>
         </plugins>
