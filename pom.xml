@@ -251,6 +251,13 @@
                     <configLocation>src/conf/checkstyle-ruleset.xml</configLocation>
                     <enableRulesSummary>false</enableRulesSummary>
                 </configuration>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>checkstyle</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
