@@ -64,10 +64,10 @@
                 <configuration>
                     <excludes>
                         <!-- Generated class -->
-                        <exclude>com/googlecode/sardine/model/*.class</exclude>
+                        <exclude>**/com/googlecode/sardine/model/*.class</exclude>
                         <!-- not interested in ant commands -->
-                        <exclude>com/googlecode/sardine/ant/*.class</exclude>
-                        <exclude>com/googlecode/sardine/ant/command/*.class</exclude>
+                        <exclude>**/com/googlecode/sardine/ant/*.class</exclude>
+                        <exclude>**/com/googlecode/sardine/ant/command/*.class</exclude>
                     </excludes>
                 </configuration>
                 <executions>
