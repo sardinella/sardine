@@ -48,9 +48,9 @@ import com.googlecode.sardine.DavResource;
  *
  * @author mirko
  */
-public class WithPasswordTest {
+public class WithPasswordIT {
     
-    private final static Logger LOG = LoggerFactory.getLogger(WithPasswordTest.class);
+    private final static Logger LOG = LoggerFactory.getLogger(WithPasswordIT.class);
 
     final String server;
 
@@ -70,7 +70,7 @@ public class WithPasswordTest {
      * @throws IOException
      *
      */
-    public WithPasswordTest() throws IOException {
+    public WithPasswordIT() throws IOException {
         final Properties properties = new Properties();
         final File sardineProperties = new File(System.getProperty("user.home"), "sardine-it-test.properties");
         assumeTrue(sardineProperties.exists());

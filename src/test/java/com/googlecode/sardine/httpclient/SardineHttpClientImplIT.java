@@ -40,7 +40,7 @@ import com.googlecode.sardine.util.ResponseToDavResource;
  * @author mirko
  *
  */
-public class SardineHttpClientImplTest extends AbstractSardineImplTest {
+public class SardineHttpClientImplIT extends AbstractSardineImplTest {
 
     /** {@inheritDoc} */
     @Override

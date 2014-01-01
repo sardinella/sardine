@@ -14,7 +14,7 @@ import com.ning.http.client.AsyncHttpClient;
  * @author mfriedenhagen
  *
  */
-public class SardineAsyncHttpClientImplTest extends AbstractSardineImplTest {
+public class SardineAsyncHttpClientImplIT extends AbstractSardineImplTest {
 
     private AsyncHttpClient client;
 
