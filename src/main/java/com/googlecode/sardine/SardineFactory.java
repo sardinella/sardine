@@ -16,7 +16,7 @@ public class SardineFactory {
      * Default begin() for when you don't need anything but no authentication and default settings for SSL.
      */
     public static Sardine begin() throws IOException {
-        return Factory.instance().begin(null, null);
+        return Factory.instance().begin();
     }
 
     /**
